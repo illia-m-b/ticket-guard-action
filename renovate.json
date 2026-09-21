@@ -1,0 +1,28 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices",
+    ":semanticCommitTypeAll(chore)",
+    ":pinAllExceptPeerDependencies",
+    ":approveMajorUpdates",
+    ":timezone(Europe/Kyiv)"
+  ],
+  "packageRules": [
+    {
+      "description": "Grouping and automerge of patch/minor devDependencies with a 3-day quarantine",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch", "minor"],
+      "groupName": "devDependencies (non-major)",
+      "schedule": ["before 9am on monday"],
+      "minimumReleaseAge": "3 days",
+      "automerge": true
+    },
+    {
+      "description": "Batch all CI action digests, tool runtimes, and minor/patch updates into one weekly PR",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin"],
+      "groupName": "CI workflows (GitHub Actions)",
+      "schedule": ["before 9am on monday"]
+    }
+  ]
+}

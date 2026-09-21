@@ -1,0 +1,104 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+name: ticket-guard-action
+author: Illia Brashkin
+description: |
+  Traceability enforcer—validates business state, labels, and lifecycle status
+  of issues referenced in pull requests.
+branding:
+  icon: shield
+  color: purple
+inputs:
+  github-token:
+    description: |
+      GitHub Token used to authenticate API requests. Defaults to the automatic
+      contextual token provided by GitHub Actions runner.
+    required: false
+    default: ${{ github.token }}
+  scope:
+    description: |
+      Allowed repository scope for referenced tickets: `current-repo`,
+      `same-org`, or `any`. Cross-repo validation requires an elevated token.
+    required: false
+    default: current-repo
+  extract-from:
+    description: |
+      Target location to scan for ticket references: `pr-title-or-body`,
+      `pr-title`, or `pr-body`.
+    required: false
+    default: pr-title-or-body
+  required-labels:
+    description: |
+      List of labels that must be attached to the ticket (one per line).
+    required: false
+    default: ''
+  require-all-labels:
+    description: |
+      If 'true', ticket must contain ALL labels listed in `required-labels`.
+      If 'false', matching ANY single label is sufficient.
+    required: false
+    default: 'false'
+  forbidden-labels:
+    description: |
+      List of labels that fail validation if present on the ticket
+      (one per line, e.g., `wontfix`, `duplicate`, `blocked`).
+    required: false
+    default: ''
+  allowed-statuses:
+    description: |
+      Allowed ticket statuses (one per line). GitHub issues support `open` and
+      `closed`.
+    required: false
+    default: open
+  require-author-assigned:
+    description: |
+      Assert whether the PR author must be an assignee on the ticket.
+      WARNING: External fork contributors without repository triage/write
+      permissions cannot be assigned to issues; setting this to 'true' will
+      fail fork contributions.
+    required: false
+    default: 'false'
+  ignore-actors:
+    description: |
+      List of GitHub usernames or bots exempt from validation (one per line).
+    required: false
+    default: |
+      dependabot[bot]
+      renovate[bot]
+  fail-on-error:
+    description: |
+      Whether the action should fail the workflow step (via core.setFailed)
+      when validation fails. Set to 'false' for audit-only workflows.
+    required: false
+    default: 'true'
+outputs:
+  is-valid:
+    description: |
+      `true` if the ticket passed all verification criteria, `false` otherwise.
+  ticket-id:
+    description: |
+      The resolved primary ticket identifier (e.g., `42` or `org/repo#42`).
+      Empty string if no ticket was matched.
+  ticket-url:
+    description: |
+      Canonical URL to the issue in GitHub. Empty string if no ticket was
+      matched.
+  ticket-status:
+    description: |
+      The current status/state of the ticket (`open`, `closed`).
+      Empty string if not resolved.
+  ticket-labels:
+    description: |
+      JSON array string of labels present on the resolved ticket (e.g.,
+      `["bug"]`).
+      Guaranteed to be valid JSON (defaults to `[]`).
+  error-message:
+    description: |
+      Machine-readable failure reason if validation fails: `no-ticket-found`,
+      `ticket-not-found`, `scope-violation`, `missing-required-label`,
+      `forbidden-label`, `status-not-allowed`, `author-not-assigned`,
+      `unauthorized`.
+runs:
+  using: node24
+  main: dist/index.js
