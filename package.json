@@ -75,11 +75,7 @@
   },
   "packageManager": "pnpm@12.5.1",
   "engines": {
-    "runtime": {
-      "name": "node",
-      "version": "24.x",
-      "onFail": "error"
-    }
+    "node": "24.x"
   },
   "devEngines": {
     "runtime": {
