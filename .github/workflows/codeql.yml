@@ -13,7 +13,6 @@ name: codeql
     paths:
       - 'src/**'
       - 'package.json'
-      - 'pnpm-lock.yaml'
       - '.github/workflows/**'
   schedule:
     - cron: '37 3 * * 0'
