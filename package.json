@@ -1,0 +1,96 @@
+{
+  "name": "ticket-guard-action",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Traceability enforcer—validates business state, labels, and lifecycle status of issues referenced in pull requests.",
+  "keywords": [
+    "github-actions",
+    "traceability",
+    "issue-tracking",
+    "ticket-guard",
+    "ticket-validation",
+    "pull-request",
+    "pr-lint",
+    "compliance",
+    "devsecops",
+    "governance",
+    "change-management",
+    "audit-readiness",
+    "soc2",
+    "github-issues",
+    "quality-gate",
+    "ci-cd",
+    "automation",
+    "policy-as-code",
+    "zero-dependency",
+    "fast"
+  ],
+  "homepage": "https://github.com/illia-m-b/ticket-guard-action#readme",
+  "bugs": {
+    "url": "https://github.com/illia-m-b/ticket-guard-action/issues",
+    "email": "illiamb@duck.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/illia-m-b/ticket-guard-action.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Illia Brashkin",
+    "email": "illiamb@duck.com"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "format:code": "prettier --write --ignore-unknown .",
+    "format:code:check": "prettier --check --ignore-unknown .",
+    "format:pkg": "sort-package-json",
+    "format:pkg:check": "sort-package-json --check",
+    "lint:pkg": "npmPkgJsonLint --ignorePath=.gitignore --maxWarnings=0 .",
+    "lint:ts": "eslint --concurrency=auto --max-warnings=0 .",
+    "lint:ts:fix": "eslint --fix --concurrency=auto .",
+    "test": "node --experimental-strip-types --disable-warning=ExperimentalWarning --enable-source-maps --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test-coverage-include=\"src/**/*.ts\" --test-coverage-exclude=\"test/**\" --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --test-timeout=2000 \"test/**/*.test.ts\"",
+    "types:check": "tsc"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.13.6",
+    "eslint": "10.11.0",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-perfectionist": "5.11.1",
+    "eslint-plugin-security": "4.0.1",
+    "eslint-plugin-sonarjs": "4.2.1",
+    "eslint-plugin-tsdoc": "0.5.3",
+    "eslint-plugin-unicorn": "76.0.0",
+    "globals": "17.12.0",
+    "lefthook": "2.1.14",
+    "npm-package-json-lint": "11.0.0",
+    "prettier": "3.9.8",
+    "prettier-plugin-jsdoc": "1.8.1",
+    "sort-package-json": "4.0.0",
+    "terser": "5.51.2",
+    "tsup": "8.5.1",
+    "typescript": "5.7.3",
+    "typescript-eslint": "8.70.0"
+  },
+  "packageManager": "pnpm@12.5.1",
+  "engines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.x",
+      "onFail": "error"
+    }
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "24.x",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.5.1",
+      "onFail": "error"
+    }
+  }
+}

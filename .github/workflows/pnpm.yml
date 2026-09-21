@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
-name: copyrights
+name: pnpm
 'on':
   push:
     branches:
@@ -13,16 +13,13 @@ name: copyrights
 permissions:
   contents: read
 jobs:
-  copyrights:
+  pnpm:
     timeout-minutes: 15
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: yegor256/copyrights-action@597733b4b433341822e601cbe3316fd45031fec8 # 0.0.12
+      - uses: pnpm/setup@fbda4c85fc2e1e08721cd8763afea8f48d60f024 # v3.0.0
         with:
-          ignore: >-
-            pnpm-lock.yaml
-            coverage/**
-            dist/**
-            node_modules/**
-            .git/**
+          runtime: node@24
+          cache: true
+      - run: pnpm exec lefthook run pre-push
