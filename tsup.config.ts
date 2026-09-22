@@ -4,6 +4,7 @@
  */
 
 import { defineConfig } from 'tsup';
+import { generateLicenseFile } from 'generate-license-file';
 
 export default defineConfig({
   clean: true,
@@ -12,7 +13,18 @@ export default defineConfig({
   target: 'node24',
   entry: ['src/index.ts'],
   format: ['esm'],
-  minify: 'terser',
+  minify: true,
+  noExternal: [/.*/],
   silent: true,
   sourcemap: true,
+  async onSuccess(): Promise<void> {
+    await generateLicenseFile(
+      './package.json',
+      './dist/THIRD-PARTY-LICENSES.txt',
+      {
+        lineEnding: 'lf',
+        omitVersions: false,
+      },
+    );
+  },
 });
