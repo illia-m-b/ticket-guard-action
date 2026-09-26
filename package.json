@@ -40,6 +40,9 @@
     "email": "illiamb@duck.com"
   },
   "type": "module",
+  "imports": {
+    "#*": "./src/*"
+  },
   "scripts": {
     "build": "tsup",
     "format:code": "prettier --write --ignore-unknown .",
