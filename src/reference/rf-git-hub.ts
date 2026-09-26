@@ -1,0 +1,32 @@
+/*
+ * SPDX-FileCopyrightText: Copyright (c) 2026 Illia Brashkin
+ * SPDX-License-Identifier: MIT
+ */
+
+import type { Reference } from './reference.ts';
+
+import { rfEmpty } from './rf-empty.ts';
+
+/**
+ * Creates an issue reference extracted from an arbitrary text string.
+ *
+ * @param text - The raw text to scan for issue references.
+ *
+ * @returns A present {@link Reference} if a pattern matches; otherwise
+ *   {@link rfEmpty}.
+ */
+export const rfGitHub = (text: string): Reference => {
+  const match =
+    /(?:https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/issues\/|\b[a-z\d_.-]+\/[a-z\d_.-]+#|(?<![\w/@#])#)(?<number>[1-9]\d{0,9})\b/i.exec(
+      text,
+    );
+  const n = match?.groups?.number;
+  if (match === null || n === undefined) {
+    return rfEmpty();
+  }
+  return {
+    number: () => Number(n),
+    present: () => true,
+    raw: () => match[0],
+  };
+};
