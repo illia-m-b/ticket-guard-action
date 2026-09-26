@@ -83,5 +83,11 @@ export default defineConfig([
       'unicorn/no-process-exit': 'off',
     },
   },
+  {
+    files: ['test/**/*.test.ts', 'test/**/*.test-d.ts'],
+    rules: {
+      '@typescript-eslint/no-floating-promises': 'off',
+    },
+  },
   eslintConfigPrettier,
 ]);
