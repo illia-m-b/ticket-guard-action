@@ -309,6 +309,18 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
           'A Pull Request URL was mistakenly accepted as an issue reference',
         title: 'rejects pull request URL',
       },
+      {
+        input: 'https://github.com/org/repo/blob/main/src/utils#42',
+        message:
+          'A line anchor in a GitHub blob URL was mistakenly treated as a scoped issue reference',
+        title: 'rejects file line anchors in GitHub blob URLs',
+      },
+      {
+        input: 'https://gitlab.com/group/project#42',
+        message:
+          'An anchor fragment on an external repository URL was mistakenly treated as a scoped issue reference',
+        title: 'rejects anchor fragments on external URLs',
+      },
     ]) {
       it(title, () => {
         assert.equal(rfGitHub(input).present(), false, message);

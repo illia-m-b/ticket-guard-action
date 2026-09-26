@@ -17,7 +17,7 @@ import { rfEmpty } from './rf-empty.ts';
  */
 export const rfGitHub = (text: string): Reference => {
   const match =
-    /(?:https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/issues\/|\b[a-z\d_.-]+\/[a-z\d_.-]+#|(?<![\w/@#])#)(?<number>[1-9]\d{0,9})\b/i.exec(
+    /(?<![^\s<([{"'`:])(?:https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/issues\/|[a-z\d_.-]+\/[a-z\d_.-]+#|#)(?<number>[1-9]\d{0,9})\b/i.exec(
       text,
     );
   const n = match?.groups?.number;
