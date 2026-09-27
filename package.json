@@ -55,6 +55,9 @@
     "test": "node --experimental-strip-types --disable-warning=ExperimentalWarning --enable-source-maps --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test-coverage-include=\"src/**/*.ts\" --test-coverage-exclude=\"test/**\" --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --test-timeout=2000 \"test/**/*.test.ts\"",
     "types:check": "tsc"
   },
+  "dependencies": {
+    "@actions/core": "3.0.1"
+  },
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "24.13.6",
