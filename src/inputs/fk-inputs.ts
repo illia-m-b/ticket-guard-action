@@ -3,23 +3,18 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { Inputs, Scope, Target } from '#inputs/inputs.ts';
+import type { Inputs } from '#inputs/inputs.ts';
 
 /**
  * Configuration options for creating a fake {@link Inputs} instance.
  */
-export interface FakeInputs {
-  readonly allowedStatuses: readonly string[];
-  readonly extractFrom: Target;
-  readonly failOnError: boolean;
-  readonly forbiddenLabels: readonly string[];
-  readonly gitHubToken: string;
-  readonly ignoreActors: readonly string[];
-  readonly requireAllLabels: boolean;
-  readonly requireAuthorAssigned: boolean;
-  readonly requiredLabels: readonly string[];
-  readonly scope: Scope;
-}
+export type FakeInputs = {
+  readonly [K in keyof Inputs]: Inputs[K] extends (
+    ..._arguments: never[]
+  ) => unknown
+    ? ReturnType<Inputs[K]>
+    : never;
+};
 
 /**
  * Creates an in-memory {@link Inputs} instance for testing.
