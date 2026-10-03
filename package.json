@@ -52,7 +52,7 @@
     "lint:pkg": "npmPkgJsonLint --ignorePath=.gitignore --maxWarnings=0 .",
     "lint:ts": "eslint --concurrency=auto --max-warnings=0 .",
     "lint:ts:fix": "eslint --fix --concurrency=auto .",
-    "test": "node --experimental-strip-types --disable-warning=ExperimentalWarning --enable-source-maps --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test-coverage-include=\"src/**/*.ts\" --test-coverage-exclude=\"test/**\" --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --test-timeout=2000 \"test/**/*.test.ts\"",
+    "test": "node --enable-source-maps --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test-coverage-include=\"src/**/*.ts\" --test-coverage-exclude=\"test/**\" --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --test-timeout=2000 \"test/**/*.test.ts\"",
     "types:check": "tsc"
   },
   "dependencies": {
