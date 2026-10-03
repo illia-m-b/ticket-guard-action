@@ -6,22 +6,26 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import type { PRPayload, Repo } from '#pull-request/gh-pull-request.ts';
+import type { PullRequestContext } from '#pull-request/gh-pull-request.ts';
 
 import { ghPullRequest } from '#pull-request/gh-pull-request.ts';
 
 describe('A GitHub-backed pull request adapter', { concurrency: true }, () => {
   it('projects actual fields', () => {
-    const payload: PRPayload = {
-      body: 'Closes #12',
-      title: 'chore(eslint): integrate unicorn',
-      user: { login: 'octocat' },
+    const context: PullRequestContext = {
+      payload: {
+        pull_request: {
+          body: 'Closes #12',
+          title: 'chore(eslint): integrate unicorn',
+          user: { login: 'octocat' },
+        },
+      },
+      repo: {
+        owner: 'actions',
+        repo: 'github',
+      },
     };
-    const repo: Repo = {
-      owner: 'actions',
-      repo: 'github',
-    };
-    const pr = ghPullRequest(payload, repo);
+    const pr = ghPullRequest(context);
     const actual = {
       author: pr.author(),
       body: pr.body(),
@@ -30,11 +34,11 @@ describe('A GitHub-backed pull request adapter', { concurrency: true }, () => {
       title: pr.title(),
     };
     const expected = {
-      author: payload.user?.login,
-      body: payload.body,
-      repoName: repo.repo,
-      repoOwner: repo.owner,
-      title: payload.title,
+      author: context.payload.pull_request.user?.login,
+      body: context.payload.pull_request.body,
+      repoName: context.repo.repo,
+      repoOwner: context.repo.owner,
+      title: context.payload.pull_request.title,
     };
     assert.deepStrictEqual(
       actual,
@@ -44,12 +48,14 @@ describe('A GitHub-backed pull request adapter', { concurrency: true }, () => {
   });
 
   it('handles missing fields', () => {
-    const payload: PRPayload = {};
-    const repo: Repo = {
-      owner: 'pnpm',
-      repo: 'pnpm',
+    const context: PullRequestContext = {
+      payload: { pull_request: {} },
+      repo: {
+        owner: 'pnpm',
+        repo: 'pnpm',
+      },
     };
-    const pr = ghPullRequest(payload, repo);
+    const pr = ghPullRequest(context);
     const actual = {
       author: pr.author(),
       body: pr.body(),
@@ -60,8 +66,8 @@ describe('A GitHub-backed pull request adapter', { concurrency: true }, () => {
     const expected = {
       author: '',
       body: '',
-      repoName: repo.repo,
-      repoOwner: repo.owner,
+      repoName: context.repo.repo,
+      repoOwner: context.repo.owner,
       title: '',
     };
     assert.deepStrictEqual(
