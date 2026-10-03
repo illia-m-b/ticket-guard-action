@@ -8,10 +8,8 @@ nodeLinker: isolated
 shamefullyHoist: false
 saveExact: true
 overrides:
-  chokidar: 5.0.0
   semver: 7.8.5
 strictPeerDependencies: true
 autoInstallPeers: true
 allowBuilds:
-  esbuild: true
   lefthook: true
