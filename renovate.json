@@ -1,28 +1,116 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Production-grade, secure Renovate configuration for TypeScript GitHub Action",
   "extends": [
     "config:best-practices",
-    ":semanticCommitTypeAll(chore)",
     ":pinAllExceptPeerDependencies",
-    ":approveMajorUpdates",
-    ":timezone(Europe/Kyiv)"
+    ":approveMajorUpdates"
   ],
+  "timezone": "Europe/Kyiv",
+  "semanticCommits": "enabled",
+  "commitMessageLowerCase": "never",
+  "rebaseWhen": "auto",
+  "platformAutomerge": true,
+  "automergeType": "pr",
+  "prConcurrentLimit": 5,
+  "branchConcurrentLimit": 5,
+  "prHourlyLimit": 0,
+  "internalChecksFilter": "strict",
+  "ignorePaths": ["**/node_modules/**", "test/**"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["* 0-5 * * 6"],
+    "automerge": true,
+    "automergeType": "pr",
+    "platformAutomerge": true
+  },
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "labels": ["security"],
+    "schedule": ["at any time"],
+    "minimumReleaseAge": null,
+    "groupName": null,
+    "automerge": false,
+    "dependencyDashboardApproval": false,
+    "prConcurrentLimit": 0
+  },
   "packageRules": [
     {
-      "description": "Grouping and automerge of patch/minor devDependencies with a 3-day quarantine",
+      "description": "Batch and automerge stable (1.x+) devDependencies on Monday morning with 3-day quarantine",
       "matchDepTypes": ["devDependencies"],
-      "matchUpdateTypes": ["patch", "minor"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
       "groupName": "devDependencies (non-major)",
-      "schedule": ["before 9am on monday"],
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps",
+      "commitMessageTopic": "devDependencies (non-major)",
+      "schedule": ["* 0-5 * * 1"],
       "minimumReleaseAge": "3 days",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": true
     },
     {
-      "description": "Batch all CI action digests, tool runtimes, and minor/patch updates into one weekly PR",
+      "description": "Batch 0.x devDependencies without automerge due to SemVer 0.x breaking change risk",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "/^0/",
+      "groupName": "0.x devDependencies",
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps",
+      "commitMessageTopic": "0.x devDependencies",
+      "schedule": ["* 0-5 * * 1"],
+      "minimumReleaseAge": "3 days",
+      "automerge": false
+    },
+    {
+      "description": "Batch non-major GitHub Actions digests and versions into a single Sunday PR",
       "matchManagers": ["github-actions"],
-      "matchUpdateTypes": ["minor", "patch", "digest", "pin"],
-      "groupName": "CI workflows (GitHub Actions)",
-      "schedule": ["before 9am on monday"]
+      "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
+      "groupName": "GitHub Actions workflows",
+      "semanticCommitType": "ci",
+      "semanticCommitScope": "actions",
+      "commitMessageTopic": "GitHub Actions workflows",
+      "schedule": ["* 0-5 * * 0"],
+      "automerge": false
+    },
+    {
+      "description": "Runtime dependencies - isolated PRs with 'fix' type to trigger release-please patch releases",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "semanticCommitType": "fix",
+      "semanticCommitScope": "deps",
+      "schedule": ["* 0-5 * * 2"],
+      "minimumReleaseAge": "3 days",
+      "automerge": false
+    },
+    {
+      "description": "Runtime dependencies major updates - trigger breaking change release in release-please",
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["major"],
+      "commitMessagePrefix": "fix(deps)!:",
+      "labels": ["breaking"],
+      "automerge": false
+    },
+    {
+      "description": "Node.js engine and pnpm package manager updates",
+      "matchDepTypes": [
+        "engines",
+        "devEngines.runtime",
+        "devEngines.packageManager",
+        "packageManager"
+      ],
+      "matchUpdateTypes": ["minor", "patch"],
+      "semanticCommitType": "chore",
+      "semanticCommitScope": "deps",
+      "schedule": ["* 0-5 * * 0"],
+      "automerge": false
+    },
+    {
+      "description": "Add breaking label to any major update requiring manual approval",
+      "matchUpdateTypes": ["major"],
+      "labels": ["breaking"],
+      "automerge": false
     }
   ]
 }
