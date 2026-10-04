@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Production-grade, secure Renovate configuration for TypeScript GitHub Action",
+  "description": "Renovate configuration for TypeScript GitHub Action",
   "extends": [
     "config:best-practices",
     ":pinAllExceptPeerDependencies",
@@ -8,7 +8,7 @@
   ],
   "timezone": "Europe/Kyiv",
   "semanticCommits": "enabled",
-  "commitMessageLowerCase": "never",
+  "commitMessageLowerCase": "auto",
   "rebaseWhen": "auto",
   "platformAutomerge": true,
   "automergeType": "pr",
@@ -51,14 +51,12 @@
       "platformAutomerge": true
     },
     {
-      "description": "Batch 0.x devDependencies without automerge due to SemVer 0.x breaking change risk",
+      "description": "Separate 0.x devDependencies without automerge due to SemVer breaking change risk",
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "/^0/",
-      "groupName": "0.x devDependencies",
       "semanticCommitType": "chore",
       "semanticCommitScope": "deps",
-      "commitMessageTopic": "0.x devDependencies",
       "schedule": ["* 0-5 * * 1"],
       "minimumReleaseAge": "3 days",
       "automerge": false
