@@ -16,13 +16,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   {
-    ignores: [
-      '.github/**',
-      'coverage/**',
-      'dist/**',
-      'eslint.config.mjs',
-      'tsup.config.ts',
-    ],
+    ignores: ['.github/**', 'coverage/**', 'dist/**', 'eslint.config.mjs'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
@@ -58,6 +52,21 @@ export default defineConfig([
         'error',
         { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
       ],
+      '@typescript-eslint/promise-function-async': [
+        'error',
+        {
+          checkArrowFunctions: true,
+          checkFunctionDeclarations: true,
+          checkFunctionExpressions: true,
+          checkMethodDeclarations: true,
+        },
+      ],
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        { allowNumber: true },
+      ],
+      '@typescript-eslint/return-await': ['error', 'in-try-catch'],
       '@typescript-eslint/strict-boolean-expressions': [
         'error',
         {
@@ -76,6 +85,12 @@ export default defineConfig([
           message:
             'for..in iterates over prototype chain. Use Object.keys()/entries() or for..of instead.',
           selector: 'ForInStatement',
+        },
+        {
+          message:
+            'Use async/await syntax instead of raw promise chains (.then, .catch, .finally).',
+          selector:
+            'CallExpression[callee.property.name=/^(then|catch|finally)$/]',
         },
       ],
       'security/detect-object-injection': 'off',
