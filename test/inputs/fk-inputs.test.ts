@@ -14,7 +14,7 @@ describe('An in-memory fake inputs instance', { concurrency: true }, () => {
   it('matches default configuration from action.yml', () => {
     const defaults: FakeInputs = {
       allowedStatuses: ['open'],
-      extractFrom: 'pr-title-or-body',
+      extractFrom: ['pr-title', 'pr-body'],
       failOnError: true,
       forbiddenLabels: [],
       gitHubToken: '',
@@ -47,7 +47,7 @@ describe('An in-memory fake inputs instance', { concurrency: true }, () => {
   it('preserves custom configuration overrides', () => {
     const custom: FakeInputs = {
       allowedStatuses: ['closed'],
-      extractFrom: 'pr-body',
+      extractFrom: ['pr-body'],
       failOnError: false,
       forbiddenLabels: ['wontfix'],
       gitHubToken: 'custom-secret-token',

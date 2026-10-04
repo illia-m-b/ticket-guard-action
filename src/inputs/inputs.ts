@@ -13,7 +13,7 @@
  */
 export interface Inputs {
   readonly allowedStatuses: () => readonly string[];
-  readonly extractFrom: () => Target;
+  readonly extractFrom: () => readonly Target[];
   readonly failOnError: () => boolean;
   readonly forbiddenLabels: () => readonly string[];
   readonly gitHubToken: () => string;
@@ -34,12 +34,18 @@ export const SCOPES = ['any', 'current-repo', 'same-org'] as const;
  */
 export type Scope = (typeof SCOPES)[number];
 
+export const isScope = (value: string): value is Scope =>
+  SCOPES.includes(value as Scope);
+
 /**
  * Permissible target locations to scan for ticket references.
  */
-export const TARGETS = ['pr-body', 'pr-title', 'pr-title-or-body'] as const;
+export const TARGETS = ['pr-title', 'pr-body'] as const;
 
 /**
  * Target scanning location type.
  */
 export type Target = (typeof TARGETS)[number];
+
+export const isTarget = (value: string): value is Target =>
+  TARGETS.includes(value as Target);
