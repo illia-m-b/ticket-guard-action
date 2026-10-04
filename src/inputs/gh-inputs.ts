@@ -10,7 +10,9 @@ import {
   setSecret,
 } from '@actions/core';
 
-import { Inputs, Scope, SCOPES, Target, TARGETS } from '#inputs/inputs.ts';
+import type { Inputs } from './inputs.ts';
+
+import { isScope, isTarget, SCOPES, TARGETS } from './inputs.ts';
 
 /**
  * Creates an {@link Inputs} instance backed by the GitHub Actions runner
@@ -24,13 +26,15 @@ import { Inputs, Scope, SCOPES, Target, TARGETS } from '#inputs/inputs.ts';
 export const ghInputs = (): Inputs => ({
   allowedStatuses: () => getMultilineInput('allowed-statuses'),
   extractFrom: () => {
-    const raw = getInput('extract-from') as Target;
-    if (!TARGETS.includes(raw)) {
-      throw new TypeError(
-        `Invalid "extract-from": expected ${TARGETS.join(' | ')}, got "${raw}"`,
-      );
-    }
-    return raw;
+    const raw = getMultilineInput('extract-from');
+    return raw.map((value) => {
+      if (!isTarget(value)) {
+        throw new TypeError(
+          `Invalid "extract-from": expected (${TARGETS.join(' | ')})[], got "${JSON.stringify(raw)}"`,
+        );
+      }
+      return value;
+    });
   },
   failOnError: () => getBooleanInput('fail-on-error'),
   forbiddenLabels: () => getMultilineInput('forbidden-labels'),
@@ -44,8 +48,8 @@ export const ghInputs = (): Inputs => ({
   requireAuthorAssigned: () => getBooleanInput('require-author-assigned'),
   requiredLabels: () => getMultilineInput('required-labels'),
   scope: () => {
-    const raw = getInput('scope') as Scope;
-    if (!SCOPES.includes(raw)) {
+    const raw = getInput('scope');
+    if (!isScope(raw)) {
       throw new TypeError(
         `Invalid "scope": expected ${SCOPES.join(' | ')}, got "${raw}"`,
       );

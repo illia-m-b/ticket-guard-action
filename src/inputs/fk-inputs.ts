@@ -36,7 +36,7 @@ export const fkInputs = ({
   scope,
 }: Partial<FakeInputs> = {}): Inputs => ({
   allowedStatuses: () => allowedStatuses ?? ['open'],
-  extractFrom: () => extractFrom ?? 'pr-title-or-body',
+  extractFrom: () => extractFrom ?? ['pr-title', 'pr-body'],
   failOnError: () => failOnError ?? true,
   forbiddenLabels: () => forbiddenLabels ?? [],
   gitHubToken: () => gitHubToken ?? '',

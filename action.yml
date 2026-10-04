@@ -24,10 +24,11 @@ inputs:
     default: current-repo
   extract-from:
     description: |
-      Target location to scan for ticket references: `pr-title-or-body`,
-      `pr-title`, or `pr-body`.
+      Target locations to scan for ticket references: `pr-title`, or `pr-body`.
     required: false
-    default: pr-title-or-body
+    default: |
+      pr-title
+      pr-body
   required-labels:
     description: |
       List of labels that must be attached to the ticket (one per line).
