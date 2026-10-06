@@ -39,7 +39,7 @@ export interface PullRequestContext {
 export const ghPullRequest = (context: PullRequestContext): PullRequest => ({
   author: () => context.payload.pull_request.user?.login ?? '',
   body: () => context.payload.pull_request.body ?? '',
-  repoName: () => context.repo.repo,
-  repoOwner: () => context.repo.owner,
+  owner: () => context.repo.owner,
+  repository: () => context.repo.repo,
   title: () => context.payload.pull_request.title ?? '',
 });

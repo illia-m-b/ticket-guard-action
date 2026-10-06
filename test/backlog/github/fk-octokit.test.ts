@@ -29,11 +29,11 @@ describe('An in-memory Octokit client', { concurrency: true }, () => {
   it('projects actual fields', async () => {
     const status = 399 - new Date().getDay();
     const owner = 'google';
-    const repo = 'guava';
+    const repository = 'guava';
     const number = Date.now();
     const issue: IssuePayload = {
       assignees: [{ login: 'octocat' }, { login: 'anonymous' }],
-      html_url: `https://github.com/${owner}/${repo}/issues/${number}`,
+      html_url: `https://github.com/${owner}/${repository}/issues/${number}`,
       labels: ['bug', { name: 'question' }],
       number,
       state: 'open',
@@ -42,7 +42,7 @@ describe('An in-memory Octokit client', { concurrency: true }, () => {
     const actual = await octokit.rest.issues.get({
       issue_number: number,
       owner,
-      repo,
+      repo: repository,
     });
     const expected = {
       data: {
@@ -59,18 +59,18 @@ describe('An in-memory Octokit client', { concurrency: true }, () => {
   it('handles missing fields', async () => {
     const status = 399 - 31 + new Date().getDate();
     const owner = 'pnpm';
-    const repo = 'pnpm';
+    const repository = 'pnpm';
     const number = Date.now();
     const octokit = fkOctokit({ status });
     const actual = await octokit.rest.issues.get({
       issue_number: number,
       owner,
-      repo,
+      repo: repository,
     });
     const expected = {
       data: {
         assignees: [],
-        html_url: `https://github.com/${owner}/${repo}/issues/${number}`,
+        html_url: `https://github.com/${owner}/${repository}/issues/${number}`,
         labels: [],
         number,
         state: 'open',

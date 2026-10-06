@@ -25,18 +25,18 @@ export interface PullRequest {
   readonly body: () => string;
 
   /**
-   * Retrieves the target repository name.
-   *
-   * @returns The repository name.
-   */
-  readonly repoName: () => string;
-
-  /**
    * Retrieves the owner (organization or user) of the target repository.
    *
    * @returns The repository owner.
    */
-  readonly repoOwner: () => string;
+  readonly owner: () => string;
+
+  /**
+   * Retrieves the target repository name.
+   *
+   * @returns The repository name.
+   */
+  readonly repository: () => string;
 
   /**
    * Retrieves the title of the pull request.

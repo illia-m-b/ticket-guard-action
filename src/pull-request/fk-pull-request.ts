@@ -27,13 +27,13 @@ export type FakePullRequest = {
 export const fkPullRequest = ({
   author = 'octocat',
   body = '',
-  repoName = 'octo-repo',
-  repoOwner = 'octo-org',
+  owner = 'octo-org',
+  repository = 'octo-repo',
   title = 'chore(deps): update devDependencies (non-major)',
 }: Partial<FakePullRequest> = {}): PullRequest => ({
   author: () => author,
   body: () => body,
-  repoName: () => repoName,
-  repoOwner: () => repoOwner,
+  owner: () => owner,
+  repository: () => repository,
   title: () => title,
 });

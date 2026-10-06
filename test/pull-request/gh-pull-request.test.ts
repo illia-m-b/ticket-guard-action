@@ -29,8 +29,8 @@ describe('A GitHub-backed pull request adapter', { concurrency: true }, () => {
     const actual = {
       author: pr.author(),
       body: pr.body(),
-      repoName: pr.repoName(),
-      repoOwner: pr.repoOwner(),
+      repoName: pr.repository(),
+      repoOwner: pr.owner(),
       title: pr.title(),
     };
     const expected = {
@@ -59,8 +59,8 @@ describe('A GitHub-backed pull request adapter', { concurrency: true }, () => {
     const actual = {
       author: pr.author(),
       body: pr.body(),
-      repoName: pr.repoName(),
-      repoOwner: pr.repoOwner(),
+      repoName: pr.repository(),
+      repoOwner: pr.owner(),
       title: pr.title(),
     };
     const expected = {
