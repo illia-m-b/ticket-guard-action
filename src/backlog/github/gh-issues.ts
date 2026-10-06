@@ -17,14 +17,14 @@ import { ghIssue } from './gh-issue.ts';
  *
  * @param octokit - Authenticated Octokit client instance.
  * @param owner - Target repository owner (organization or user).
- * @param repo - Target repository name.
+ * @param repository - Target repository name.
  *
  * @returns An {@link Backlog} implementation retrieving issues via GitHub API.
  */
 export const ghIssues = (
   octokit: Octokit,
   owner: string,
-  repo: string,
+  repository: string,
 ): Backlog => ({
   ticket: async (reference: Reference): Promise<Ticket> => {
     if (!reference.present()) {
@@ -34,7 +34,7 @@ export const ghIssues = (
       const payload = await octokit.rest.issues.get({
         issue_number: reference.number(),
         owner,
-        repo,
+        repo: repository,
       });
       return ghIssue(payload.data);
     } catch (error: unknown) {

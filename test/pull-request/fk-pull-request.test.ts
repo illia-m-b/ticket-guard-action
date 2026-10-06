@@ -15,16 +15,16 @@ describe('An in-memory pull request instance', { concurrency: true }, () => {
     const defaults: FakePullRequest = {
       author: 'octocat',
       body: '',
-      repoName: 'octo-repo',
-      repoOwner: 'octo-org',
+      owner: 'octo-org',
+      repository: 'octo-repo',
       title: 'chore(deps): update devDependencies (non-major)',
     };
     const fake = fkPullRequest();
     const actual: FakePullRequest = {
       author: fake.author(),
       body: fake.body(),
-      repoName: fake.repoName(),
-      repoOwner: fake.repoOwner(),
+      owner: fake.owner(),
+      repository: fake.repository(),
       title: fake.title(),
     };
     assert.deepStrictEqual(
@@ -38,16 +38,16 @@ describe('An in-memory pull request instance', { concurrency: true }, () => {
     const custom: FakePullRequest = {
       author: 'actions',
       body: 'Hello, world!',
-      repoName: 'core',
-      repoOwner: 'actions',
+      owner: 'actions',
+      repository: 'core',
       title: 'Custom PR',
     };
     const fake = fkPullRequest(custom);
     const actual: FakePullRequest = {
       author: fake.author(),
       body: fake.body(),
-      repoName: fake.repoName(),
-      repoOwner: fake.repoOwner(),
+      owner: fake.owner(),
+      repository: fake.repository(),
       title: fake.title(),
     };
     assert.deepStrictEqual(

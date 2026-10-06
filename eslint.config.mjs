@@ -95,6 +95,7 @@ export default defineConfig([
       ],
       'security/detect-object-injection': 'off',
       'tsdoc/syntax': 'error',
+      'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
       'unicorn/no-process-exit': 'off',
     },
   },

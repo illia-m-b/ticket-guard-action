@@ -18,7 +18,7 @@ export const ghIssue = (payload: IssuePayload): Ticket => ({
   labels: () =>
     payload.labels.flatMap((label) => {
       const name = typeof label === 'string' ? label : label.name;
-      return typeof name === 'string' ? [name] : [];
+      return typeof name === 'string' ? name : [];
     }),
   number: () => payload.number,
   present: () => true,

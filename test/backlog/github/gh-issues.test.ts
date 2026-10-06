@@ -34,8 +34,8 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     };
     const reference = rfEmpty();
     const owner = 'actions';
-    const repo = 'toolkit';
-    const backlog = ghIssues(fkOctokit(), owner, repo);
+    const repository = 'toolkit';
+    const backlog = ghIssues(fkOctokit(), owner, repository);
     const retrieved = await backlog.ticket(reference);
     let actualNumber;
     try {
@@ -75,10 +75,10 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
       url: fake.url(),
     };
     const owner = 'pnpm';
-    const repo = 'setup';
+    const repository = 'setup';
     const number = new Date().getSeconds() + 1;
-    const reference = rfGitHub(`Closes ${owner}/${repo}#${number}`);
-    const backlog = ghIssues(fkOctokit({ status: 404 }), owner, repo);
+    const reference = rfGitHub(`Closes ${owner}/${repository}#${number}`);
+    const backlog = ghIssues(fkOctokit({ status: 404 }), owner, repository);
     const retrieved = await backlog.ticket(reference);
     let actualNumber;
     try {
