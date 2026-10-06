@@ -76,7 +76,7 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     };
     const owner = 'pnpm';
     const repo = 'setup';
-    const number = new Date().getSeconds();
+    const number = new Date().getSeconds() + 1;
     const reference = rfGitHub(`Closes ${owner}/${repo}#${number}`);
     const backlog = ghIssues(fkOctokit({ status: 404 }), owner, repo);
     const retrieved = await backlog.ticket(reference);
