@@ -3,18 +3,19 @@
  * SPDX-License-Identifier: MIT
  */
 
+import type { ConfigWithExtends } from 'typescript-eslint';
+
 import eslint from '@eslint/js';
-import { defineConfig } from 'eslint/config';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import perfectionist from 'eslint-plugin-perfectionist';
 import security from 'eslint-plugin-security';
-import sonarjs from 'eslint-plugin-sonarjs';
+import { configs as sonarjsConfigs } from 'eslint-plugin-sonarjs';
 import tsdoc from 'eslint-plugin-tsdoc';
 import unicorn from 'eslint-plugin-unicorn';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-export default defineConfig([
+export default [
   {
     ignores: ['.github/**', 'coverage/**', 'dist/**', 'eslint.config.mjs'],
   },
@@ -24,7 +25,7 @@ export default defineConfig([
   unicorn.configs.recommended,
   perfectionist.configs['recommended-natural'],
   security.configs.recommended,
-  sonarjs.configs.recommended,
+  sonarjsConfigs.recommended,
   {
     languageOptions: {
       globals: {
@@ -106,4 +107,4 @@ export default defineConfig([
     },
   },
   eslintConfigPrettier,
-]);
+] satisfies ConfigWithExtends[];
