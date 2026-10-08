@@ -7,9 +7,9 @@ import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
 import { describe, it } from 'node:test';
 
-import { sticky } from '#sticky/sticky.ts';
+import { stGrip } from '#grip/st-grip.ts';
 
-describe('A sticky wrapper', { concurrency: true }, () => {
+describe('A sticky grip', { concurrency: true }, () => {
   it('does not call the origin function upon initialization', () => {
     let called = 0;
     const never = 0;
@@ -17,11 +17,11 @@ describe('A sticky wrapper', { concurrency: true }, () => {
       called += 1;
       return randomInt(Date.now());
     };
-    sticky(origin);
+    stGrip(origin);
     assert.equal(
       called,
       never,
-      'A sticky wrapper eagerly executed the supplier function',
+      'A sticky grip eagerly executed the supplier function',
     );
   });
 
@@ -32,31 +32,31 @@ describe('A sticky wrapper', { concurrency: true }, () => {
       called += 1;
       return randomInt(Date.now());
     };
-    const wrapped = sticky(origin);
-    wrapped();
-    wrapped();
-    wrapped();
+    const grip = stGrip(origin);
+    grip();
+    grip();
+    grip();
     assert.equal(
       called,
       once,
-      'A sticky wrapper evaluated the supplier function more than once',
+      'A sticky grip evaluated the supplier function more than once',
     );
   });
 
-  it('returns the exact value produced by the origin across successive calls', () => {
-    const wrapped = sticky(() => ({
+  it('returns the identical value produced by the origin across successive calls', () => {
+    const grip = stGrip(() => ({
       time: Date.now(),
     }));
-    const first = wrapped();
-    const second = wrapped();
+    const first = grip();
+    const second = grip();
     assert.equal(
       first,
       second,
-      'A sticky wrapper returned different values across multiple calls',
+      'A sticky grip returned different values across multiple calls',
     );
   });
 
-  it('does not re-trigger the origin function when it returns nullish values', () => {
+  it('does not re-evaluate the origin function when it returns nullish values', () => {
     // eslint-disable-next-line unicorn/no-null
     for (const nullish of [null, undefined]) {
       let called = 0;
@@ -65,26 +65,26 @@ describe('A sticky wrapper', { concurrency: true }, () => {
         called += 1;
         return nullish;
       };
-      const wrapped = sticky(origin);
-      wrapped();
-      wrapped();
-      wrapped();
+      const grip = stGrip(origin);
+      grip();
+      grip();
+      grip();
       assert.equal(
         called,
         once,
-        'A sticky wrapper did not cache a function that returns a nullish value',
+        'A sticky grip re-evaluated the origin function when it yielded a nullish value',
       );
     }
   });
 
   it('propagates errors thrown by the origin function', () => {
-    const wrapped = sticky((): never => {
+    const grip = stGrip((): never => {
       throw new Error('I realized what is wrong with me');
     });
     assert.throws(
-      () => wrapped(),
+      () => grip(),
       { message: 'I realized what is wrong with me', name: 'Error' },
-      'A sticky wrapper silently ignored errors from the origin function or modified them',
+      'A sticky grip silently ignored or modified errors from the origin function',
     );
   });
 });
