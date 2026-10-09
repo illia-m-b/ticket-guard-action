@@ -7,15 +7,14 @@ pre-commit:
   commands:
     lint-ts-fix:
       glob: '**/*.{js,ts,cjs,mjs}'
-      run: pnpm lint:ts:fix:staged {staged_files}
+      run: pnpm lint:ts:fix {staged_files}
       stage_fixed: true
-    format-pkg:
+    format-pkg-fix:
       glob: 'package.json'
-      run: pnpm format:pkg
+      run: pnpm format:pkg:fix
       stage_fixed: true
-    format-code:
-      glob: '**/*.{js,ts,cjs,mjs,json,jsonc,md,yml,yaml}'
-      run: pnpm exec prettier --write --ignore-unknown {staged_files}
+    format-code-fix:
+      run: pnpm format:code:fix {staged_files}
       stage_fixed: true
 pre-push:
   parallel: true

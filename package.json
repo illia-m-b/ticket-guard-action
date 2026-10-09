@@ -44,15 +44,15 @@
     "#*": "./src/*"
   },
   "scripts": {
-    "format:code": "prettier --write --ignore-unknown .",
-    "format:code:check": "prettier --check --ignore-unknown .",
-    "format:pkg": "sort-package-json",
+    "format:code": "prettier --ignore-unknown --log-level=warn",
+    "format:code:check": "pnpm format:code --check .",
+    "format:code:fix": "pnpm format:code --cache --cache-strategy=metadata --write",
     "format:pkg:check": "sort-package-json --check",
+    "format:pkg:fix": "sort-package-json",
     "lint:pkg": "npmPkgJsonLint --ignorePath=.gitignore --maxWarnings=0 .",
     "lint:ts": "eslint --concurrency=auto --no-warn-ignored --flag=unstable_native_nodejs_ts_config",
     "lint:ts:check": "pnpm lint:ts --max-warnings=0",
     "lint:ts:fix": "pnpm lint:ts --fix",
-    "lint:ts:fix:staged": "pnpm lint:ts --fix",
     "test": "node --enable-source-maps --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test-coverage-include=\"src/**/*.ts\" --test-coverage-exclude=\"test/**\" --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --test-timeout=2000 \"test/**/*.test.ts\"",
     "types:check": "tsc"
   },
