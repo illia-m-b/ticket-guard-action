@@ -32,7 +32,7 @@ export const ghIssues = (
     }
     try {
       const payload = await octokit.rest.issues.get({
-        issue_number: reference.number(),
+        issue_number: Number(reference.id()),
         owner,
         repo: repository,
       });

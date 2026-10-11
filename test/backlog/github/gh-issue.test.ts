@@ -21,8 +21,8 @@ describe('A GitHub issue adapter', { concurrency: true }, () => {
     };
     const expected = {
       assignees: ['pnpm', 'googleapis'],
+      id: '56',
       labels: ['wontfix', 'bug'],
-      number: 56,
       present: true,
       status: 'open',
       url: 'https://github.com/illia-m-b/veils-js/issues/56',
@@ -30,8 +30,8 @@ describe('A GitHub issue adapter', { concurrency: true }, () => {
     const issue = ghIssue(payload);
     const actual = {
       assignees: issue.assignees(),
+      id: issue.id(),
       labels: issue.labels(),
-      number: issue.number(),
       present: issue.present(),
       status: issue.status(),
       url: issue.url(),

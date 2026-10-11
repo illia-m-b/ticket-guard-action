@@ -8,13 +8,13 @@
  */
 export interface Reference {
   /**
-   * Retrieves the numeric issue identifier.
+   * Retrieves the issue identifier.
    *
-   * @returns The issue number.
+   * @returns The issue ID.
    *
    * @throws TypeError - If the reference is empty (not present).
    */
-  readonly number: () => number;
+  readonly id: () => string;
 
   /**
    * Indicates whether a valid issue reference was identified.

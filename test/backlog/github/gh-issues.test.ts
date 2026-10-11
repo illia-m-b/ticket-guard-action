@@ -18,16 +18,16 @@ import { rfGitHub } from '#reference/rf-git-hub.ts';
 describe('A GitHub issues adapter', { concurrency: true }, () => {
   it('returns fake ticket when reference is absent', async () => {
     const fake = fkTicket();
-    let fkNumber;
+    let fkId;
     try {
-      fkNumber = fake.number();
+      fkId = fake.id();
     } catch (error: unknown) {
-      fkNumber = error;
+      fkId = error;
     }
     const defaults = {
       assignees: fake.assignees(),
+      id: fkId,
       labels: fake.labels(),
-      number: fkNumber,
       present: fake.present(),
       status: fake.status(),
       url: fake.url(),
@@ -37,16 +37,16 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     const repository = 'toolkit';
     const backlog = ghIssues(fkOctokit(), owner, repository);
     const retrieved = await backlog.ticket(reference);
-    let actualNumber;
+    let actualId;
     try {
-      actualNumber = retrieved.number();
+      actualId = retrieved.id();
     } catch (error: unknown) {
-      actualNumber = error;
+      actualId = error;
     }
     const actual = {
       assignees: retrieved.assignees(),
+      id: actualId,
       labels: retrieved.labels(),
-      number: actualNumber,
       present: retrieved.present(),
       status: retrieved.status(),
       url: retrieved.url(),
@@ -60,16 +60,16 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
 
   it('returns fake ticket when ticket is not found', async () => {
     const fake = fkTicket();
-    let fkNumber;
+    let fkId;
     try {
-      fkNumber = fake.number();
+      fkId = fake.id();
     } catch (error: unknown) {
-      fkNumber = error;
+      fkId = error;
     }
     const defaults = {
       assignees: fake.assignees(),
+      id: fkId,
       labels: fake.labels(),
-      number: fkNumber,
       present: fake.present(),
       status: fake.status(),
       url: fake.url(),
@@ -80,16 +80,16 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     const reference = rfGitHub(`Closes ${owner}/${repository}#${number}`);
     const backlog = ghIssues(fkOctokit({ status: 404 }), owner, repository);
     const retrieved = await backlog.ticket(reference);
-    let actualNumber;
+    let actualId;
     try {
-      actualNumber = retrieved.number();
+      actualId = retrieved.id();
     } catch (error: unknown) {
-      actualNumber = error;
+      actualId = error;
     }
     const actual = {
       assignees: retrieved.assignees(),
+      id: actualId,
       labels: retrieved.labels(),
-      number: actualNumber,
       present: retrieved.present(),
       status: retrieved.status(),
       url: retrieved.url(),
@@ -114,8 +114,8 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     };
     const expected = {
       assignees: ['yokoffing'],
+      id: '167',
       labels: [':arrow_up: enhancement', ':recycle: ongoing'],
-      number: 167,
       present: true,
       status: 'open',
       url: 'https://github.com/yokoffing/Betterfox/issues/167',
@@ -129,8 +129,8 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     const retrieved = await backlog.ticket(reference);
     const actual = {
       assignees: retrieved.assignees(),
+      id: retrieved.id(),
       labels: retrieved.labels(),
-      number: retrieved.number(),
       present: retrieved.present(),
       status: retrieved.status(),
       url: retrieved.url(),

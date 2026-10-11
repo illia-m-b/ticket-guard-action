@@ -17,137 +17,136 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
     );
   });
 
-  describe('number extraction', { concurrency: true }, () => {
+  describe('id extraction', { concurrency: true }, () => {
     for (const { expected, input, message, title } of [
       {
-        expected: 143,
+        expected: '143',
         input: 'fixes #143',
         message:
-          'The extracted issue number does not match the shorthand numeric identifier',
-        title: 'extracts number from shorthand reference',
+          'The extracted issue id does not match the shorthand numeric identifier',
+        title: 'extracts id from shorthand reference',
       },
       {
-        expected: 1023,
+        expected: '1023',
         input: 'see avajs/ava#1023',
         message:
-          'The extracted issue number differs from the number specified in the scoped repository autolink',
-        title: 'extracts number from scoped organization reference',
+          'The extracted issue id differs from the id specified in the scoped repository autolink',
+        title: 'extracts id from scoped organization reference',
       },
       {
-        expected: 21,
+        expected: '21',
         input: 'ref foo-bar/unicorn.rainbow#21',
         message:
-          'The issue number was parsed incorrectly when the repository name contained hyphens and dots',
-        title: 'extracts number when repository contains hyphens and dots',
+          'The issue id was parsed incorrectly when the repository name contained hyphens and dots',
+        title: 'extracts id when repository contains hyphens and dots',
       },
       {
-        expected: 409,
+        expected: '409',
         input: 'fixes Meta/React#409',
         message:
-          'The issue number was not extracted due to uppercase characters in the organization or repository name',
-        title: 'extracts number when organization is capitalized',
+          'The issue id was not extracted due to uppercase characters in the organization or repository name',
+        title: 'extracts id when organization is capitalized',
       },
       {
-        expected: 52_109,
+        expected: '52109',
         input: 'https://github.com/nodejs/node/issues/52109',
         message:
-          'The issue number was not extracted from the canonical GitHub issue URL',
-        title: 'extracts number from canonical https URL',
+          'The issue id was not extracted from the canonical GitHub issue URL',
+        title: 'extracts id from canonical https URL',
       },
       {
-        expected: 1_000_000_000,
+        expected: '1000000000',
         input: '#1000000000',
         message:
           'The ten-digit boundary issue identifier was parsed incorrectly',
-        title: 'extracts ten-digit issue number at upper boundary',
+        title: 'extracts ten-digit issue id at upper boundary',
       },
       {
-        expected: 891,
+        expected: '891',
         input: 'fix: correct memory leak (#891) in worker',
         message:
-          'The issue number enclosed in parentheses was not extracted from the commit message',
-        title: 'extracts number embedded in commit message parentheses',
+          'The issue id enclosed in parentheses was not extracted from the commit message',
+        title: 'extracts id embedded in commit message parentheses',
       },
       {
-        expected: 666,
+        expected: '666',
         input: 'resolves [#666] in core',
-        message:
-          'The issue number enclosed in square brackets was not extracted',
-        title: 'extracts number enclosed in square brackets',
+        message: 'The issue id enclosed in square brackets was not extracted',
+        title: 'extracts id enclosed in square brackets',
       },
       {
-        expected: 77,
+        expected: '77',
         input: 'First line of PR body\n\nCloses #77\n\nThanks!',
         message:
           'The issue reference located on a subsequent line of a multiline body was not detected',
-        title: 'extracts number located on subsequent line of multiline body',
+        title: 'extracts id located on subsequent line of multiline body',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'Completed in #42.',
         message:
-          'The issue number was not extracted when followed by a trailing period',
-        title: 'extracts number when followed by trailing period',
+          'The issue id was not extracted when followed by a trailing period',
+        title: 'extracts id when followed by trailing period',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'Addresses #42, please review',
         message:
-          'The issue number was not extracted when followed by a trailing comma',
-        title: 'extracts number when followed by trailing comma',
+          'The issue id was not extracted when followed by a trailing comma',
+        title: 'extracts id when followed by trailing comma',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'Finally fixed #42!',
         message:
-          'The issue number was not extracted when followed by an exclamation mark',
-        title: 'extracts number when followed by exclamation mark',
+          'The issue id was not extracted when followed by an exclamation mark',
+        title: 'extracts id when followed by exclamation mark',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'Did this resolve #42?',
         message:
-          'The issue number was not extracted when followed by a question mark',
-        title: 'extracts number when followed by question mark',
+          'The issue id was not extracted when followed by a question mark',
+        title: 'extracts id when followed by question mark',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'Fixed in `#42` inside code block',
         message:
-          'The issue number was not extracted when enclosed in markdown backticks',
-        title: 'extracts number enclosed in markdown code backticks',
+          'The issue id was not extracted when enclosed in markdown backticks',
+        title: 'extracts id enclosed in markdown code backticks',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'See <#42> for details',
         message:
-          'The issue number was not extracted when enclosed in angle brackets',
-        title: 'extracts number enclosed in angle brackets',
+          'The issue id was not extracted when enclosed in angle brackets',
+        title: 'extracts id enclosed in angle brackets',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'See <foo/bar#42> for details',
         message:
-          'The scoped issue number was not extracted when enclosed in angle brackets',
-        title: 'extracts scoped number enclosed in angle brackets',
+          'The scoped issue id was not extracted when enclosed in angle brackets',
+        title: 'extracts scoped id enclosed in angle brackets',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'https://github.com/foo/bar/issues/42#issuecomment-123456789',
         message:
-          'The issue number was not extracted from a URL containing a comment anchor fragment',
-        title: 'extracts number from URL with comment anchor fragment',
+          'The issue id was not extracted from a URL containing a comment anchor fragment',
+        title: 'extracts id from URL with comment anchor fragment',
       },
       {
-        expected: 42,
+        expected: '42',
         input: 'https://github.com/foo/bar/issues/42?tab=readme-ov-file',
         message:
-          'The issue number was not extracted from a URL containing query parameters',
-        title: 'extracts number from URL with query parameters',
+          'The issue id was not extracted from a URL containing query parameters',
+        title: 'extracts id from URL with query parameters',
       },
     ]) {
       it(title, () => {
-        assert.equal(rfGitHub(input).number(), expected, message);
+        assert.equal(rfGitHub(input).id(), expected, message);
       });
     }
   });
@@ -186,8 +185,8 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
   describe('complex environments', { concurrency: true }, () => {
     it('selects the first ticket reference when multiple issues exist', () => {
       assert.equal(
-        rfGitHub('fixes #12 and resolves #88').number(),
-        12,
+        rfGitHub('fixes #12 and resolves #88').id(),
+        '12',
         'The first ticket reference was not selected when multiple issue references were present in text',
       );
     });
@@ -196,19 +195,19 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
       const hostile =
         'ab/cd-'.repeat(1600) + ' fixes #42 ' + '-cd/ab'.repeat(1600);
       assert.equal(
-        rfGitHub(hostile).number(),
-        42,
-        'Failed to extract issue number from large hostile text within performance limits',
+        rfGitHub(hostile).id(),
+        '42',
+        'Failed to extract issue id from large hostile text within performance limits',
       );
     });
   });
 
   describe('syntax rejections', { concurrency: true }, () => {
-    it('fails when requesting number from an unmentioned ticket', () => {
+    it('fails when requesting id from an unmentioned ticket', () => {
       assert.throws(
-        () => rfGitHub('chore: update dependencies').number(),
+        () => rfGitHub('chore: update dependencies').id(),
         { message: 'Reference is empty', name: 'TypeError' },
-        'Requesting number from an invalid reference did not throw the expected TypeError',
+        'Requesting id from an invalid reference did not throw the expected TypeError',
       );
     });
 
@@ -224,8 +223,8 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
       {
         input: '#0',
         message:
-          'Issue number zero was incorrectly treated as a valid issue reference',
-        title: 'rejects issue number zero',
+          'Issue id zero was incorrectly treated as a valid issue reference',
+        title: 'rejects issue id zero',
       },
       {
         input: '#',
@@ -283,7 +282,7 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
       {
         input: '#11111111111',
         message:
-          'An issue number exceeding ten digits exceeded the allowable GitHub boundary',
+          'An issue id exceeding ten digits exceeded the allowable GitHub boundary',
         title: 'rejects numbers exceeding ten digits',
       },
       {

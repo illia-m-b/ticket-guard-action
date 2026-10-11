@@ -19,31 +19,31 @@ describe('An in-memory backlog instance', { concurrency: true }, () => {
     const backlog = fkBacklog([]);
     const reference = rfEmpty();
     const retrieved = await backlog.ticket(reference);
-    let actualNumber: unknown;
+    let actualId: unknown;
     try {
-      actualNumber = retrieved.number();
+      actualId = retrieved.id();
     } catch (error: unknown) {
-      actualNumber = error;
+      actualId = error;
     }
     const actual = {
       assignees: retrieved.assignees(),
+      id: actualId,
       labels: retrieved.labels(),
-      number: actualNumber,
       present: retrieved.present(),
       status: retrieved.status(),
       url: retrieved.url(),
     };
     const fake = fkTicket();
-    let fkNumber: unknown;
+    let fkId: unknown;
     try {
-      fkNumber = fake.number();
+      fkId = fake.id();
     } catch (error: unknown) {
-      fkNumber = error;
+      fkId = error;
     }
     const expected = {
       assignees: fake.assignees(),
+      id: fkId,
       labels: fake.labels(),
-      number: fkNumber,
       present: fake.present(),
       status: fake.status(),
       url: fake.url(),
@@ -58,36 +58,36 @@ describe('An in-memory backlog instance', { concurrency: true }, () => {
   it('returns fake ticket when search fails', async () => {
     const backlog = fkBacklog([]);
     const reference: Reference = {
-      number: () => Number.MAX_SAFE_INTEGER,
+      id: () => String(Number.MAX_SAFE_INTEGER),
       present: () => true,
       raw: () => `#${Number.MAX_SAFE_INTEGER}`,
     };
     const retrieved = await backlog.ticket(reference);
-    let actualNumber: unknown;
+    let actualId: unknown;
     try {
-      actualNumber = retrieved.number();
+      actualId = retrieved.id();
     } catch (error: unknown) {
-      actualNumber = error;
+      actualId = error;
     }
     const actual = {
       assignees: retrieved.assignees(),
+      id: actualId,
       labels: retrieved.labels(),
-      number: actualNumber,
       present: retrieved.present(),
       status: retrieved.status(),
       url: retrieved.url(),
     };
     const fake = fkTicket();
-    let fkNumber: unknown;
+    let fkId: unknown;
     try {
-      fkNumber = fake.number();
+      fkId = fake.id();
     } catch (error: unknown) {
-      fkNumber = error;
+      fkId = error;
     }
     const expected = {
       assignees: fake.assignees(),
+      id: fkId,
       labels: fake.labels(),
-      number: fkNumber,
       present: fake.present(),
       status: fake.status(),
       url: fake.url(),
@@ -103,8 +103,8 @@ describe('An in-memory backlog instance', { concurrency: true }, () => {
     const number = new Date().getDate();
     const expected: FakeTicket = {
       assignees: [],
+      id: String(number),
       labels: ['wontfix'],
-      number,
       present: true,
       status: 'open',
       url: 'https://github.com/illia-m-b/ticket-guard-action/issues/4',
@@ -115,8 +115,8 @@ describe('An in-memory backlog instance', { concurrency: true }, () => {
     const found = await backlog.ticket(reference);
     const actual = {
       assignees: found.assignees(),
+      id: found.id(),
       labels: found.labels(),
-      number: found.number(),
       present: found.present(),
       status: found.status(),
       url: found.url(),
