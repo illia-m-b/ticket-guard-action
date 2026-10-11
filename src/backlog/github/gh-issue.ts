@@ -15,12 +15,12 @@ import type { IssuePayload } from './octokit.ts';
  */
 export const ghIssue = (payload: IssuePayload): Ticket => ({
   assignees: () => payload.assignees?.map(({ login }) => login) ?? [],
+  id: () => String(payload.number),
   labels: () =>
     payload.labels.flatMap((label) => {
       const name = typeof label === 'string' ? label : label.name;
       return typeof name === 'string' ? name : [];
     }),
-  number: () => payload.number,
   present: () => true,
   status: () => payload.state,
   url: () => payload.html_url,

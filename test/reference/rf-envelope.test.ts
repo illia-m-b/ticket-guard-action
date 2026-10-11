@@ -15,12 +15,12 @@ describe('A reference envelope', { concurrency: true }, () => {
     const origin = rfGitHub(`Closes #${new Date().getDate()}`);
     const envelope = rfEnvelope(() => origin);
     const expected = {
-      number: origin.number(),
+      id: origin.id(),
       present: origin.present(),
       raw: origin.raw(),
     };
     const actual = {
-      number: envelope.number(),
+      id: envelope.id(),
       present: envelope.present(),
       raw: envelope.raw(),
     };
@@ -38,7 +38,7 @@ describe('A reference envelope', { concurrency: true }, () => {
       called += 1;
       return rfGitHub('#123');
     });
-    envelope.number();
+    envelope.id();
     envelope.present();
     envelope.raw();
     assert.equal(
@@ -55,7 +55,7 @@ describe('A reference envelope', { concurrency: true }, () => {
       called += 1;
       return rfGitHub('#123');
     }, rtGrip);
-    envelope.number();
+    envelope.id();
     envelope.present();
     envelope.raw();
     assert.equal(

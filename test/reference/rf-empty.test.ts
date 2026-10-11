@@ -9,11 +9,11 @@ import { describe, it } from 'node:test';
 import { rfEmpty } from '#reference/rf-empty.ts';
 
 describe('An empty issue reference', { concurrency: true }, () => {
-  it('fails when requesting number', () => {
+  it('fails when requesting ID', () => {
     assert.throws(
-      () => rfEmpty().number(),
+      () => rfEmpty().id(),
       { message: 'Reference is empty', name: 'TypeError' },
-      'Accessing the number of an empty issue reference was silently allowed',
+      'Accessing the ID of an empty issue reference was silently allowed',
     );
   });
 

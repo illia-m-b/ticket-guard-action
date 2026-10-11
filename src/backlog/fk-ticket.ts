@@ -25,20 +25,20 @@ export type FakeTicket = {
  */
 export const fkTicket = ({
   assignees = [],
+  id = '',
   labels = [],
-  number = NaN,
   present = false,
   status = '',
   url = '',
 }: Partial<FakeTicket> = {}): Ticket => ({
   assignees: () => assignees,
-  labels: () => labels,
-  number: (): number => {
+  id: (): string => {
     if (!present) {
       throw new TypeError('Ticket is absent');
     }
-    return number;
+    return id;
   },
+  labels: () => labels,
   present: () => present,
   status: () => status,
   url: () => url,

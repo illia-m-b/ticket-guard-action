@@ -27,7 +27,7 @@ export const rfEnvelope = (
 ): Reference => {
   const grp = grip(origin);
   return {
-    number: () => grp().number(),
+    id: () => grp().id(),
     present: () => grp().present(),
     raw: () => grp().raw(),
   };

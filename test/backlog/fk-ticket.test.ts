@@ -12,7 +12,7 @@ import { fkTicket } from '#backlog/fk-ticket.ts';
 
 describe('An in-memory ticket instance', { concurrency: true }, () => {
   it('returns default values when absent', () => {
-    const defaults: Omit<FakeTicket, 'number'> = {
+    const defaults: Omit<FakeTicket, 'id'> = {
       assignees: [],
       labels: [],
       present: false,
@@ -20,7 +20,7 @@ describe('An in-memory ticket instance', { concurrency: true }, () => {
       url: '',
     };
     const fake = fkTicket();
-    const actual: Omit<FakeTicket, 'number'> = {
+    const actual: Omit<FakeTicket, 'id'> = {
       assignees: fake.assignees(),
       labels: fake.labels(),
       present: fake.present(),
@@ -34,28 +34,30 @@ describe('An in-memory ticket instance', { concurrency: true }, () => {
     );
   });
 
-  it('throws TypeError when reading the number of an absent ticket', () => {
+  it('throws TypeError when reading the id of an absent ticket', () => {
     const fake = fkTicket();
     assert.throws(
-      () => fake.number(),
+      () => fake.id(),
       new TypeError('Ticket is absent'),
       'Accessing an absent ticket was silently permitted',
     );
   });
 
-  it('uses NaN when marked as present without overrides', () => {
-    const number = fkTicket({ present: true }).number();
-    assert.ok(
-      Number.isNaN(number),
-      'A non-NaN number was assigned to the fake present ticket',
+  it('uses an empty string when marked as present without overrides', () => {
+    const id = fkTicket({ present: true }).id();
+    const empty = '';
+    assert.equal(
+      id,
+      empty,
+      'A non-empty id was assigned to the fake present ticket',
     );
   });
 
   it('preserves custom overrides', () => {
     const custom: FakeTicket = {
       assignees: ['octocat'],
+      id: String(Date.now()),
       labels: ['bug'],
-      number: Date.now(),
       present: true,
       status: 'open',
       url: 'https://github.com/illia-m-b/ticket-guard-action/issues/4',
@@ -63,8 +65,8 @@ describe('An in-memory ticket instance', { concurrency: true }, () => {
     const fake = fkTicket(custom);
     const actual: FakeTicket = {
       assignees: fake.assignees(),
+      id: fake.id(),
       labels: fake.labels(),
-      number: fake.number(),
       present: fake.present(),
       status: fake.status(),
       url: fake.url(),

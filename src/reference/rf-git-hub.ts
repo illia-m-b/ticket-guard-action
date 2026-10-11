@@ -19,15 +19,15 @@ import { rfEnvelope } from './rf-envelope.ts';
 export const rfGitHub = (text: string): Reference =>
   rfEnvelope(() => {
     const match =
-      /(?<![^\s<([{"'`:])(?:https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/issues\/|[a-z\d_.-]+\/[a-z\d_.-]+#|#)(?<number>[1-9]\d{0,9})\b/i.exec(
+      /(?<![^\s<([{"'`:])(?:https:\/\/github\.com\/[^/\s]+\/[^/\s]+\/issues\/|[a-z\d_.-]+\/[a-z\d_.-]+#|#)(?<id>[1-9]\d{0,9})\b/i.exec(
         text,
       );
-    const number = match?.groups?.number;
-    if (match === null || number === undefined) {
+    const id = match?.groups?.id;
+    if (match === null || id === undefined) {
       return rfEmpty();
     }
     return {
-      number: () => Number(number),
+      id: () => id,
       present: () => true,
       raw: () => match[0],
     };

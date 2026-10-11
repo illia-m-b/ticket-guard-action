@@ -11,7 +11,7 @@ import type { Reference } from './reference.ts';
  * @returns A {@link Reference} whose presence is false.
  */
 export const rfEmpty = (): Reference => ({
-  number: (): never => {
+  id: (): never => {
     throw new TypeError('Reference is empty');
   },
   present: () => false,

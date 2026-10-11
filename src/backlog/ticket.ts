@@ -18,20 +18,20 @@ export interface Ticket {
   readonly assignees: () => readonly string[];
 
   /**
+   * Retrieves the ticket identifier.
+   *
+   * @returns The ticket ID.
+   *
+   * @throws TypeError - If the ticket is absent (not present).
+   */
+  readonly id: () => string;
+
+  /**
    * Retrieves the label names attached to the ticket.
    *
    * @returns A list of label names.
    */
   readonly labels: () => readonly string[];
-
-  /**
-   * Retrieves the numeric ticket identifier.
-   *
-   * @returns The ticket number.
-   *
-   * @throws TypeError - If the ticket is absent (not present).
-   */
-  readonly number: () => number;
 
   /**
    * Indicates whether the ticket exists and was successfully retrieved.

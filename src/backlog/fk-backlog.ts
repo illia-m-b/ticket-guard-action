@@ -21,8 +21,7 @@ export const fkBacklog = (tickets: readonly Ticket[]): Backlog => ({
   ticket: async (reference: Reference): Promise<Ticket> =>
     reference.present()
       ? (tickets.find(
-          (ticket) =>
-            ticket.present() && ticket.number() === reference.number(),
+          (ticket) => ticket.present() && ticket.id() === reference.id(),
         ) ?? fkTicket())
       : fkTicket(),
 });
