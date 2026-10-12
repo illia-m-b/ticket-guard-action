@@ -11,8 +11,26 @@ import { ckOk } from '#check/ck-ok.ts';
 import { fkCheck } from '#check/fk-check.ts';
 
 describe('A bypassed check', { concurrency: true }, () => {
+  it('evaluates condition lazily', () => {
+    let called = 0;
+    const never = 0;
+    const shouldBypass = (): boolean => {
+      called += 1;
+      return true;
+    };
+    ckBypassed(shouldBypass, () => fkCheck());
+    assert.equal(
+      called,
+      never,
+      'A condition was eagerly executed upon creation',
+    );
+  });
+
   it('short-circuits immediately with a passed check and default message when bypass predicate is true', () => {
-    const actual = ckBypassed(true, fkCheck({ valid: false }));
+    const actual = ckBypassed(
+      () => true,
+      () => fkCheck({ valid: false }),
+    );
     const check = {
       message: actual.message(),
       reason: actual.reason(),
@@ -33,7 +51,11 @@ describe('A bypassed check', { concurrency: true }, () => {
 
   it('short-circuits immediately with a passed check and custom message when bypass predicate is true', () => {
     const message = String(Date.now());
-    const actual = ckBypassed(true, fkCheck({ valid: false }), message);
+    const actual = ckBypassed(
+      () => true,
+      () => fkCheck({ valid: false }),
+      message,
+    );
     const check = {
       message: actual.message(),
       reason: actual.reason(),
@@ -59,7 +81,10 @@ describe('A bypassed check', { concurrency: true }, () => {
       reason: fake.reason(),
       valid: fake.valid(),
     };
-    const actual = ckBypassed(false, fake);
+    const actual = ckBypassed(
+      () => false,
+      () => fake,
+    );
     const check = {
       message: actual.message(),
       reason: actual.reason(),

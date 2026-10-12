@@ -9,7 +9,6 @@ import type { Repository } from '#repository/repository.ts';
 import type { Check } from './check.ts';
 
 import { ckBypassed } from './ck-bypassed.ts';
-import { ckEnvelope } from './ck-envelope.ts';
 import { ckFailed } from './ck-failed.ts';
 import { ckOk } from './ck-ok.ts';
 
@@ -38,8 +37,8 @@ export const ckScope = (
   ticket: Repository,
 ): Check =>
   ckBypassed(
-    scope === 'any',
-    ckEnvelope(() => {
+    () => scope === 'any',
+    () => {
       if (scope === 'same-org') {
         return target.owner() === ticket.owner()
           ? ckOk()
@@ -55,6 +54,6 @@ export const ckScope = (
             'scope-violation',
             `Scope violation: ticket belongs to "${ticket.owner()}/${ticket.name()}", but pull request targets "${target.owner()}/${target.name()}". Scope is set to "current-repo".`,
           );
-    }),
+    },
     'Validation bypassed: scope is set to "any"',
   );

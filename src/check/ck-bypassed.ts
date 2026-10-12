@@ -15,14 +15,15 @@ import { ckOk } from './ck-ok.ts';
  * using the specified message. Otherwise, delegates to the wrapped check.
  *
  * @param shouldBypass - Whether validation should be bypassed.
- * @param check - The fallback {@link Check} to evaluate when not bypassed.
+ * @param origin - The supplier function that returns a fallback {@link Check} to
+ *   evaluate when not bypassed.
  * @param message - An optional custom explanation of the bypass outcome.
  *   Defaults to `'Validation bypassed'`.
  *
  * @returns A {@link Check} representing the bypassed or delegated outcome.
  */
 export const ckBypassed = (
-  shouldBypass: boolean,
-  check: Check,
+  shouldBypass: () => boolean,
+  origin: () => Check,
   message = 'Validation bypassed',
-): Check => ckEnvelope(() => (shouldBypass ? ckOk(message) : check));
+): Check => ckEnvelope(() => (shouldBypass() ? ckOk(message) : origin()));
