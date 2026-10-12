@@ -9,10 +9,11 @@ import { describe, it } from 'node:test';
 import type { FakePullRequest } from '#pull-request/fk-pull-request.ts';
 
 import { fkPullRequest } from '#pull-request/fk-pull-request.ts';
+import { rpPlain } from '#repository/rp-plain.ts';
 
 describe('An in-memory pull request instance', { concurrency: true }, () => {
   it('returns default values', () => {
-    const defaults: FakePullRequest = {
+    const defaults = {
       author: 'octocat',
       body: '',
       owner: 'octo-org',
@@ -20,11 +21,11 @@ describe('An in-memory pull request instance', { concurrency: true }, () => {
       title: 'chore(deps): update devDependencies (non-major)',
     };
     const fake = fkPullRequest();
-    const actual: FakePullRequest = {
+    const actual = {
       author: fake.author(),
       body: fake.body(),
-      owner: fake.owner(),
-      repository: fake.repository(),
+      owner: fake.repository().owner(),
+      repository: fake.repository().name(),
       title: fake.title(),
     };
     assert.deepStrictEqual(
@@ -35,19 +36,25 @@ describe('An in-memory pull request instance', { concurrency: true }, () => {
   });
 
   it('preserves custom overrides', () => {
-    const custom: FakePullRequest = {
+    const custom = {
       author: 'actions',
       body: 'Hello, world!',
       owner: 'actions',
       repository: 'core',
       title: 'Custom PR',
     };
-    const fake = fkPullRequest(custom);
-    const actual: FakePullRequest = {
+    const parameters: FakePullRequest = {
+      author: custom.author,
+      body: custom.body,
+      repository: rpPlain({ owner: custom.owner, repo: custom.repository }),
+      title: custom.title,
+    };
+    const fake = fkPullRequest(parameters);
+    const actual = {
       author: fake.author(),
       body: fake.body(),
-      owner: fake.owner(),
-      repository: fake.repository(),
+      owner: fake.repository().owner(),
+      repository: fake.repository().name(),
       title: fake.title(),
     };
     assert.deepStrictEqual(

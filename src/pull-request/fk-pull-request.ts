@@ -5,6 +5,8 @@
 
 import type { PullRequest } from '#pull-request/pull-request.ts';
 
+import { rpPlain } from '#repository/rp-plain.ts';
+
 /**
  * Configuration options for creating a fake {@link PullRequest} instance.
  */
@@ -27,13 +29,11 @@ export type FakePullRequest = {
 export const fkPullRequest = ({
   author = 'octocat',
   body = '',
-  owner = 'octo-org',
-  repository = 'octo-repo',
+  repository = rpPlain({ owner: 'octo-org', repo: 'octo-repo' }),
   title = 'chore(deps): update devDependencies (non-major)',
 }: Partial<FakePullRequest> = {}): PullRequest => ({
   author: () => author,
   body: () => body,
-  owner: () => owner,
   repository: () => repository,
   title: () => title,
 });

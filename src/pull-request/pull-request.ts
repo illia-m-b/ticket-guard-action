@@ -3,6 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
+import type { Repository } from '#repository/repository.ts';
+
 /**
  * Represents the Pull Request under evaluation.
  *
@@ -25,18 +27,11 @@ export interface PullRequest {
   readonly body: () => string;
 
   /**
-   * Retrieves the owner (organization or user) of the target repository.
+   * Retrieves the target repository coordinates.
    *
-   * @returns The repository owner.
+   * @returns The repository coordinates {@link Repository}.
    */
-  readonly owner: () => string;
-
-  /**
-   * Retrieves the target repository name.
-   *
-   * @returns The repository name.
-   */
-  readonly repository: () => string;
+  readonly repository: () => Repository;
 
   /**
    * Retrieves the title of the pull request.
