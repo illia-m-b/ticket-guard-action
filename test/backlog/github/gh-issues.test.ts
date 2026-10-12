@@ -14,6 +14,7 @@ import { fkOctokit } from '#backlog/github/fk-octokit.ts';
 import { ghIssues } from '#backlog/github/gh-issues.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
+import { rpPlain } from '#repository/rp-plain.ts';
 
 describe('A GitHub issues adapter', { concurrency: true }, () => {
   it('returns fake ticket when reference is absent', async () => {
@@ -35,7 +36,7 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     const reference = rfEmpty();
     const owner = 'actions';
     const repository = 'toolkit';
-    const backlog = ghIssues(fkOctokit(), owner, repository);
+    const backlog = ghIssues(fkOctokit(), rpPlain({ owner, repo: repository }));
     const retrieved = await backlog.ticket(reference);
     let actualId;
     try {
@@ -78,7 +79,10 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     const repository = 'setup';
     const number = new Date().getSeconds() + 1;
     const reference = rfGitHub(`Closes ${owner}/${repository}#${number}`);
-    const backlog = ghIssues(fkOctokit({ status: 404 }), owner, repository);
+    const backlog = ghIssues(
+      fkOctokit({ status: 404 }),
+      rpPlain({ owner, repo: repository }),
+    );
     const retrieved = await backlog.ticket(reference);
     let actualId;
     try {
@@ -122,8 +126,10 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     };
     const backlog = ghIssues(
       fkOctokit({ issue: payload }),
-      'yokoffing',
-      'betterfox',
+      rpPlain({
+        owner: 'yokoffing',
+        repo: 'betterfox',
+      }),
     );
     const reference = rfGitHub('Closes #167');
     const retrieved = await backlog.ticket(reference);
@@ -153,7 +159,7 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
       },
     };
     const reference = rfGitHub('Closes #91');
-    const backlog = ghIssues(buggy, 'pnpm', 'setup');
+    const backlog = ghIssues(buggy, rpPlain({ owner: 'pnpm', repo: 'setup' }));
     await assert.rejects(
       async () => backlog.ticket(reference),
       { message: 'This client is buggy as hell' },

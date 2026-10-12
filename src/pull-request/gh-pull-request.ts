@@ -5,6 +5,8 @@
 
 import type { PullRequest } from '#pull-request/pull-request.ts';
 
+import { rpPlain } from '#repository/rp-plain.ts';
+
 /**
  * Minimal subset of the GitHub Actions event context required by
  * {@link ghPullRequest}.
@@ -39,7 +41,10 @@ export interface PullRequestContext {
 export const ghPullRequest = (context: PullRequestContext): PullRequest => ({
   author: () => context.payload.pull_request.user?.login ?? '',
   body: () => context.payload.pull_request.body ?? '',
-  owner: () => context.repo.owner,
-  repository: () => context.repo.repo,
+  repository: () =>
+    rpPlain({
+      owner: context.repo.owner,
+      repo: context.repo.repo,
+    }),
   title: () => context.payload.pull_request.title ?? '',
 });

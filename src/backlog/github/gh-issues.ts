@@ -4,6 +4,7 @@
  */
 
 import type { Reference } from '#reference/reference.ts';
+import type { Repository } from '#repository/repository.ts';
 
 import type { Backlog } from '../backlog.ts';
 import type { Ticket } from '../ticket.ts';
@@ -16,15 +17,13 @@ import { ghIssue } from './gh-issue.ts';
  * Creates an {@link Backlog} backed by the GitHub REST API.
  *
  * @param octokit - Authenticated Octokit client instance.
- * @param owner - Target repository owner (organization or user).
- * @param repository - Target repository name.
+ * @param repository - Target repository coordinates.
  *
  * @returns An {@link Backlog} implementation retrieving issues via GitHub API.
  */
 export const ghIssues = (
   octokit: Octokit,
-  owner: string,
-  repository: string,
+  repository: Repository,
 ): Backlog => ({
   ticket: async (reference: Reference): Promise<Ticket> => {
     if (!reference.present()) {
@@ -33,8 +32,8 @@ export const ghIssues = (
     try {
       const payload = await octokit.rest.issues.get({
         issue_number: Number(reference.id()),
-        owner,
-        repo: repository,
+        owner: repository.owner(),
+        repo: repository.name(),
       });
       return ghIssue(payload.data);
     } catch (error: unknown) {
