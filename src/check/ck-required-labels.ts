@@ -8,7 +8,6 @@ import type { Check } from './check.ts';
 import { ckAllLabels } from './ck-all-labels.ts';
 import { ckAnyLabel } from './ck-any-label.ts';
 import { ckBypassed } from './ck-bypassed.ts';
-import { ckEnvelope } from './ck-envelope.ts';
 
 /**
  * Creates a {@link Check} verifying that required labels are attached based on
@@ -32,11 +31,10 @@ export const ckRequiredLabels = (
   requiresAll: boolean,
 ): Check =>
   ckBypassed(
-    required.length === 0,
-    ckEnvelope(() =>
+    () => required.length === 0,
+    () =>
       requiresAll
         ? ckAllLabels(labels, required)
         : ckAnyLabel(labels, required),
-    ),
     'Required labels check bypassed as no required labels are specified',
   );
