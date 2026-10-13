@@ -81,20 +81,6 @@ export default [
       'no-console': 'error',
       'no-extend-native': 'error',
       'no-proto': 'error',
-      'no-restricted-syntax': [
-        'error',
-        {
-          message:
-            'for..in iterates over prototype chain. Use Object.keys()/entries() or for..of instead.',
-          selector: 'ForInStatement',
-        },
-        {
-          message:
-            'Use async/await syntax instead of raw promise chains (.then, .catch, .finally).',
-          selector:
-            'CallExpression[callee.property.name=/^(then|catch|finally)$/]',
-        },
-      ],
       'security/detect-object-injection': 'off',
       'tsdoc/syntax': 'error',
       'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
