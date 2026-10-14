@@ -14,6 +14,7 @@
  * @returns The value returned by the callback.
  */
 export const silenced = <T>(action: () => T): T => {
+  // eslint-disable-next-line unicorn/consistent-boolean-name
   const original = process.stdout.write.bind(process.stdout);
   process.stdout.write = () => true;
   try {

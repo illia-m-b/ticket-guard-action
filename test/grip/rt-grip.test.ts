@@ -32,9 +32,9 @@ describe('A real-time grip', { concurrency: true }, () => {
       called += 1;
       return randomInt(0, 2) < 1;
     };
-    const grip = rtGrip(isDumb);
+    const isDumbGrp = rtGrip(isDumb);
     for (let index = 0; index < times; index += 1) {
-      grip();
+      isDumbGrp();
     }
     assert.equal(
       called,

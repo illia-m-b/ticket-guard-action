@@ -85,6 +85,8 @@ export default [
       'tsdoc/syntax': 'error',
       'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
       'unicorn/no-process-exit': 'off',
+      'unicorn/no-repeated-call-wrappers': 'error',
+      'unicorn/no-unnecessary-default-arguments': 'error',
     },
   },
   {
