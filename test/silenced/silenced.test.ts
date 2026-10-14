@@ -19,6 +19,7 @@ describe('A silenced stdout execution wrapper', () => {
   });
 
   it('restores standard output stream on abnormal termination', () => {
+    // eslint-disable-next-line unicorn/consistent-boolean-name
     const original = process.stdout.write.bind(process.stdout);
     try {
       silenced(() => {
