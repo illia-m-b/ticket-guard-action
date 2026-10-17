@@ -3,4 +3,39 @@
  * SPDX-License-Identifier: MIT
  */
 
-export const dumb = (): string => 'Hello, world!';
+/* eslint-disable unicorn/max-nested-calls */
+
+import { ticketGuard } from '#action/ticket-guard.ts';
+import { ghIssues } from '#backlog/github/gh-issues.ts';
+import { ghInputs } from '#inputs/gh-inputs.ts';
+import { rtOutputs } from '#outputs/rt-outputs.ts';
+import { ghPullRequest } from '#pull-request/gh-pull-request.ts';
+import { rfGitHub } from '#reference/rf-git-hub.ts';
+import { rpPlain } from '#repository/rp-plain.ts';
+
+const outputs = rtOutputs();
+try {
+  const { context, getOctokit } = await import('@actions/github');
+  const {
+    payload: { pull_request: pr },
+    repo,
+  } = context;
+  if (!pr) {
+    throw new TypeError(
+      `Unsupported event "${context.eventName}". Ticket Guard action requires a "pull_request" event payload.`,
+    );
+  }
+  const inputs = ghInputs();
+  await ticketGuard(
+    ghPullRequest({
+      payload: { pull_request: pr },
+      repo,
+    }),
+    inputs,
+    ghIssues(getOctokit(inputs.gitHubToken()), rpPlain(repo)),
+    outputs,
+    rfGitHub,
+  ).run();
+} catch (error: unknown) {
+  outputs.fail(error instanceof Error ? error.message : String(error));
+}
