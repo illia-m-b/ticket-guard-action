@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-/* node:coverage disable */
-
 import {
   debug,
   error,
