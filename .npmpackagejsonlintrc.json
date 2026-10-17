@@ -46,7 +46,7 @@
     "prefer-no-version-zero-devDependencies": [
       "error",
       {
-        "exceptions": ["eslint-plugin-tsdoc"]
+        "exceptions": ["eslint-plugin-tsdoc", "tsdown"]
       }
     ]
   }
