@@ -44,6 +44,7 @@
     "#*": "./src/*"
   },
   "scripts": {
+    "build": "tsdown",
     "format:code": "prettier --ignore-unknown --log-level=warn",
     "format:code:check": "pnpm format:code --check .",
     "format:code:fix": "pnpm format:code --cache --cache-strategy=metadata --write",
@@ -75,7 +76,9 @@
     "npm-package-json-lint": "11.0.0",
     "prettier": "3.9.9",
     "prettier-plugin-jsdoc": "1.8.1",
+    "rollup-plugin-license": "3.7.1",
     "sort-package-json": "4.0.0",
+    "tsdown": "0.23.1",
     "typescript": "5.9.3",
     "typescript-eslint": "8.71.1"
   },

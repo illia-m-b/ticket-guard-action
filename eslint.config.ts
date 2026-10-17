@@ -17,7 +17,7 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ignores: ['.github/**', 'coverage/**', 'dist/**', 'eslint.config.mjs'],
+    ignores: ['.github/**', 'coverage/**', 'dist/**'],
   },
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,

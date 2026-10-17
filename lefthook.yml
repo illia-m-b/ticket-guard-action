@@ -19,6 +19,8 @@ pre-commit:
 pre-push:
   parallel: true
   commands:
+    build:
+      run: pnpm build
     lint-pkg:
       run: pnpm lint:pkg
     format-pkg-check:
