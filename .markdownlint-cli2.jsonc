@@ -3,6 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 {
+  "config": {
+    "MD013": {
+      "tables": false,
+    },
+    "MD033": {
+      "allowed_elements": ["br"],
+    },
+  },
   "gitignore": true,
   "ignores": ["CHANGELOG.md"],
 }
