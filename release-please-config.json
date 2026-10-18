@@ -1,5 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "last-release-sha": "082aa2de83effd3fd1e7ec1e58cfc73cc8148a52",
   "packages": {
     ".": {
       "draft": true,
@@ -7,6 +8,7 @@
       "force-tag-creation": true,
       "include-component-in-tag": false,
       "include-v-in-tag": true,
+      "initial-version": "0.1.0",
       "package-name": "ticket-guard-action",
       "release-type": "node"
     }
