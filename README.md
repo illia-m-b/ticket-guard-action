@@ -59,10 +59,11 @@ Add the action to your `.github/workflows/ticket-guard.yml`:
 name: ticket-guard
 'on':
   pull_request:
-    - opened
-    - reopened
-    - edited
-    - synchronize
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
 jobs:
   ticket-guard:
     runs-on: ubuntu-slim
@@ -151,10 +152,11 @@ pull request is opened without an associated issue:
 name: ticket-guard
 'on':
   pull_request:
-    - opened
-    - reopened
-    - edited
-    - synchronize
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
 permissions:
   contents: read
   issues: read
