@@ -5,6 +5,7 @@
       "draft": true,
       "extra-files": ["README.md"],
       "force-tag-creation": true,
+      "include-component-in-tag": false,
       "include-v-in-tag": true,
       "package-name": "ticket-guard-action",
       "release-type": "node"
