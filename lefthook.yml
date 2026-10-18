@@ -5,22 +5,29 @@
 glob_matcher: doublestar
 pre-commit:
   commands:
-    lint-ts-fix:
-      glob: '**/*.{js,ts,cjs,mjs}'
-      run: pnpm lint:ts:fix {staged_files}
-      stage_fixed: true
     format-pkg-fix:
       glob: 'package.json'
       run: pnpm format:pkg:fix
       stage_fixed: true
+    pnpm-pkg-fix:
+      glob: 'package.json'
+      run: pnpm pkg fix
+      stage_fixed: true
     format-code-fix:
       run: pnpm format:code:fix {staged_files}
+      stage_fixed: true
+    lint-ts-fix:
+      glob: '**/*.{js,ts,cjs,mjs}'
+      run: pnpm lint:ts:fix {staged_files}
+      stage_fixed: true
+    build:
+      run: pnpm build
       stage_fixed: true
 pre-push:
   parallel: true
   commands:
     build:
-      run: pnpm build
+      run: pnpm build && git diff --exit-code dist/
     lint-pkg:
       run: pnpm lint:pkg
     format-pkg-check:

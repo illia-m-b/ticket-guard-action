@@ -27,9 +27,8 @@ export default ((): ReturnType<UserConfigFn> => ({
     license({
       banner: {
         commentStyle: 'ignored',
-        content: {
-          file: path.join(import.meta.dirname, 'LICENSE.txt'),
-        },
+        content:
+          'SPDX-FileCopyrightText: Copyright (c) 2026 Illia Brashkin\nSPDX-License-Identifier: MIT',
       },
       thirdParty: {
         allow: {
