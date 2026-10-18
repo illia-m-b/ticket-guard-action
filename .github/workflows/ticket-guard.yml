@@ -18,7 +18,7 @@ jobs:
       issues: read
       pull-requests: read
     steps:
-      - uses: illia-m-b/ticket-guard-action@v0
+      - uses: illia-m-b/ticket-guard-action@085f3e6433a3ac9de5bd7f94673d068b9466e219 # v0.0.0
         with:
           extract-from: 'pr-body'
           forbidden-labels: |
