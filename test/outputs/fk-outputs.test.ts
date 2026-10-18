@@ -93,8 +93,8 @@ describe('An in-memory fake outputs instance', { concurrency: true }, () => {
       outputs.output(name, value);
     }
     assert.deepStrictEqual(
-      [...storage].toSorted((a, b) => a[0].localeCompare(b[0])),
-      pairs,
+      Object.fromEntries(storage),
+      Object.fromEntries(pairs),
       'A fake outputs instance failed to populate output storage with the given entries',
     );
   });
