@@ -3,15 +3,7 @@
 ## 0.1.0 (2026-10-18)
 
 
-### Bug Fixes
-
-* **readme:** correct action usage examples ([#166](https://github.com/illia-m-b/ticket-guard-action/issues/166)) ([2795185](https://github.com/illia-m-b/ticket-guard-action/commit/2795185f1a6c5c6416a08891904ccf7bb46cf40f))
-
-## 0.0.0 (2026-10-18)
-
-
 ### Features
-
 
 * **Issue Reference Extraction**: Automatically detect local issue numbers (`#42`), cross-repository references (`owner/repo#42`), and full GitHub issue URLs from pull request titles and descriptions.
 * **Scope Boundary Enforcement**: Restrict accepted ticket references to `current-repo`, `same-org`, or `any` repository.
