@@ -11,8 +11,8 @@ import { ckAnyLabel } from '#check/ck-any-label.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-describe('An any-label check', { concurrency: true }, () => {
-  it('returns a passed check when there are no required labels', () => {
+void describe('An any-label check', { concurrency: true }, () => {
+  void it('returns a passed check when there are no required labels', () => {
     const required: readonly string[] = [];
     const labels = ['wontfix', 'invalid', 'duplicate'];
     const actual = ckAnyLabel(labels, required);
@@ -34,7 +34,7 @@ describe('An any-label check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a passed check when there is at least one required label', () => {
+  void it('returns a passed check when there is at least one required label', () => {
     const required = ['help wanted', 'documentation', 'bug', 'approved'];
     const labels = required.slice(randomInt(1, required.length));
     const actual = ckAnyLabel(labels, required);
@@ -56,7 +56,7 @@ describe('An any-label check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when no required labels are present', () => {
+  void it('returns a failed check when no required labels are present', () => {
     const required = ['question', 'invalid', 'bug'];
     const labels: readonly string[] = [];
     const actual = ckAnyLabel(labels, required);

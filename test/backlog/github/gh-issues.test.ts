@@ -16,8 +16,8 @@ import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-describe('A GitHub issues adapter', { concurrency: true }, () => {
-  it('returns fake ticket when reference is absent', async () => {
+void describe('A GitHub issues adapter', { concurrency: true }, () => {
+  void it('returns fake ticket when reference is absent', async () => {
     const fake = fkTicket();
     let fkId;
     try {
@@ -59,7 +59,7 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     );
   });
 
-  it('returns fake ticket when ticket is not found', async () => {
+  void it('returns fake ticket when ticket is not found', async () => {
     const fake = fkTicket();
     let fkId;
     try {
@@ -105,7 +105,7 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     );
   });
 
-  it('returns ticket when search succeeds', async () => {
+  void it('returns ticket when search succeeds', async () => {
     const payload: IssuePayload = {
       assignees: [{ login: 'yokoffing' }],
       html_url: 'https://github.com/yokoffing/Betterfox/issues/167',
@@ -148,7 +148,7 @@ describe('A GitHub issues adapter', { concurrency: true }, () => {
     );
   });
 
-  it('re-throws unknown errors', async () => {
+  void it('re-throws unknown errors', async () => {
     const buggy: Octokit = {
       rest: {
         issues: {

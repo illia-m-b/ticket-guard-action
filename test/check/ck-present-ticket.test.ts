@@ -11,8 +11,8 @@ import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckPresentTicket } from '#check/ck-present-ticket.ts';
 
-describe('A ticket presence check', { concurrency: true }, () => {
-  it('returns a passed check when ticket is present', () => {
+void describe('A ticket presence check', { concurrency: true }, () => {
+  void it('returns a passed check when ticket is present', () => {
     const ticket = fkTicket({ present: true });
     const actual = ckPresentTicket(ticket);
     const check = {
@@ -33,7 +33,7 @@ describe('A ticket presence check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when ticket is absent', () => {
+  void it('returns a failed check when ticket is absent', () => {
     const ticket = fkTicket();
     const actual = ckPresentTicket(ticket);
     const check = {

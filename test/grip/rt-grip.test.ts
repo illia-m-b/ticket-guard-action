@@ -9,8 +9,8 @@ import { describe, it } from 'node:test';
 
 import { rtGrip } from '#grip/rt-grip.ts';
 
-describe('A real-time grip', { concurrency: true }, () => {
-  it('does not call the origin function upon initialization', () => {
+void describe('A real-time grip', { concurrency: true }, () => {
+  void it('does not call the origin function upon initialization', () => {
     let called = 0;
     const never = 0;
     const origin = (): number => {
@@ -25,7 +25,7 @@ describe('A real-time grip', { concurrency: true }, () => {
     );
   });
 
-  it('calls the origin function on every invocation', () => {
+  void it('calls the origin function on every invocation', () => {
     let called = 0;
     const times = randomInt(5, 20);
     const isDumb = (): boolean => {
@@ -43,7 +43,7 @@ describe('A real-time grip', { concurrency: true }, () => {
     );
   });
 
-  it('yields distinct values produced by the origin across successive calls', () => {
+  void it('yields distinct values produced by the origin across successive calls', () => {
     const grip = rtGrip(() => ({ time: Date.now() }));
     const first = grip();
     const second = grip();
@@ -54,7 +54,7 @@ describe('A real-time grip', { concurrency: true }, () => {
     );
   });
 
-  it('re-evaluates the origin function when it yields nullish values', () => {
+  void it('re-evaluates the origin function when it yields nullish values', () => {
     // eslint-disable-next-line unicorn/no-null
     for (const nullish of [null, undefined]) {
       let called = 0;
@@ -75,7 +75,7 @@ describe('A real-time grip', { concurrency: true }, () => {
     }
   });
 
-  it('propagates errors thrown by the origin function on every invocation', () => {
+  void it('propagates errors thrown by the origin function on every invocation', () => {
     const grip = rtGrip((): never => {
       throw new Error('I realized what is wrong with me');
     });

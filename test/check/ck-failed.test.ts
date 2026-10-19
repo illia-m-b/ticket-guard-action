@@ -8,8 +8,8 @@ import { describe, it } from 'node:test';
 
 import { ckFailed } from '#check/ck-failed.ts';
 
-describe('A failed check', { concurrency: true }, () => {
-  it('preserves failure reason, diagnostic message, and invalid status', () => {
+void describe('A failed check', { concurrency: true }, () => {
+  void it('preserves failure reason, diagnostic message, and invalid status', () => {
     const message = 'Ticket #42 is closed';
     const reason = 'status-not-allowed';
     const check = ckFailed(reason, message);

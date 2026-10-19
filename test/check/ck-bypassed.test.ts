@@ -10,8 +10,8 @@ import { ckBypassed } from '#check/ck-bypassed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { fkCheck } from '#check/fk-check.ts';
 
-describe('A bypassed check', { concurrency: true }, () => {
-  it('evaluates condition lazily', () => {
+void describe('A bypassed check', { concurrency: true }, () => {
+  void it('evaluates condition lazily', () => {
     let called = 0;
     const never = 0;
     const shouldBypass = (): boolean => {
@@ -26,7 +26,7 @@ describe('A bypassed check', { concurrency: true }, () => {
     );
   });
 
-  it('short-circuits immediately with a passed check and default message when bypass predicate is true', () => {
+  void it('short-circuits immediately with a passed check and default message when bypass predicate is true', () => {
     const actual = ckBypassed(
       () => true,
       () => fkCheck({ valid: false }),
@@ -49,7 +49,7 @@ describe('A bypassed check', { concurrency: true }, () => {
     );
   });
 
-  it('short-circuits immediately with a passed check and custom message when bypass predicate is true', () => {
+  void it('short-circuits immediately with a passed check and custom message when bypass predicate is true', () => {
     const message = String(Date.now());
     const actual = ckBypassed(
       () => true,
@@ -74,7 +74,7 @@ describe('A bypassed check', { concurrency: true }, () => {
     );
   });
 
-  it('delegates to the wrapped check when bypass predicate is false', () => {
+  void it('delegates to the wrapped check when bypass predicate is false', () => {
     const fake = fkCheck({ valid: false });
     const delegated = {
       message: fake.message(),

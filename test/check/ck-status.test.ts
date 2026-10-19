@@ -10,8 +10,8 @@ import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckStatus } from '#check/ck-status.ts';
 
-describe('A status check', { concurrency: true }, () => {
-  it('returns a passed check when status is allowed', () => {
+void describe('A status check', { concurrency: true }, () => {
+  void it('returns a passed check when status is allowed', () => {
     const status = 'open';
     const allowed = [status];
     const actual = ckStatus(status, allowed);
@@ -33,7 +33,7 @@ describe('A status check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when status is not allowed', () => {
+  void it('returns a failed check when status is not allowed', () => {
     const status = 'closed';
     const allowed = ['open'];
     const actual = ckStatus(status, allowed);

@@ -14,8 +14,8 @@ import { fkTicket } from '#backlog/fk-ticket.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-describe('An in-memory backlog instance', { concurrency: true }, () => {
-  it('returns fake ticket when reference is absent', async () => {
+void describe('An in-memory backlog instance', { concurrency: true }, () => {
+  void it('returns fake ticket when reference is absent', async () => {
     const backlog = fkBacklog([]);
     const reference = rfEmpty();
     const retrieved = await backlog.ticket(reference);
@@ -55,7 +55,7 @@ describe('An in-memory backlog instance', { concurrency: true }, () => {
     );
   });
 
-  it('returns fake ticket when search fails', async () => {
+  void it('returns fake ticket when search fails', async () => {
     const backlog = fkBacklog([]);
     const reference: Reference = {
       id: () => String(Number.MAX_SAFE_INTEGER),
@@ -99,7 +99,7 @@ describe('An in-memory backlog instance', { concurrency: true }, () => {
     );
   });
 
-  it('returns present ticket successfully', async () => {
+  void it('returns present ticket successfully', async () => {
     const number = new Date().getDate();
     const expected: FakeTicket = {
       assignees: [],

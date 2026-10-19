@@ -8,8 +8,8 @@ import { describe, it } from 'node:test';
 
 import { rfEmpty } from '#reference/rf-empty.ts';
 
-describe('An empty issue reference', { concurrency: true }, () => {
-  it('fails when requesting ID', () => {
+void describe('An empty issue reference', { concurrency: true }, () => {
+  void it('fails when requesting ID', () => {
     assert.throws(
       () => rfEmpty().id(),
       { message: 'Reference is empty', name: 'TypeError' },
@@ -17,7 +17,7 @@ describe('An empty issue reference', { concurrency: true }, () => {
     );
   });
 
-  it('is never present', () => {
+  void it('is never present', () => {
     assert.equal(
       rfEmpty().present(),
       false,
@@ -25,7 +25,7 @@ describe('An empty issue reference', { concurrency: true }, () => {
     );
   });
 
-  it('has an empty raw string', () => {
+  void it('has an empty raw string', () => {
     assert.equal(
       rfEmpty().raw(),
       '',

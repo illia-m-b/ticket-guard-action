@@ -5,10 +5,6 @@
 glob_matcher: doublestar
 pre-commit:
   commands:
-    format-pkg-fix:
-      glob: 'package.json'
-      run: pnpm format:pkg:fix
-      stage_fixed: true
     pnpm-pkg-fix:
       glob: 'package.json'
       run: pnpm pkg fix
@@ -25,10 +21,6 @@ pre-push:
   commands:
     build:
       run: pnpm build
-    lint-pkg:
-      run: pnpm lint:pkg
-    format-pkg-check:
-      run: pnpm format:pkg:check
     types-check:
       run: pnpm types:check
     format-code-check:

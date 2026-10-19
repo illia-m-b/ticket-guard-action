@@ -11,8 +11,8 @@ import { ckAuthorAssigned } from '#check/ck-author-assigned.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-describe('An author assignment check', { concurrency: true }, () => {
-  it('returns a passed check when author is among assignees', () => {
+void describe('An author assignment check', { concurrency: true }, () => {
+  void it('returns a passed check when author is among assignees', () => {
     const assignees = ['OcToCaT', 'pNPM', 'AnoN'];
     const author = (
       assignees[randomInt(assignees.length)] ?? 'pNPM'
@@ -36,7 +36,7 @@ describe('An author assignment check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when author is not assigned', () => {
+  void it('returns a failed check when author is not assigned', () => {
     const assignees = ['NiCkNaMe', 'AbbR', 'LoREM'];
     const author =
       (assignees[randomInt(assignees.length)] ?? 'NpM')
@@ -65,7 +65,7 @@ describe('An author assignment check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when the assignees list is empty', () => {
+  void it('returns a failed check when the assignees list is empty', () => {
     const assignees: readonly string[] = [];
     const author = 'octocat';
     const actual = ckAuthorAssigned(author, assignees);

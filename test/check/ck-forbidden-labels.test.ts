@@ -11,8 +11,8 @@ import { ckFailed } from '#check/ck-failed.ts';
 import { ckForbiddenLabels } from '#check/ck-forbidden-labels.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-describe('A forbidden labels check', { concurrency: true }, () => {
-  it('returns a passed check when there are no forbidden labels', () => {
+void describe('A forbidden labels check', { concurrency: true }, () => {
+  void it('returns a passed check when there are no forbidden labels', () => {
     const labels = ['bug', 'help wanted'];
     const forbidden = ['wontfix', 'invalid', 'question'];
     const actual = ckForbiddenLabels(labels, forbidden);
@@ -34,7 +34,7 @@ describe('A forbidden labels check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a passed check when forbidden labels list is empty', () => {
+  void it('returns a passed check when forbidden labels list is empty', () => {
     const labels = ['bug', 'help wanted'];
     const forbidden: readonly string[] = [];
     const actual = ckForbiddenLabels(labels, forbidden);
@@ -56,7 +56,7 @@ describe('A forbidden labels check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when a forbidden label is present', () => {
+  void it('returns a failed check when a forbidden label is present', () => {
     const labels = ['duplicate', 'bug', 'documentation'];
     const forbidden = [labels[randomInt(labels.length)] ?? 'wontfix'];
     const actual = ckForbiddenLabels(labels, forbidden);

@@ -8,8 +8,8 @@ import { describe, it } from 'node:test';
 
 import { silenced } from './silenced.ts';
 
-describe('A silenced stdout execution wrapper', () => {
-  it('returns the result yielded by the callback', () => {
+void describe('A silenced stdout execution wrapper', () => {
+  void it('returns the result yielded by the callback', () => {
     const expected = 42;
     assert.equal(
       silenced(() => expected),
@@ -18,7 +18,7 @@ describe('A silenced stdout execution wrapper', () => {
     );
   });
 
-  it('restores standard output stream on abnormal termination', () => {
+  void it('restores standard output stream on abnormal termination', () => {
     // eslint-disable-next-line unicorn/consistent-boolean-name
     const original = process.stdout.write.bind(process.stdout);
     try {

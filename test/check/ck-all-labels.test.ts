@@ -11,8 +11,8 @@ import { ckAllLabels } from '#check/ck-all-labels.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-describe('An all-labels check', { concurrency: true }, () => {
-  it('returns a passed check when there are no required labels', () => {
+void describe('An all-labels check', { concurrency: true }, () => {
+  void it('returns a passed check when there are no required labels', () => {
     const required: readonly string[] = [];
     const labels = ['wontfix', 'invalid', 'duplicate'];
     const actual = ckAllLabels(labels, required);
@@ -34,7 +34,7 @@ describe('An all-labels check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a passed check when all required labels are present', () => {
+  void it('returns a passed check when all required labels are present', () => {
     const required = ['approved', 'bug'];
     const labels = [...required, 'documentation'];
     const actual = ckAllLabels(labels, required);
@@ -56,7 +56,7 @@ describe('An all-labels check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when at least one required label is missing', () => {
+  void it('returns a failed check when at least one required label is missing', () => {
     const required = ['help wanted', 'documentation', 'bug', 'approved'];
     const labels = required.slice(randomInt(1, required.length));
     const actual = ckAllLabels(labels, required);
@@ -81,7 +81,7 @@ describe('An all-labels check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when no required labels are present', () => {
+  void it('returns a failed check when no required labels are present', () => {
     const required = ['question', 'invalid', 'bug'];
     const labels: readonly string[] = [];
     const actual = ckAllLabels(labels, required);
