@@ -8,8 +8,8 @@ import { describe, it } from 'node:test';
 
 import { ckOk } from '#check/ck-ok.ts';
 
-describe('A passed check', { concurrency: true }, () => {
-  it('returns default success message and valid status', () => {
+void describe('A passed check', { concurrency: true }, () => {
+  void it('returns default success message and valid status', () => {
     const check = ckOk();
     const actual = {
       message: check.message(),
@@ -28,7 +28,7 @@ describe('A passed check', { concurrency: true }, () => {
     );
   });
 
-  it('preserves custom message and valid status', () => {
+  void it('preserves custom message and valid status', () => {
     const message = "It's gonna be OK.";
     const check = ckOk(message);
     const actual = {

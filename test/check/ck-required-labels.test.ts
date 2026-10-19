@@ -11,8 +11,8 @@ import { ckAnyLabel } from '#check/ck-any-label.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckRequiredLabels } from '#check/ck-required-labels.ts';
 
-describe('A required-labels check', { concurrency: true }, () => {
-  it('bypasses when there are no required labels', () => {
+void describe('A required-labels check', { concurrency: true }, () => {
+  void it('bypasses when there are no required labels', () => {
     const labels = ['bug', 'question'];
     const required: readonly string[] = [];
     const requiresAll = true;
@@ -37,7 +37,7 @@ describe('A required-labels check', { concurrency: true }, () => {
     );
   });
 
-  it('delegates to all-labels check when requiresAll is true', () => {
+  void it('delegates to all-labels check when requiresAll is true', () => {
     const labels = ['bug', 'help wanted', 'approved'];
     const required: readonly string[] = ['approved', 'assigned'];
     const requiresAll = true;
@@ -60,7 +60,7 @@ describe('A required-labels check', { concurrency: true }, () => {
     );
   });
 
-  it('delegates to any-label check when requiresAll is false', () => {
+  void it('delegates to any-label check when requiresAll is false', () => {
     const labels = ['bug', 'duplicate', 'invalid'];
     const required: readonly string[] = ['approved', 'assigned'];
     const requiresAll = false;

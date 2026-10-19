@@ -10,8 +10,8 @@ import type { FakeCheck } from '#check/fk-check.ts';
 
 import { fkCheck } from '#check/fk-check.ts';
 
-describe('An in-memory fake check instance', { concurrency: true }, () => {
-  it('returns default values', () => {
+void describe('An in-memory fake check instance', { concurrency: true }, () => {
+  void it('returns default values', () => {
     const check = fkCheck();
     const actual = {
       message: check.message(),
@@ -30,7 +30,7 @@ describe('An in-memory fake check instance', { concurrency: true }, () => {
     );
   });
 
-  it('preserves custom overrides', () => {
+  void it('preserves custom overrides', () => {
     const custom: FakeCheck = {
       message: 'Author is exempt from ticket validation',
       reason: 'ok',

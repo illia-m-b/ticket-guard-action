@@ -10,8 +10,8 @@ import type { FakeTicket } from '#backlog/fk-ticket.ts';
 
 import { fkTicket } from '#backlog/fk-ticket.ts';
 
-describe('An in-memory ticket instance', { concurrency: true }, () => {
-  it('returns default values when absent', () => {
+void describe('An in-memory ticket instance', { concurrency: true }, () => {
+  void it('returns default values when absent', () => {
     const defaults: Omit<FakeTicket, 'id'> = {
       assignees: [],
       labels: [],
@@ -34,7 +34,7 @@ describe('An in-memory ticket instance', { concurrency: true }, () => {
     );
   });
 
-  it('throws TypeError when reading the id of an absent ticket', () => {
+  void it('throws TypeError when reading the id of an absent ticket', () => {
     const fake = fkTicket();
     assert.throws(
       () => fake.id(),
@@ -43,7 +43,7 @@ describe('An in-memory ticket instance', { concurrency: true }, () => {
     );
   });
 
-  it('uses an empty string when marked as present without overrides', () => {
+  void it('uses an empty string when marked as present without overrides', () => {
     const id = fkTicket({ present: true }).id();
     const empty = '';
     assert.equal(
@@ -53,7 +53,7 @@ describe('An in-memory ticket instance', { concurrency: true }, () => {
     );
   });
 
-  it('preserves custom overrides', () => {
+  void it('preserves custom overrides', () => {
     const custom: FakeTicket = {
       assignees: ['octocat'],
       id: String(Date.now()),

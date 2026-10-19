@@ -10,8 +10,8 @@ import { rtGrip } from '#grip/rt-grip.ts';
 import { rfEnvelope } from '#reference/rf-envelope.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-describe('A reference envelope', { concurrency: true }, () => {
-  it('delegates all methods to the encapsulated reference', () => {
+void describe('A reference envelope', { concurrency: true }, () => {
+  void it('delegates all methods to the encapsulated reference', () => {
     const origin = rfGitHub(`Closes #${new Date().getDate()}`);
     const envelope = rfEnvelope(() => origin);
     const expected = {
@@ -31,7 +31,7 @@ describe('A reference envelope', { concurrency: true }, () => {
     );
   });
 
-  it('evaluates the origin function only once across multiple accessors by default', () => {
+  void it('evaluates the origin function only once across multiple accessors by default', () => {
     let called = 0;
     const once = 1;
     const envelope = rfEnvelope(() => {
@@ -48,7 +48,7 @@ describe('A reference envelope', { concurrency: true }, () => {
     );
   });
 
-  it('re-evaluates the origin function for each accessor when configured with a real-time grip', () => {
+  void it('re-evaluates the origin function for each accessor when configured with a real-time grip', () => {
     let called = 0;
     const times = 3;
     const envelope = rfEnvelope(() => {

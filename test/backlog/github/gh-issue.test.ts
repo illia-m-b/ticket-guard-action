@@ -10,8 +10,8 @@ import type { IssuePayload } from '#backlog/github/octokit.ts';
 
 import { ghIssue } from '#backlog/github/gh-issue.ts';
 
-describe('A GitHub issue adapter', { concurrency: true }, () => {
-  it('projects actual fields', () => {
+void describe('A GitHub issue adapter', { concurrency: true }, () => {
+  void it('projects actual fields', () => {
     const payload: IssuePayload = {
       assignees: [{ login: 'pnpm' }, { login: 'googleapis' }],
       html_url: 'https://github.com/illia-m-b/veils-js/issues/56',
@@ -43,7 +43,7 @@ describe('A GitHub issue adapter', { concurrency: true }, () => {
     );
   });
 
-  it('defaults assignees to an empty array when omitted', () => {
+  void it('defaults assignees to an empty array when omitted', () => {
     const payload: IssuePayload = {
       html_url: 'https://github.com/illia-m-b/veils-js/issues/51',
       labels: ['wontfix'],

@@ -11,8 +11,8 @@ import { ckOk } from '#check/ck-ok.ts';
 import { ckScope } from '#check/ck-scope.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-describe('A scope verification check', { concurrency: true }, () => {
-  it('bypasses validation when scope is set to "any"', () => {
+void describe('A scope verification check', { concurrency: true }, () => {
+  void it('bypasses validation when scope is set to "any"', () => {
     const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
     const other = rpPlain({ owner: 'googleapis', repo: 'release-please' });
     const actual = ckScope('any', repository, other);
@@ -34,8 +34,8 @@ describe('A scope verification check', { concurrency: true }, () => {
     );
   });
 
-  describe('"same-org" scope', { concurrency: true }, () => {
-    it('passes when repositories belong to the same organization', () => {
+  void describe('"same-org" scope', { concurrency: true }, () => {
+    void it('passes when repositories belong to the same organization', () => {
       const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
       const other = rpPlain({ owner: 'pnpm', repo: 'pnpm' });
       const actual = ckScope('same-org', repository, other);
@@ -57,7 +57,7 @@ describe('A scope verification check', { concurrency: true }, () => {
       );
     });
 
-    it('fails when repositories belong to different organizations', () => {
+    void it('fails when repositories belong to different organizations', () => {
       const target = rpPlain({ owner: 'pnpm', repo: 'setup' });
       const ticket = rpPlain({ owner: 'googleapis', repo: 'release-please' });
       const actual = ckScope('same-org', target, ticket);
@@ -83,8 +83,8 @@ describe('A scope verification check', { concurrency: true }, () => {
     });
   });
 
-  describe('"current-repo" scope', { concurrency: true }, () => {
-    it('passes when repositories are identical', () => {
+  void describe('"current-repo" scope', { concurrency: true }, () => {
+    void it('passes when repositories are identical', () => {
       const repository = rpPlain({ owner: 'illia-m-b', repo: 'veils-js' });
       const clone = rpPlain({
         owner: repository.owner(),
@@ -109,7 +109,7 @@ describe('A scope verification check', { concurrency: true }, () => {
       );
     });
 
-    it('fails when repositories belong to the same organization but have different names', () => {
+    void it('fails when repositories belong to the same organization but have different names', () => {
       const owner = 'octocat';
       const one = 'octo-repo';
       const other = one.split('').toReversed().join('');

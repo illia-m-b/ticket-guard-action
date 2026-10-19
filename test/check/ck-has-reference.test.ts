@@ -12,8 +12,8 @@ import { ckOk } from '#check/ck-ok.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-describe('A reference presence check', { concurrency: true }, () => {
-  it('returns a passed check when reference is present', () => {
+void describe('A reference presence check', { concurrency: true }, () => {
+  void it('returns a passed check when reference is present', () => {
     const present = rfGitHub('Closes #1020');
     const actual = ckHasReference(present);
     const check = {
@@ -34,7 +34,7 @@ describe('A reference presence check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a failed check when reference is absent', () => {
+  void it('returns a failed check when reference is absent', () => {
     const absent = rfEmpty();
     const actual = ckHasReference(absent);
     const check = {

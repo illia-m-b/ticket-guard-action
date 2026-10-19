@@ -10,8 +10,8 @@ import { ghInputs } from '#inputs/gh-inputs.ts';
 
 import { silenced } from '../silenced/silenced.ts';
 
-describe('A GitHub-backed action inputs adapter', () => {
-  it('extracts allowed statuses from environment', () => {
+void describe('A GitHub-backed action inputs adapter', () => {
+  void it('extracts allowed statuses from environment', () => {
     const expected = ['opened', 'closed', 'in_progress'];
     process.env['INPUT_ALLOWED-STATUSES'] = expected.join('\n');
     assert.deepStrictEqual(
@@ -21,7 +21,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('extracts ticket target locations from environment', () => {
+  void it('extracts ticket target locations from environment', () => {
     const expected = ['pr-body', 'pr-title'];
     process.env['INPUT_EXTRACT-FROM'] = expected.join('\n');
     assert.deepStrictEqual(
@@ -31,7 +31,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('fails when extraction target is unsupported', () => {
+  void it('fails when extraction target is unsupported', () => {
     const invalid = ['pr-body', 'commit-message'];
     process.env['INPUT_EXTRACT-FROM'] = invalid.join('\n');
     assert.throws(
@@ -41,7 +41,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads fail-on-error flag when enabled', () => {
+  void it('reads fail-on-error flag when enabled', () => {
     process.env['INPUT_FAIL-ON-ERROR'] = 'true';
     assert.equal(
       ghInputs().failOnError(),
@@ -50,7 +50,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads fail-on-error flag when disabled', () => {
+  void it('reads fail-on-error flag when disabled', () => {
     process.env['INPUT_FAIL-ON-ERROR'] = 'false';
     assert.equal(
       ghInputs().failOnError(),
@@ -59,7 +59,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('extracts forbidden labels from environment', () => {
+  void it('extracts forbidden labels from environment', () => {
     const expected = ['do-not-merge', 'blocked', 'stale'];
     process.env['INPUT_FORBIDDEN-LABELS'] = expected.join('\n');
     assert.deepStrictEqual(
@@ -69,7 +69,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads GitHub token from environment', () => {
+  void it('reads GitHub token from environment', () => {
     const expected = 'ghp_7xK9mQ2vL8wP4zR1tY6uI0oA3sD5fG8jH';
     process.env['INPUT_GITHUB-TOKEN'] = expected;
     assert.equal(
@@ -79,7 +79,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('extracts ignored actors from environment', () => {
+  void it('extracts ignored actors from environment', () => {
     const expected = ['greenkeeper[bot]', 'snyk-bot'];
     process.env['INPUT_IGNORE-ACTORS'] = expected.join('\n');
     assert.deepStrictEqual(
@@ -89,7 +89,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads require-all-labels flag when enabled', () => {
+  void it('reads require-all-labels flag when enabled', () => {
     process.env['INPUT_REQUIRE-ALL-LABELS'] = 'true';
     assert.equal(
       ghInputs().requireAllLabels(),
@@ -98,7 +98,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads require-all-labels flag when disabled', () => {
+  void it('reads require-all-labels flag when disabled', () => {
     process.env['INPUT_REQUIRE-ALL-LABELS'] = 'false';
     assert.equal(
       ghInputs().requireAllLabels(),
@@ -107,7 +107,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads require-author-assigned flag when enabled', () => {
+  void it('reads require-author-assigned flag when enabled', () => {
     process.env['INPUT_REQUIRE-AUTHOR-ASSIGNED'] = 'true';
     assert.equal(
       ghInputs().requireAuthorAssigned(),
@@ -116,7 +116,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads require-author-assigned flag when disabled', () => {
+  void it('reads require-author-assigned flag when disabled', () => {
     process.env['INPUT_REQUIRE-AUTHOR-ASSIGNED'] = 'false';
     assert.equal(
       ghInputs().requireAuthorAssigned(),
@@ -125,7 +125,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('extracts required labels from environment', () => {
+  void it('extracts required labels from environment', () => {
     const expected = ['bug', 'triage', 'documentation'];
     process.env['INPUT_REQUIRED-LABELS'] = expected.join('\n');
     assert.deepStrictEqual(
@@ -135,7 +135,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('reads repository scope from environment', () => {
+  void it('reads repository scope from environment', () => {
     const expected = 'same-org';
     process.env.INPUT_SCOPE = expected;
     assert.equal(
@@ -145,7 +145,7 @@ describe('A GitHub-backed action inputs adapter', () => {
     );
   });
 
-  it('fails when repository scope is unsupported', () => {
+  void it('fails when repository scope is unsupported', () => {
     const invalid = 'cross-enterprise';
     process.env.INPUT_SCOPE = invalid;
     assert.throws(

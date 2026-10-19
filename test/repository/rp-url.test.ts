@@ -8,15 +8,15 @@ import { describe, it } from 'node:test';
 
 import { rpUrl } from '#repository/rp-url.ts';
 
-describe('A repository URL', { concurrency: true }, () => {
-  it('defers evaluation until coordinates are accessed', () => {
+void describe('A repository URL', { concurrency: true }, () => {
+  void it('defers evaluation until coordinates are accessed', () => {
     assert.doesNotThrow(
       () => rpUrl('invalid input'),
       'Constructing repository coordinates from an invalid input threw eagerly',
     );
   });
 
-  describe('coordinates extraction', { concurrency: true }, () => {
+  void describe('coordinates extraction', { concurrency: true }, () => {
     for (const { expected, input, message, title } of [
       {
         expected: { name: 'node', owner: 'nodejs' },
@@ -266,7 +266,7 @@ describe('A repository URL', { concurrency: true }, () => {
         title: 'extracts scoped coordinates when followed by question mark',
       },
     ]) {
-      it(title, () => {
+      void it(title, () => {
         const repository = rpUrl(input);
         assert.deepStrictEqual(
           { name: repository.name(), owner: repository.owner() },
@@ -277,7 +277,7 @@ describe('A repository URL', { concurrency: true }, () => {
     }
   });
 
-  describe('case normalization', { concurrency: true }, () => {
+  void describe('case normalization', { concurrency: true }, () => {
     for (const { expected, input, message, title } of [
       {
         expected: { name: 'react', owner: 'meta' },
@@ -294,7 +294,7 @@ describe('A repository URL', { concurrency: true }, () => {
         title: 'normalizes canonical URL coordinates to lowercase',
       },
     ]) {
-      it(title, () => {
+      void it(title, () => {
         const repository = rpUrl(input);
         assert.deepStrictEqual(
           { name: repository.name(), owner: repository.owner() },
@@ -305,8 +305,8 @@ describe('A repository URL', { concurrency: true }, () => {
     }
   });
 
-  describe('complex environments', { concurrency: true }, () => {
-    it('selects the first repository reference when multiple repositories exist', () => {
+  void describe('complex environments', { concurrency: true }, () => {
+    void it('selects the first repository reference when multiple repositories exist', () => {
       const repository = rpUrl(
         'fixes https://github.com/nodejs/node/issues/52109 and resolves https://github.com/eslint/eslint/issues/18900',
       );
@@ -317,7 +317,7 @@ describe('A repository URL', { concurrency: true }, () => {
       );
     });
 
-    it('processes a ten-thousand character hostile body within performance limits', () => {
+    void it('processes a ten-thousand character hostile body within performance limits', () => {
       const hostile =
         'ab-cd-'.repeat(1600) +
         ' https://github.com/nodejs/node/issues/52109 ' +
@@ -331,7 +331,7 @@ describe('A repository URL', { concurrency: true }, () => {
     });
   });
 
-  describe('syntax rejections', { concurrency: true }, () => {
+  void describe('syntax rejections', { concurrency: true }, () => {
     for (const { input, message, title } of [
       {
         input: '#42',
@@ -498,7 +498,7 @@ describe('A repository URL', { concurrency: true }, () => {
         title: 'rejects repository name ending in double dots',
       },
     ]) {
-      it(title, () => {
+      void it(title, () => {
         assert.throws(
           () => rpUrl(input).owner(),
           {

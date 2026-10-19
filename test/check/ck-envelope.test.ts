@@ -10,8 +10,8 @@ import { ckEnvelope } from '#check/ck-envelope.ts';
 import { fkCheck } from '#check/fk-check.ts';
 import { rtGrip } from '#grip/rt-grip.ts';
 
-describe('A check envelope', { concurrency: true }, () => {
-  it('delegates all methods to the encapsulated check', () => {
+void describe('A check envelope', { concurrency: true }, () => {
+  void it('delegates all methods to the encapsulated check', () => {
     const origin = fkCheck();
     const envelope = ckEnvelope(() => origin);
     const expected = {
@@ -31,7 +31,7 @@ describe('A check envelope', { concurrency: true }, () => {
     );
   });
 
-  it('evaluates the origin function only once across multiple accessors by default', () => {
+  void it('evaluates the origin function only once across multiple accessors by default', () => {
     let called = 0;
     const once = 1;
     const envelope = ckEnvelope(() => {
@@ -48,7 +48,7 @@ describe('A check envelope', { concurrency: true }, () => {
     );
   });
 
-  it('re-evaluates the origin function for each accessor when configured with a real-time grip', () => {
+  void it('re-evaluates the origin function for each accessor when configured with a real-time grip', () => {
     let called = 0;
     const times = 3;
     const envelope = ckEnvelope(() => {

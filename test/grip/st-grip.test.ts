@@ -9,8 +9,8 @@ import { describe, it } from 'node:test';
 
 import { stGrip } from '#grip/st-grip.ts';
 
-describe('A sticky grip', { concurrency: true }, () => {
-  it('does not call the origin function upon initialization', () => {
+void describe('A sticky grip', { concurrency: true }, () => {
+  void it('does not call the origin function upon initialization', () => {
     let called = 0;
     const never = 0;
     const origin = (): number => {
@@ -25,7 +25,7 @@ describe('A sticky grip', { concurrency: true }, () => {
     );
   });
 
-  it('calls the origin function only once', () => {
+  void it('calls the origin function only once', () => {
     let called = 0;
     const once = 1;
     const origin = (): number => {
@@ -43,7 +43,7 @@ describe('A sticky grip', { concurrency: true }, () => {
     );
   });
 
-  it('returns the identical value produced by the origin across successive calls', () => {
+  void it('returns the identical value produced by the origin across successive calls', () => {
     const grip = stGrip(() => ({
       time: Date.now(),
     }));
@@ -56,7 +56,7 @@ describe('A sticky grip', { concurrency: true }, () => {
     );
   });
 
-  it('does not re-evaluate the origin function when it returns nullish values', () => {
+  void it('does not re-evaluate the origin function when it returns nullish values', () => {
     // eslint-disable-next-line unicorn/no-null
     for (const nullish of [null, undefined]) {
       let called = 0;
@@ -77,7 +77,7 @@ describe('A sticky grip', { concurrency: true }, () => {
     }
   });
 
-  it('propagates errors thrown by the origin function', () => {
+  void it('propagates errors thrown by the origin function', () => {
     const grip = stGrip((): never => {
       throw new Error('I realized what is wrong with me');
     });

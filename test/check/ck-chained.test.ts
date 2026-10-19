@@ -13,8 +13,8 @@ import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { fkCheck } from '#check/fk-check.ts';
 
-describe('A composite check', { concurrency: true }, () => {
-  it('returns a passed check when all checks pass', () => {
+void describe('A composite check', { concurrency: true }, () => {
+  void it('returns a passed check when all checks pass', () => {
     const ok = ckOk();
     const fake = fkCheck();
     const checks = [ok, fake];
@@ -36,7 +36,7 @@ describe('A composite check', { concurrency: true }, () => {
     );
   });
 
-  it('returns a passed check when check list is empty', () => {
+  void it('returns a passed check when check list is empty', () => {
     const chained = ckChained([]);
     const ok = ckOk();
     const passed = {
@@ -56,7 +56,7 @@ describe('A composite check', { concurrency: true }, () => {
     );
   });
 
-  it('returns the first failing check', () => {
+  void it('returns the first failing check', () => {
     const failed: FakeCheck = {
       message: 'Happiness for misery I want it',
       reason: 'scope-violation',

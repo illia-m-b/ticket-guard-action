@@ -10,8 +10,8 @@ import type { IssuePayload } from '#backlog/github/octokit.ts';
 
 import { fkOctokit } from '#backlog/github/fk-octokit.ts';
 
-describe('An in-memory Octokit client', { concurrency: true }, () => {
-  it('throws an error when status is 4xx', async () => {
+void describe('An in-memory Octokit client', { concurrency: true }, () => {
+  void it('throws an error when status is 4xx', async () => {
     const status = 400 + new Date().getDay();
     const octokit = fkOctokit({ status });
     await assert.rejects(
@@ -26,7 +26,7 @@ describe('An in-memory Octokit client', { concurrency: true }, () => {
     );
   });
 
-  it('projects actual fields', async () => {
+  void it('projects actual fields', async () => {
     const status = 399 - new Date().getDay();
     const owner = 'google';
     const repository = 'guava';
@@ -56,7 +56,7 @@ describe('An in-memory Octokit client', { concurrency: true }, () => {
     );
   });
 
-  it('handles missing fields', async () => {
+  void it('handles missing fields', async () => {
     const status = 399 - 31 + new Date().getDate();
     const owner = 'pnpm';
     const repository = 'pnpm';

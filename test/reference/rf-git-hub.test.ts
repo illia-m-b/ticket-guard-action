@@ -8,8 +8,8 @@ import { describe, it } from 'node:test';
 
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-describe('A GitHub issue reference', { concurrency: true }, () => {
-  it('confirms presence when a valid issue reference is provided', () => {
+void describe('A GitHub issue reference', { concurrency: true }, () => {
+  void it('confirms presence when a valid issue reference is provided', () => {
     assert.equal(
       rfGitHub('fixes #42').present(),
       true,
@@ -17,7 +17,7 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
     );
   });
 
-  describe('id extraction', { concurrency: true }, () => {
+  void describe('id extraction', { concurrency: true }, () => {
     for (const { expected, input, message, title } of [
       {
         expected: '143',
@@ -145,13 +145,13 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
         title: 'extracts id from URL with query parameters',
       },
     ]) {
-      it(title, () => {
+      void it(title, () => {
         assert.equal(rfGitHub(input).id(), expected, message);
       });
     }
   });
 
-  describe('raw string capture', { concurrency: true }, () => {
+  void describe('raw string capture', { concurrency: true }, () => {
     for (const { expected, input, message, title } of [
       {
         expected: '#982',
@@ -176,14 +176,14 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
         title: 'captures raw canonical URL',
       },
     ]) {
-      it(title, () => {
+      void it(title, () => {
         assert.equal(rfGitHub(input).raw(), expected, message);
       });
     }
   });
 
-  describe('complex environments', { concurrency: true }, () => {
-    it('selects the first ticket reference when multiple issues exist', () => {
+  void describe('complex environments', { concurrency: true }, () => {
+    void it('selects the first ticket reference when multiple issues exist', () => {
       assert.equal(
         rfGitHub('fixes #12 and resolves #88').id(),
         '12',
@@ -191,7 +191,7 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
       );
     });
 
-    it('processes a ten-thousand character hostile body within performance limits', () => {
+    void it('processes a ten-thousand character hostile body within performance limits', () => {
       const hostile =
         'ab/cd-'.repeat(1600) + ' fixes #42 ' + '-cd/ab'.repeat(1600);
       assert.equal(
@@ -202,8 +202,8 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
     });
   });
 
-  describe('syntax rejections', { concurrency: true }, () => {
-    it('fails when requesting id from an unmentioned ticket', () => {
+  void describe('syntax rejections', { concurrency: true }, () => {
+    void it('fails when requesting id from an unmentioned ticket', () => {
       assert.throws(
         () => rfGitHub('chore: update dependencies').id(),
         { message: 'Reference is empty', name: 'TypeError' },
@@ -211,7 +211,7 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
       );
     });
 
-    it('returns empty raw string when ticket was not mentioned', () => {
+    void it('returns empty raw string when ticket was not mentioned', () => {
       assert.equal(
         rfGitHub('chore: update dependencies').raw(),
         '',
@@ -321,7 +321,7 @@ describe('A GitHub issue reference', { concurrency: true }, () => {
         title: 'rejects anchor fragments on external URLs',
       },
     ]) {
-      it(title, () => {
+      void it(title, () => {
         assert.equal(rfGitHub(input).present(), false, message);
       });
     }

@@ -15,8 +15,8 @@ import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfTargets } from '#reference/rf-targets.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-describe('A multi-target reference scanner', { concurrency: true }, () => {
-  it('extracts reference from pull request title when configured', () => {
+void describe('A multi-target reference scanner', { concurrency: true }, () => {
+  void it('extracts reference from pull request title when configured', () => {
     const id = String(randomInt(100, 10_000));
     const token = `#${id}`;
     const pr = fkPullRequest({
@@ -40,7 +40,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('extracts reference from pull request body when configured', () => {
+  void it('extracts reference from pull request body when configured', () => {
     const id = String(randomInt(100, 10_000));
     const token = `#${id}`;
     const pr = fkPullRequest({
@@ -64,7 +64,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('falls back to body when title contains no reference', () => {
+  void it('falls back to body when title contains no reference', () => {
     const id = String(randomInt(100, 10_000));
     const token = `#${id}`;
     const pr = fkPullRequest({
@@ -89,7 +89,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('prioritizes title when title precedes body in target order', () => {
+  void it('prioritizes title when title precedes body in target order', () => {
     const titleId = String(randomInt(100, 10_000));
     const bodyId = String(randomInt(100, 10_000));
     const pr = fkPullRequest({
@@ -104,7 +104,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('prioritizes body when body precedes title in target order', () => {
+  void it('prioritizes body when body precedes title in target order', () => {
     const titleId = String(randomInt(100, 10_000));
     const bodyId = String(randomInt(100, 10_000));
     const pr = fkPullRequest({
@@ -119,7 +119,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('yields empty reference representation when no target contains an issue reference', () => {
+  void it('yields empty reference representation when no target contains an issue reference', () => {
     const pr = fkPullRequest({
       body: 'No ticket mentioned in description',
       title: 'chore: internal refactoring without issue',
@@ -140,7 +140,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('throws an error when accessing id on an unreferenced pull request', () => {
+  void it('throws an error when accessing id on an unreferenced pull request', () => {
     const pr = fkPullRequest({
       body: 'No ticket mentioned in description',
       title: 'chore: internal refactoring without issue',
@@ -153,7 +153,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('yields empty reference when target list is empty', () => {
+  void it('yields empty reference when target list is empty', () => {
     const id = String(randomInt(100, 10_000));
     const pr = fkPullRequest({
       body: `Fixes #${id}`,
@@ -175,7 +175,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('defers evaluation until reference methods are accessed', () => {
+  void it('defers evaluation until reference methods are accessed', () => {
     let accessed = 0;
     const never = 0;
     const pr: PullRequest = {
@@ -198,7 +198,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('avoids reading subsequent targets once an earlier target yields a reference', () => {
+  void it('avoids reading subsequent targets once an earlier target yields a reference', () => {
     let accessed = 0;
     const never = 0;
     const id = String(randomInt(100, 10_000));
@@ -220,7 +220,7 @@ describe('A multi-target reference scanner', { concurrency: true }, () => {
     );
   });
 
-  it('uses custom extracted supplier when provided', () => {
+  void it('uses custom extracted supplier when provided', () => {
     const id = `PROJ-${randomInt(100, 10_000)}`;
     const custom: Reference = {
       id: () => id,

@@ -3,30 +3,33 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { ConfigWithExtends } from 'typescript-eslint';
-
 import eslint from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import packageJson from 'eslint-plugin-package-json';
 import perfectionist from 'eslint-plugin-perfectionist';
 import security from 'eslint-plugin-security';
 import { configs as sonarjsConfigs } from 'eslint-plugin-sonarjs';
 import tsdoc from 'eslint-plugin-tsdoc';
 import unicorn from 'eslint-plugin-unicorn';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfig([
   {
     ignores: ['.github/**', 'coverage/**', 'dist/**'],
   },
   eslint.configs.recommended,
-  ...tseslint.configs.strictTypeChecked,
-  ...tseslint.configs.stylisticTypeChecked,
   unicorn.configs.recommended,
   perfectionist.configs['recommended-natural'],
   security.configs.recommended,
   sonarjsConfigs.recommended,
   {
+    extends: [
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+    files: ['**/*.{js,ts}'],
     languageOptions: {
       globals: {
         ...globals.nodeBuiltin,
@@ -48,11 +51,17 @@ export default [
         'error',
         { allowExpressions: true },
       ],
-      '@typescript-eslint/no-dynamic-delete': 'error',
-      '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
       ],
       '@typescript-eslint/promise-function-async': [
         'error',
@@ -81,7 +90,6 @@ export default [
       'no-console': 'error',
       'no-extend-native': 'error',
       'no-proto': 'error',
-      'security/detect-object-injection': 'off',
       'tsdoc/syntax': 'error',
       'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
       'unicorn/no-process-exit': 'off',
@@ -90,10 +98,29 @@ export default [
     },
   },
   {
-    files: ['test/**/*.test.ts', 'test/**/*.test-d.ts'],
+    extends: [packageJson.configs.recommended, packageJson.configs.stylistic],
+    files: ['package.json'],
     rules: {
-      '@typescript-eslint/no-floating-promises': 'off',
+      'package-json/no-local-dependencies': 'error',
+      'package-json/require-author': 'error',
+      'package-json/require-bugs': 'error',
+      'package-json/require-dependencies': 'error',
+      'package-json/require-devDependencies': 'error',
+      'package-json/require-devEngines': 'error',
+      'package-json/require-engines': 'error',
+      'package-json/require-homepage': 'error',
+      'package-json/require-keywords': 'error',
+      'package-json/require-private': 'error',
+      'package-json/require-scripts': 'error',
+      'package-json/restrict-dependency-ranges': [
+        'error',
+        {
+          forDependencyTypes: ['dependencies', 'devDependencies'],
+          rangeType: 'pin',
+        },
+      ],
+      'package-json/restrict-private-properties': 'error',
     },
   },
   eslintConfigPrettier,
-] satisfies ConfigWithExtends[];
+]);
