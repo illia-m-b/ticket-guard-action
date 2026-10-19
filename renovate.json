@@ -37,7 +37,7 @@
   "packageRules": [
     {
       "matchPackageNames": ["lefthook"],
-      "allowedVersions": "!=2.2.2"
+      "allowedVersions": "!/^2\\.2\\.2$/"
     },
     {
       "description": "Batch and automerge stable (1.x+) devDependencies on Monday morning with 3-day quarantine",
