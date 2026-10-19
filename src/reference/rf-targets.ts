@@ -5,7 +5,8 @@
 
 import type { Target } from '#inputs/inputs.ts';
 import type { PullRequest } from '#pull-request/pull-request.ts';
-import type { Reference } from '#reference/reference.ts';
+
+import type { Reference } from './reference.ts';
 
 import { rfEmpty } from './rf-empty.ts';
 import { rfEnvelope } from './rf-envelope.ts';
