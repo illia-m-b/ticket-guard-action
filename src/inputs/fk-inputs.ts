@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { Inputs } from '#inputs/inputs.ts';
+import type { Inputs } from './inputs.ts';
 
 /**
  * Configuration options for creating a fake {@link Inputs} instance.

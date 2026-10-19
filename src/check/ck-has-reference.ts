@@ -3,12 +3,13 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { Check } from '#check/check.ts';
 import type { Reference } from '#reference/reference.ts';
 
-import { ckEnvelope } from '#check/ck-envelope.ts';
-import { ckFailed } from '#check/ck-failed.ts';
-import { ckOk } from '#check/ck-ok.ts';
+import type { Check } from './check.ts';
+
+import { ckEnvelope } from './ck-envelope.ts';
+import { ckFailed } from './ck-failed.ts';
+import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that an issue reference is present.

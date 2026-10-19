@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { PullRequest } from '#pull-request/pull-request.ts';
-
 import { rpPlain } from '#repository/rp-plain.ts';
+
+import type { PullRequest } from './pull-request.ts';
 
 /**
  * Minimal subset of the GitHub Actions event context required by
