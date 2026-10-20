@@ -48,6 +48,7 @@
     "format:code": "prettier --ignore-unknown --log-level=warn",
     "format:code:check": "pnpm format:code --check .",
     "format:code:fix": "pnpm format:code --cache --cache-strategy=metadata --write",
+    "lint:agents": "dogent --hints --offline AGENTS.md",
     "lint:ts": "eslint --cache --exit-on-fatal-error --no-warn-ignored --flag=unstable_native_nodejs_ts_config",
     "lint:ts:check": "pnpm lint:ts --max-warnings=0",
     "lint:ts:fix": "pnpm lint:ts --fix",
@@ -61,6 +62,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "24.19.2",
+    "@yegor256/dogent": "0.13.3",
     "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-package-json": "1.10.1",
