@@ -175,6 +175,35 @@ void describe(
       );
     });
 
+    void it('fails when ticket url is not a valid github repository url', () => {
+      const pr = fkPullRequest();
+      const reference = rfGitHub('Fixes #8738');
+      const ticket = fkTicket({
+        present: true,
+        url: 'https://tracker.corp.internal/issue/TICK-9418',
+      });
+      const actual = ckTraceability(fkInputs(), pr, reference, ticket);
+      const check = {
+        message: actual.message(),
+        reason: actual.reason(),
+        valid: actual.valid(),
+      };
+      const expected = ckFailed(
+        'scope-violation',
+        'Scope violation: ticket repository coordinates cannot be determined. Scope is set to "current-repo".',
+      );
+      const failed = {
+        message: expected.message(),
+        reason: expected.reason(),
+        valid: expected.valid(),
+      };
+      assert.deepStrictEqual(
+        check,
+        failed,
+        'A composite traceability check did not fail when ticket url is not a valid github repository url',
+      );
+    });
+
     void it('fails when ticket has a disallowed status', () => {
       const reference = rfGitHub('Fixes google/guava#8738');
       const ticket = fkTicket({

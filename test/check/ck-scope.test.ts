@@ -6,6 +6,8 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
+import type { Repository } from '#repository/repository.ts';
+
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckScope } from '#check/ck-scope.ts';
@@ -31,6 +33,35 @@ void describe('A scope verification check', { concurrency: true }, () => {
       check,
       passed,
       'A scope verification check did not bypass validation when scope is "any"',
+    );
+  });
+
+  void it('bypasses validation when scope is set to "any" even if coordinates cannot be determined', () => {
+    const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
+    const ticket: Repository = {
+      name: () => {
+        throw new TypeError('Cannot extract coordinates');
+      },
+      owner: () => {
+        throw new TypeError('Cannot extract coordinates');
+      },
+    };
+    const actual = ckScope('any', repository, ticket);
+    const check = {
+      message: actual.message(),
+      reason: actual.reason(),
+      valid: actual.valid(),
+    };
+    const ok = ckOk('Validation bypassed: scope is set to "any"');
+    const passed = {
+      message: ok.message(),
+      reason: ok.reason(),
+      valid: ok.valid(),
+    };
+    assert.deepStrictEqual(
+      check,
+      passed,
+      'A scope verification check did not bypass validation when scope is "any" and coordinates cannot be determined',
     );
   });
 
@@ -79,6 +110,38 @@ void describe('A scope verification check', { concurrency: true }, () => {
         check,
         failed,
         'A scope verification check succeeded when scope is "same-org" but repositories belong to different organizations',
+      );
+    });
+
+    void it('fails when ticket repository coordinates cannot be determined', () => {
+      const target = rpPlain({ owner: 'pnpm', repo: 'setup' });
+      const ticket: Repository = {
+        name: () => {
+          throw new TypeError('Cannot extract coordinates');
+        },
+        owner: () => {
+          throw new TypeError('Cannot extract coordinates');
+        },
+      };
+      const actual = ckScope('same-org', target, ticket);
+      const check = {
+        message: actual.message(),
+        reason: actual.reason(),
+        valid: actual.valid(),
+      };
+      const expected = ckFailed(
+        'scope-violation',
+        'Scope violation: ticket repository coordinates cannot be determined. Scope is set to "same-org".',
+      );
+      const failed = {
+        message: expected.message(),
+        reason: expected.reason(),
+        valid: expected.valid(),
+      };
+      assert.deepStrictEqual(
+        check,
+        failed,
+        'A scope verification check did not fail when ticket repository coordinates cannot be determined in "same-org" scope',
       );
     });
   });
@@ -134,6 +197,38 @@ void describe('A scope verification check', { concurrency: true }, () => {
         check,
         failed,
         'A scope verification check succeeded when scope is "current-repo", repositories belong to the same organization, but have different names',
+      );
+    });
+
+    void it('fails when ticket repository coordinates cannot be determined', () => {
+      const target = rpPlain({ owner: 'octocat', repo: 'octo-repo' });
+      const ticket: Repository = {
+        name: () => {
+          throw new TypeError('Cannot extract coordinates');
+        },
+        owner: () => {
+          throw new TypeError('Cannot extract coordinates');
+        },
+      };
+      const actual = ckScope('current-repo', target, ticket);
+      const check = {
+        message: actual.message(),
+        reason: actual.reason(),
+        valid: actual.valid(),
+      };
+      const expected = ckFailed(
+        'scope-violation',
+        'Scope violation: ticket repository coordinates cannot be determined. Scope is set to "current-repo".',
+      );
+      const failed = {
+        message: expected.message(),
+        reason: expected.reason(),
+        valid: expected.valid(),
+      };
+      assert.deepStrictEqual(
+        check,
+        failed,
+        'A scope verification check did not fail when ticket repository coordinates cannot be determined in "current-repo" scope',
       );
     });
   });
