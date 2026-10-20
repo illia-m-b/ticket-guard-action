@@ -179,6 +179,9 @@ importers:
       '@types/node':
         specifier: 24.19.2
         version: 24.19.2
+      '@yegor256/dogent':
+        specifier: 0.13.3
+        version: 0.13.3
       eslint:
         specifier: 10.12.0
         version: 10.12.0
@@ -758,6 +761,11 @@ packages:
   '@typescript-eslint/visitor-keys@8.71.2':
     resolution: {integrity: sha512-zozlN0UA32bSG2zkKAgQyRYSbEISVoyU6vvkKYo2aSny74D8Jh4e+POkJ6Lk0dlezZi5x7TtD+88Xb06IB8nhg==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@yegor256/dogent@0.13.3':
+    resolution: {integrity: sha512-0mIkp/HOBkey4wDXK5cf95ULLifoe2aVDR/+PAZHMgBCG0ZP4MmhWMiqlWOPBRepcI5ix6LRTgo789di6sVmqA==}
+    engines: {node: '>=18'}
+    hasBin: true
 
   '@yuku-core/binding-android-arm64@0.19.0':
     resolution: {integrity: sha512-wdL2XmTiZixAOaHk9Z0JJZ8u9Qm8d333Zjpc6gaxXFX+UR5BlsfxZ7a2+2Rm71pamppsPYGUGFq2oVLbh6DISw==}
@@ -1420,6 +1428,9 @@ packages:
     resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
     engines: {node: 18 || 20 || >=22}
 
+  minimist@1.2.8:
+    resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+
   moment@2.31.0:
     resolution: {integrity: sha512-0acOTfMiWOheYS4eoWb80yYMb/JLvVv9SHbs2PehaDzfUG0Bw855SKyk0IKTnPGa5+U2bmi3W68l1+sGLX/pvw==}
 
@@ -1465,6 +1476,10 @@ packages:
     resolution: {integrity: sha512-gFL35q7kbE/zBaPA3UKhp2vSzcPYx2ecbYuwv1ucE9Il6IIgBDweBlH8D68UFGZic2MkllKa2KHCfC1IQBQUYA==}
     engines: {node: '>=12'}
 
+  parse-ms@2.1.0:
+    resolution: {integrity: sha512-kHt7kzLoS9VBZfUsiKjv43mr91ea+U05EyKkEtqp7vNbHxmaVuEqN7XxeEVnGrMtYOAxGrDElSi96K7EgO1zCA==}
+    engines: {node: '>=6'}
+
   parse5@8.0.1:
     resolution: {integrity: sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw==}
 
@@ -1504,6 +1519,10 @@ packages:
     resolution: {integrity: sha512-skGHTH1Yb9QvaTC4hWnRTzEYtCpApF0UMBPz+t/0ZPzP8ihefo/btKd+QA7pUE0fEwA1SbS/NmhyEcstdXOIdA==}
     engines: {node: '>=14'}
     hasBin: true
+
+  pretty-ms@7.0.1:
+    resolution: {integrity: sha512-973driJZvxiGOQ5ONsFhOF/DtzPMOMtgC11kCpUrPGMTgqp2q/1gwzCquocrN33is0VZ5GFHXZYMM9l6h67v2Q==}
+    engines: {node: '>=10'}
 
   proc-log@6.1.0:
     resolution: {integrity: sha512-iG+GYldRf2BQ0UDUAd6JQ/RwzaQy6mXmsk/IzlYyal4A4SNFw54MeH4/tLkF4I5WoWG9SQwuqWzS99jaFQHBuQ==}
@@ -2280,6 +2299,12 @@ snapshots:
       '@typescript-eslint/types': 8.71.2
       eslint-visitor-keys: 5.0.1
 
+  '@yegor256/dogent@0.13.3':
+    dependencies:
+      minimist: 1.2.8
+      picocolors: 1.1.1
+      pretty-ms: 7.0.1
+
   '@yuku-core/binding-android-arm64@0.19.0':
     optional: true
 
@@ -2958,6 +2983,8 @@ snapshots:
     dependencies:
       brace-expansion: 5.0.12
 
+  minimist@1.2.8: {}
+
   moment@2.31.0: {}
 
   ms@2.1.3: {}
@@ -3003,6 +3030,8 @@ snapshots:
 
   package-name-regex@2.0.6: {}
 
+  parse-ms@2.1.0: {}
+
   parse5@8.0.1:
     dependencies:
       entities: 8.1.0
@@ -3031,6 +3060,10 @@ snapshots:
       - supports-color
 
   prettier@3.9.10: {}
+
+  pretty-ms@7.0.1:
+    dependencies:
+      parse-ms: 2.1.0
 
   proc-log@6.1.0: {}
 
