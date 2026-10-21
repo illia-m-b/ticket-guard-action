@@ -19,5 +19,11 @@
     "strictNullChecks": true,
     "pretty": false
   },
-  "include": ["eslint.config.ts", "src/**/*", "test/**/*", "tsdown.config.ts"]
+  "include": [
+    "eslint.config.ts",
+    "src/**/*",
+    "test/**/*",
+    "tsdown.config.ts",
+    "vitest.config.ts"
+  ]
 }
