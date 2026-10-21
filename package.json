@@ -52,7 +52,8 @@
     "lint:ts": "eslint --cache --exit-on-fatal-error --no-warn-ignored --flag=unstable_native_nodejs_ts_config",
     "lint:ts:check": "pnpm lint:ts --max-warnings=0",
     "lint:ts:fix": "pnpm lint:ts --fix",
-    "test": "node --enable-source-maps --test --experimental-test-coverage --test-coverage-lines=100 --test-coverage-functions=100 --test-coverage-branches=100 --test-coverage-include=\"src/**/*.ts\" --test-coverage-exclude=\"test/**\" --test-reporter=spec --test-reporter=lcov --test-reporter-destination=stdout --test-reporter-destination=lcov.info --test-timeout=2000 \"test/**/*.test.ts\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "types:check": "tsc"
   },
   "dependencies": {
@@ -62,6 +63,7 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "@types/node": "24.19.2",
+    "@vitest/coverage-v8": "5.0.5",
     "@yegor256/dogent": "0.13.3",
     "eslint": "10.12.0",
     "eslint-config-prettier": "10.1.8",
@@ -78,7 +80,8 @@
     "rollup-plugin-license": "3.7.1",
     "tsdown": "0.23.1",
     "typescript": "5.9.3",
-    "typescript-eslint": "8.71.2"
+    "typescript-eslint": "8.71.2",
+    "vitest": "5.0.5"
   },
   "engines": {
     "node": "24.x"
