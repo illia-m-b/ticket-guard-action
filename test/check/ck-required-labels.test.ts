@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckAllLabels } from '#check/ck-all-labels.ts';
 import { ckAnyLabel } from '#check/ck-any-label.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckRequiredLabels } from '#check/ck-required-labels.ts';
 
-void describe('A required-labels check', { concurrency: true }, () => {
-  void it('bypasses when there are no required labels', () => {
+describe('a required-labels check', () => {
+  it('bypasses when there are no required labels', () => {
     const labels = ['bug', 'question'];
     const required: readonly string[] = [];
     const requiresAll = true;
@@ -30,14 +29,14 @@ void describe('A required-labels check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      bypassed,
       'A required-labels check was executed even though no required labels are specified',
-    );
+    ).toStrictEqual(bypassed);
   });
 
-  void it('delegates to all-labels check when requiresAll is true', () => {
+  it('delegates to all-labels check when requiresAll is true', () => {
     const labels = ['bug', 'help wanted', 'approved'];
     const required: readonly string[] = ['approved', 'assigned'];
     const requiresAll = true;
@@ -53,14 +52,14 @@ void describe('A required-labels check', { concurrency: true }, () => {
       reason: original.reason(),
       valid: original.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      delegated,
       'A required-labels check was not delegated to the all-labels check',
-    );
+    ).toStrictEqual(delegated);
   });
 
-  void it('delegates to any-label check when requiresAll is false', () => {
+  it('delegates to any-label check when requiresAll is false', () => {
     const labels = ['bug', 'duplicate', 'invalid'];
     const required: readonly string[] = ['approved', 'assigned'];
     const requiresAll = false;
@@ -76,10 +75,10 @@ void describe('A required-labels check', { concurrency: true }, () => {
       reason: original.reason(),
       valid: original.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      delegated,
       'A required-labels check was not delegated to the any-label check',
-    );
+    ).toStrictEqual(delegated);
   });
 });

@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { IssuePayload } from '#backlog/github/octokit.ts';
 import type { Octokit } from '#backlog/github/octokit.ts';
@@ -16,8 +15,8 @@ import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-void describe('A GitHub issues adapter', { concurrency: true }, () => {
-  void it('returns fake ticket when reference is absent', async () => {
+describe('a GitHub issues adapter', () => {
+  it('returns fake ticket when reference is absent', async () => {
     const fake = fkTicket();
     let fkId;
     try {
@@ -52,14 +51,14 @@ void describe('A GitHub issues adapter', { concurrency: true }, () => {
       status: retrieved.status(),
       url: retrieved.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      defaults,
       'Retrieved fields differ from fake ticket defaults when reference is absent',
-    );
+    ).toStrictEqual(defaults);
   });
 
-  void it('returns fake ticket when ticket is not found', async () => {
+  it('returns fake ticket when ticket is not found', async () => {
     const fake = fkTicket();
     let fkId;
     try {
@@ -98,14 +97,14 @@ void describe('A GitHub issues adapter', { concurrency: true }, () => {
       status: retrieved.status(),
       url: retrieved.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      defaults,
       'Retrieved fields differ from fake ticket defaults when ticket is not found',
-    );
+    ).toStrictEqual(defaults);
   });
 
-  void it('returns ticket when search succeeds', async () => {
+  it('returns ticket when search succeeds', async () => {
     const payload: IssuePayload = {
       assignees: [{ login: 'yokoffing' }],
       html_url: 'https://github.com/yokoffing/Betterfox/issues/167',
@@ -141,14 +140,14 @@ void describe('A GitHub issues adapter', { concurrency: true }, () => {
       status: retrieved.status(),
       url: retrieved.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'Retrieved ticket does not match the expected backlog issue',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('re-throws unknown errors', async () => {
+  it('re-throws unknown errors', async () => {
     const buggy: Octokit = {
       rest: {
         issues: {
@@ -160,10 +159,10 @@ void describe('A GitHub issues adapter', { concurrency: true }, () => {
     };
     const reference = rfGitHub('Closes #91');
     const backlog = ghIssues(buggy, rpPlain({ owner: 'pnpm', repo: 'setup' }));
-    await assert.rejects(
-      async () => backlog.ticket(reference),
-      { message: 'This client is buggy as hell' },
+
+    await expect(
+      backlog.ticket(reference),
       'An unknown error from the Octokit client was silently ignored',
-    );
+    ).rejects.toThrow(new Error('This client is buggy as hell'));
   });
 });

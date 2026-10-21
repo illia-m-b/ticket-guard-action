@@ -3,14 +3,13 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckFailed } from '#check/ck-failed.ts';
 
-void describe('A failed check', { concurrency: true }, () => {
-  void it('preserves failure reason, diagnostic message, and invalid status', () => {
-    const message = 'Ticket #42 is closed';
+describe('a failed check', () => {
+  it('preserves failure reason, diagnostic message, and invalid status', () => {
+    const message = 'Ticket #592 is closed';
     const reason = 'status-not-allowed';
     const check = ckFailed(reason, message);
     const actual = {
@@ -23,10 +22,10 @@ void describe('A failed check', { concurrency: true }, () => {
       reason,
       valid: false,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'A failed check did not preserve the supplied reason code, message, or invalid status',
-    );
+    ).toStrictEqual(expected);
   });
 });

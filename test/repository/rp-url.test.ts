@@ -3,21 +3,22 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { rpUrl } from '#repository/rp-url.ts';
 
-void describe('A repository URL', { concurrency: true }, () => {
-  void it('defers evaluation until coordinates are accessed', () => {
-    assert.doesNotThrow(
-      () => rpUrl('invalid input'),
+describe('a repository URL', () => {
+  it('defers evaluation until coordinates are accessed', () => {
+    const repository = rpUrl('invalid input');
+
+    expect(
+      repository.owner,
       'Constructing repository coordinates from an invalid input threw eagerly',
-    );
+    ).toBeTypeOf('function');
   });
 
-  void describe('coordinates extraction', { concurrency: true }, () => {
-    for (const { expected, input, message, title } of [
+  describe('coordinates extraction', () => {
+    it.for([
       {
         expected: { name: 'node', owner: 'nodejs' },
         input: 'https://github.com/nodejs/node/issues/52109',
@@ -265,20 +266,18 @@ void describe('A repository URL', { concurrency: true }, () => {
           'The scoped coordinates were not extracted when followed by a question mark',
         title: 'extracts scoped coordinates when followed by question mark',
       },
-    ]) {
-      void it(title, () => {
-        const repository = rpUrl(input);
-        assert.deepStrictEqual(
-          { name: repository.name(), owner: repository.owner() },
-          expected,
-          message,
-        );
-      });
-    }
+    ])('$title', ({ expected, input, message }) => {
+      const repository = rpUrl(input);
+
+      expect(
+        { name: repository.name(), owner: repository.owner() },
+        message,
+      ).toStrictEqual(expected);
+    });
   });
 
-  void describe('case normalization', { concurrency: true }, () => {
-    for (const { expected, input, message, title } of [
+  describe('case normalization', () => {
+    it.for([
       {
         expected: { name: 'react', owner: 'meta' },
         input: 'fixes Meta/React#409',
@@ -293,46 +292,44 @@ void describe('A repository URL', { concurrency: true }, () => {
           'The extracted coordinates were not lowercased for canonical URL',
         title: 'normalizes canonical URL coordinates to lowercase',
       },
-    ]) {
-      void it(title, () => {
-        const repository = rpUrl(input);
-        assert.deepStrictEqual(
-          { name: repository.name(), owner: repository.owner() },
-          expected,
-          message,
-        );
-      });
-    }
+    ])('$title', ({ expected, input, message }) => {
+      const repository = rpUrl(input);
+
+      expect(
+        { name: repository.name(), owner: repository.owner() },
+        message,
+      ).toStrictEqual(expected);
+    });
   });
 
-  void describe('complex environments', { concurrency: true }, () => {
-    void it('selects the first repository reference when multiple repositories exist', () => {
+  describe('complex environments', () => {
+    it('selects the first repository reference when multiple repositories exist', () => {
       const repository = rpUrl(
         'fixes https://github.com/nodejs/node/issues/52109 and resolves https://github.com/eslint/eslint/issues/18900',
       );
-      assert.deepStrictEqual(
+
+      expect(
         { name: repository.name(), owner: repository.owner() },
-        { name: 'node', owner: 'nodejs' },
         'The first repository reference was not selected when multiple repository URLs were present in text',
-      );
+      ).toStrictEqual({ name: 'node', owner: 'nodejs' });
     });
 
-    void it('processes a ten-thousand character hostile body within performance limits', () => {
+    it('processes a ten-thousand character hostile body within performance limits', () => {
       const hostile =
         'ab-cd-'.repeat(1600) +
         ' https://github.com/nodejs/node/issues/52109 ' +
         '-cd-ab'.repeat(1600);
       const repository = rpUrl(hostile);
-      assert.deepStrictEqual(
+
+      expect(
         { name: repository.name(), owner: repository.owner() },
-        { name: 'node', owner: 'nodejs' },
         'Failed to extract repository coordinates from large hostile text within performance limits',
-      );
+      ).toStrictEqual({ name: 'node', owner: 'nodejs' });
     });
   });
 
-  void describe('syntax rejections', { concurrency: true }, () => {
-    for (const { input, message, title } of [
+  describe('syntax rejections', () => {
+    it.for([
       {
         input: '#42',
         message:
@@ -497,17 +494,12 @@ void describe('A repository URL', { concurrency: true }, () => {
           'A path ending in double dots was mistakenly accepted as repository coordinates',
         title: 'rejects repository name ending in double dots',
       },
-    ]) {
-      void it(title, () => {
-        assert.throws(
-          () => rpUrl(input).owner(),
-          {
-            message: `Cannot extract repository coordinates from URL: "${input}"`,
-            name: 'TypeError',
-          },
-          message,
-        );
-      });
-    }
+    ])('$title', ({ input, message }) => {
+      expect(() => rpUrl(input).owner(), message).toThrow(
+        new TypeError(
+          `Cannot extract repository coordinates from URL: "${input}"`,
+        ),
+      );
+    });
   });
 });

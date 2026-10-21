@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckAnyLabel } from '#check/ck-any-label.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-void describe('An any-label check', { concurrency: true }, () => {
-  void it('returns a passed check when there are no required labels', () => {
+describe('an any-label check', () => {
+  it('returns a passed check when there are no required labels', () => {
     const required: readonly string[] = [];
     const labels = ['wontfix', 'invalid', 'duplicate'];
     const actual = ckAnyLabel(labels, required);
@@ -27,14 +26,14 @@ void describe('An any-label check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An any-label check failed even though no labels are required',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a passed check when there is at least one required label', () => {
+  it('returns a passed check when there is at least one required label', () => {
     const required = ['help wanted', 'documentation', 'bug', 'approved'];
     const labels = required.slice(randomInt(1, required.length));
     const actual = ckAnyLabel(labels, required);
@@ -49,14 +48,14 @@ void describe('An any-label check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An any-label check failed even though at least one required label is present',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when no required labels are present', () => {
+  it('returns a failed check when no required labels are present', () => {
     const required = ['question', 'invalid', 'bug'];
     const labels: readonly string[] = [];
     const actual = ckAnyLabel(labels, required);
@@ -74,10 +73,10 @@ void describe('An any-label check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An any-label check passed even though no required labels are present',
-    );
+    ).toStrictEqual(failed);
   });
 });

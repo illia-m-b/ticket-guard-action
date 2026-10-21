@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { Backlog } from '#backlog/backlog.ts';
 import type { OutputsStorage } from '#outputs/fk-outputs.ts';
@@ -21,9 +20,9 @@ import { fkPullRequest } from '#pull-request/fk-pull-request.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
-  void describe('successful verification', { concurrency: true }, () => {
-    void it('publishes outputs and logs info when ticket passes verification', async () => {
+describe('ticket guard GitHub action', () => {
+  describe('successful verification', () => {
+    it('publishes outputs and logs info when ticket passes verification', async () => {
       const id = String(randomInt(200, 20_000));
       const labels = ['approved', 'assigned', 'bug', 'question'];
       const status = 'open';
@@ -55,14 +54,14 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
         'ticket-status': status,
         'ticket-url': url,
       };
-      assert.deepStrictEqual(
+
+      expect(
         result,
-        passed,
         'Ticket Guard action failed even though all requirements were met',
-      );
+      ).toStrictEqual(passed);
     });
 
-    void it('logs informational message upon successful verification', async () => {
+    it('logs informational message upon successful verification', async () => {
       const id = String(randomInt(200, 20_000));
       const status = 'open';
       const url = `https://github.com/octo-org/octo-repo/issues/${id}/`;
@@ -87,14 +86,14 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
         infos: ['Validation successful'],
         warns: [],
       };
-      assert.deepStrictEqual(
+
+      expect(
         result,
-        passed,
         'Ticket Guard action did not emit success message, or created failure/warning messages',
-      );
+      ).toStrictEqual(passed);
     });
 
-    void it('publishes outputs and logs bypass message when author is ignored', async () => {
+    it('publishes outputs and logs bypass message when author is ignored', async () => {
       const pr = fkPullRequest({ author: 'Renovate[BOT]' });
       const storage: Partial<OutputsStorage> = {
         infos: [],
@@ -119,14 +118,14 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
           'is-valid': 'true',
         },
       };
-      assert.partialDeepStrictEqual(
+
+      expect(
         result,
-        bypassed,
         'Ticket Guard action did not bypass and succeed when author is an ignored actor',
-      );
+      ).toMatchObject(bypassed);
     });
 
-    void it('bypasses backlog queries when author is ignored', async () => {
+    it('bypasses backlog queries when author is ignored', async () => {
       const pr = fkPullRequest({
         author: 'Renovate[BOT]',
         body: `Closes #${randomInt(100, 10_000)}`,
@@ -143,14 +142,14 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
         backlog,
         fkOutputs({ outputs }),
       ).run();
-      assert.equal(
+
+      expect(
         outputs.get('is-valid'),
-        'true',
         'Ticket Guard action did not bypass backlog lookup for ignored author',
-      );
+      ).toBe('true');
     });
 
-    void it('bypasses backlog queries when no issue reference is found', async () => {
+    it('bypasses backlog queries when no issue reference is found', async () => {
       const pr = fkPullRequest({
         body: 'A regular pull request without issue reference',
       });
@@ -166,119 +165,111 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
         backlog,
         fkOutputs({ outputs }),
       ).run();
-      assert.equal(
+
+      expect(
         outputs.get('error-message'),
-        'no-ticket-found',
         'Ticket Guard action did not report no-ticket-found when reference is absent',
-      );
+      ).toBe('no-ticket-found');
     });
   });
 
-  void describe(
-    'policy failures and failOnError modes',
-    { concurrency: true },
-    () => {
-      void it('fails the workflow step when validation fails and failOnError is enabled', async () => {
-        const result: string[] = [];
-        await ticketGuard(
-          fkPullRequest(),
-          fkInputs(),
-          fkBacklog([]),
-          fkOutputs({ fails: result }),
-        ).run();
-        const failed = ['No issue reference found in the pull request'];
-        assert.deepStrictEqual(
-          result,
-          failed,
-          'Ticket Guard action did not emit a failure message even though failOnError is enabled',
-        );
-      });
+  describe('policy failures and failOnError modes', () => {
+    it('fails the workflow step when validation fails and failOnError is enabled', async () => {
+      const result: string[] = [];
+      await ticketGuard(
+        fkPullRequest(),
+        fkInputs(),
+        fkBacklog([]),
+        fkOutputs({ fails: result }),
+      ).run();
+      const failed = ['No issue reference found in the pull request'];
 
-      void it('emits a warning and does not fail the step when validation fails and failOnError is disabled', async () => {
-        const result: string[] = [];
-        await ticketGuard(
-          fkPullRequest(),
-          fkInputs({ failOnError: false }),
-          fkBacklog([]),
-          fkOutputs({ warns: result }),
-        ).run();
-        const warned = ['No issue reference found in the pull request'];
-        assert.deepStrictEqual(
-          result,
-          warned,
-          'Ticket Guard action did not emit a warning message even though failOnError is disabled',
-        );
-      });
-    },
-  );
+      expect(
+        result,
+        'Ticket Guard action did not emit a failure message even though failOnError is enabled',
+      ).toStrictEqual(failed);
+    });
 
-  void describe(
-    'output state invariants on failure',
-    { concurrency: true },
-    () => {
-      void it('records "ticket-not-found" reason when referenced ticket is absent from backlog', async () => {
-        const pr = fkPullRequest({
-          author: 'anon',
-          body: 'Fixes an issue',
-          title: `fix(issue): fix an issue (#${randomInt(10_000, 20_000)})`,
-        });
-        const backlog = fkBacklog([fkTicket()]);
-        const result = new Map<Output, string>();
-        await ticketGuard(
-          pr,
-          fkInputs(),
-          backlog,
-          fkOutputs({ outputs: result }),
-        ).run();
-        const failed = {
-          'error-message': 'ticket-not-found',
-          'is-valid': 'false',
-          'ticket-id': '',
-          'ticket-labels': '[]',
-          'ticket-status': '',
-          'ticket-url': '',
-        };
-        assert.deepStrictEqual(
-          Object.fromEntries(result),
-          failed,
-          'Ticket Guard action must fail with "ticket-not-found" reason when ticket is mentioned in PR but does not exist in backlog',
-        );
-      });
+    it('emits a warning and does not fail the step when validation fails and failOnError is disabled', async () => {
+      const result: string[] = [];
+      await ticketGuard(
+        fkPullRequest(),
+        fkInputs({ failOnError: false }),
+        fkBacklog([]),
+        fkOutputs({ warns: result }),
+      ).run();
+      const warned = ['No issue reference found in the pull request'];
 
-      void it('records "scope-violation" reason when ticket belongs to another repository', async () => {
-        const pr = fkPullRequest({
-          body: 'Closes pnpm/setup#100',
-          repository: rpPlain({
-            owner: 'pnpm',
-            repo: 'pnpm',
-          }),
-        });
-        const backlog = fkBacklog([
-          fkTicket({
-            id: '100',
-            present: true,
-            url: 'https://github.com/pnpm/setup/issues#100',
-          }),
-        ]);
-        const result = new Map<Output, string>();
-        await ticketGuard(
-          pr,
-          fkInputs(),
-          backlog,
-          fkOutputs({ outputs: result }),
-        ).run();
-        const failed = 'scope-violation';
-        assert.equal(
-          result.get('error-message'),
-          failed,
-          'Ticket Guard action must fail with "scope-violation" reason when referenced ticket belongs to another repository',
-        );
-      });
-    },
-  );
+      expect(
+        result,
+        'Ticket Guard action did not emit a warning message even though failOnError is disabled',
+      ).toStrictEqual(warned);
+    });
+  });
 
-  void describe('extraction configuration', { concurrency: true }, () => {
-    void it('uses custom reference extractor when provided', async () => {
+  describe('output state invariants on failure', () => {
+    it('records "ticket-not-found" reason when referenced ticket is absent from backlog', async () => {
+      const pr = fkPullRequest({
+        author: 'anon',
+        body: 'Fixes an issue',
+        title: `fix(issue): fix an issue (#${randomInt(10_000, 20_000)})`,
+      });
+      const backlog = fkBacklog([fkTicket()]);
+      const result = new Map<Output, string>();
+      await ticketGuard(
+        pr,
+        fkInputs(),
+        backlog,
+        fkOutputs({ outputs: result }),
+      ).run();
+      const failed = {
+        'error-message': 'ticket-not-found',
+        'is-valid': 'false',
+        'ticket-id': '',
+        'ticket-labels': '[]',
+        'ticket-status': '',
+        'ticket-url': '',
+      };
+
+      expect(
+        Object.fromEntries(result),
+        'Ticket Guard action must fail with "ticket-not-found" reason when ticket is mentioned in PR but does not exist in backlog',
+      ).toStrictEqual(failed);
+    });
+
+    it('records "scope-violation" reason when ticket belongs to another repository', async () => {
+      const pr = fkPullRequest({
+        body: 'Closes pnpm/setup#100',
+        repository: rpPlain({
+          owner: 'pnpm',
+          repo: 'pnpm',
+        }),
+      });
+      const backlog = fkBacklog([
+        fkTicket({
+          id: '100',
+          present: true,
+          url: 'https://github.com/pnpm/setup/issues#100',
+        }),
+      ]);
+      const result = new Map<Output, string>();
+      await ticketGuard(
+        pr,
+        fkInputs(),
+        backlog,
+        fkOutputs({ outputs: result }),
+      ).run();
+      const failed = 'scope-violation';
+
+      expect(
+        result.get('error-message'),
+        'Ticket Guard action must fail with "scope-violation" reason when referenced ticket belongs to another repository',
+      ).toBe(failed);
+    });
+  });
+
+  describe('extraction configuration', () => {
+    it('uses custom reference extractor when provided', async () => {
       const pr = fkPullRequest({
         body: 'Closes PROJ-123',
       });
@@ -307,11 +298,11 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
               };
         },
       ).run();
-      assert.equal(
+
+      expect(
         result.get('ticket-id'),
-        'PROJ-123',
         'Ticket Guard action must support custom reference extractors',
-      );
+      ).toBe('PROJ-123');
     });
   });
 });

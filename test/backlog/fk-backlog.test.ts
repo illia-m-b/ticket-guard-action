@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { FakeTicket } from '#backlog/fk-ticket.ts';
 import type { Reference } from '#reference/reference.ts';
@@ -14,8 +13,8 @@ import { fkTicket } from '#backlog/fk-ticket.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-void describe('An in-memory backlog instance', { concurrency: true }, () => {
-  void it('returns fake ticket when reference is absent', async () => {
+describe('an in-memory backlog instance', () => {
+  it('returns fake ticket when reference is absent', async () => {
     const backlog = fkBacklog([]);
     const reference = rfEmpty();
     const retrieved = await backlog.ticket(reference);
@@ -48,14 +47,14 @@ void describe('An in-memory backlog instance', { concurrency: true }, () => {
       status: fake.status(),
       url: fake.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'A ticket with nondefault fields was returned though reference is absent',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('returns fake ticket when search fails', async () => {
+  it('returns fake ticket when search fails', async () => {
     const backlog = fkBacklog([]);
     const reference: Reference = {
       id: () => String(Number.MAX_SAFE_INTEGER),
@@ -92,14 +91,14 @@ void describe('An in-memory backlog instance', { concurrency: true }, () => {
       status: fake.status(),
       url: fake.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'A ticket with nondefault fields was returned though search failed',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('returns present ticket successfully', async () => {
+  it('returns present ticket successfully', async () => {
     const number = new Date().getDate();
     const expected: FakeTicket = {
       assignees: [],
@@ -121,10 +120,10 @@ void describe('An in-memory backlog instance', { concurrency: true }, () => {
       status: found.status(),
       url: found.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'The retrieved ticket did not match the expected preset ticket values',
-    );
+    ).toStrictEqual(expected);
   });
 });

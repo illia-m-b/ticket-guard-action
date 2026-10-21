@@ -3,155 +3,154 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ghInputs } from '#inputs/gh-inputs.ts';
 
 import { silenced } from '../silenced/silenced.ts';
 
-void describe('A GitHub-backed action inputs adapter', () => {
-  void it('extracts allowed statuses from environment', () => {
+describe('a GitHub-backed action inputs adapter', () => {
+  it('extracts allowed statuses from environment', () => {
     const expected = ['opened', 'closed', 'in_progress'];
     process.env['INPUT_ALLOWED-STATUSES'] = expected.join('\n');
-    assert.deepStrictEqual(
+
+    expect(
       ghInputs().allowedStatuses(),
-      expected,
       'The allowed statuses do not match the configured action input',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('extracts ticket target locations from environment', () => {
+  it('extracts ticket target locations from environment', () => {
     const expected = ['pr-body', 'pr-title'];
     process.env['INPUT_EXTRACT-FROM'] = expected.join('\n');
-    assert.deepStrictEqual(
+
+    expect(
       ghInputs().extractFrom(),
-      expected,
       'The extraction targets do not match the configured action input',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('fails when extraction target is unsupported', () => {
+  it('fails when extraction target is unsupported', () => {
     const invalid = ['pr-body', 'commit-message'];
     process.env['INPUT_EXTRACT-FROM'] = invalid.join('\n');
-    assert.throws(
+
+    expect(
       () => ghInputs().extractFrom(),
-      TypeError,
       'An invalid ticket extraction target did not throw a TypeError',
-    );
+    ).toThrow(TypeError);
   });
 
-  void it('reads fail-on-error flag when enabled', () => {
+  it('reads fail-on-error flag when enabled', () => {
     process.env['INPUT_FAIL-ON-ERROR'] = 'true';
-    assert.equal(
+
+    expect(
       ghInputs().failOnError(),
-      true,
-      'The fail-on-error flag was expected to be true',
-    );
+      'The fail-on-error flag was not true',
+    ).toBe(true);
   });
 
-  void it('reads fail-on-error flag when disabled', () => {
+  it('reads fail-on-error flag when disabled', () => {
     process.env['INPUT_FAIL-ON-ERROR'] = 'false';
-    assert.equal(
+
+    expect(
       ghInputs().failOnError(),
-      false,
-      'The fail-on-error flag was expected to be false',
-    );
+      'The fail-on-error flag was not false',
+    ).toBe(false);
   });
 
-  void it('extracts forbidden labels from environment', () => {
+  it('extracts forbidden labels from environment', () => {
     const expected = ['do-not-merge', 'blocked', 'stale'];
     process.env['INPUT_FORBIDDEN-LABELS'] = expected.join('\n');
-    assert.deepStrictEqual(
+
+    expect(
       ghInputs().forbiddenLabels(),
-      expected,
       'The forbidden labels do not match the configured action input',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('reads GitHub token from environment', () => {
+  it('reads GitHub token from environment', () => {
     const expected = 'ghp_7xK9mQ2vL8wP4zR1tY6uI0oA3sD5fG8jH';
     process.env['INPUT_GITHUB-TOKEN'] = expected;
-    assert.equal(
+
+    expect(
       silenced(() => ghInputs().gitHubToken()),
-      expected,
       'The extracted GitHub token does not match the configured action input',
-    );
+    ).toBe(expected);
   });
 
-  void it('extracts ignored actors from environment', () => {
+  it('extracts ignored actors from environment', () => {
     const expected = ['greenkeeper[bot]', 'snyk-bot'];
     process.env['INPUT_IGNORE-ACTORS'] = expected.join('\n');
-    assert.deepStrictEqual(
+
+    expect(
       ghInputs().ignoreActors(),
-      expected,
       'The ignored actors do not match the configured action input',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('reads require-all-labels flag when enabled', () => {
+  it('reads require-all-labels flag when enabled', () => {
     process.env['INPUT_REQUIRE-ALL-LABELS'] = 'true';
-    assert.equal(
+
+    expect(
       ghInputs().requireAllLabels(),
-      true,
-      'The require-all-labels flag was expected to be true',
-    );
+      'The require-all-labels flag was not true',
+    ).toBe(true);
   });
 
-  void it('reads require-all-labels flag when disabled', () => {
+  it('reads require-all-labels flag when disabled', () => {
     process.env['INPUT_REQUIRE-ALL-LABELS'] = 'false';
-    assert.equal(
+
+    expect(
       ghInputs().requireAllLabels(),
-      false,
-      'The require-all-labels flag was expected to be false',
-    );
+      'The require-all-labels flag was not false',
+    ).toBe(false);
   });
 
-  void it('reads require-author-assigned flag when enabled', () => {
+  it('reads require-author-assigned flag when enabled', () => {
     process.env['INPUT_REQUIRE-AUTHOR-ASSIGNED'] = 'true';
-    assert.equal(
+
+    expect(
       ghInputs().requireAuthorAssigned(),
-      true,
-      'The require-author-assigned flag was expected to be true',
-    );
+      'The require-author-assigned flag was not true',
+    ).toBe(true);
   });
 
-  void it('reads require-author-assigned flag when disabled', () => {
+  it('reads require-author-assigned flag when disabled', () => {
     process.env['INPUT_REQUIRE-AUTHOR-ASSIGNED'] = 'false';
-    assert.equal(
+
+    expect(
       ghInputs().requireAuthorAssigned(),
-      false,
-      'The require-author-assigned flag was expected to be false',
-    );
+      'The require-author-assigned flag was not false',
+    ).toBe(false);
   });
 
-  void it('extracts required labels from environment', () => {
+  it('extracts required labels from environment', () => {
     const expected = ['bug', 'triage', 'documentation'];
     process.env['INPUT_REQUIRED-LABELS'] = expected.join('\n');
-    assert.deepStrictEqual(
+
+    expect(
       ghInputs().requiredLabels(),
-      expected,
       'The required labels do not match the configured action input',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('reads repository scope from environment', () => {
+  it('reads repository scope from environment', () => {
     const expected = 'same-org';
     process.env.INPUT_SCOPE = expected;
-    assert.equal(
+
+    expect(
       ghInputs().scope(),
-      expected,
       'The repository scope does not match the configured action input',
-    );
+    ).toBe(expected);
   });
 
-  void it('fails when repository scope is unsupported', () => {
+  it('fails when repository scope is unsupported', () => {
     const invalid = 'cross-enterprise';
     process.env.INPUT_SCOPE = invalid;
-    assert.throws(
+
+    expect(
       () => ghInputs().scope(),
-      TypeError,
       'An invalid repository scope did not throw a TypeError',
-    );
+    ).toThrow(TypeError);
   });
 });

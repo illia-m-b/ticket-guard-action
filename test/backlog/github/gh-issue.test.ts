@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { IssuePayload } from '#backlog/github/octokit.ts';
 
 import { ghIssue } from '#backlog/github/gh-issue.ts';
 
-void describe('A GitHub issue adapter', { concurrency: true }, () => {
-  void it('projects actual fields', () => {
+describe('a GitHub issue adapter', () => {
+  it('projects actual fields', () => {
     const payload: IssuePayload = {
       assignees: [{ login: 'pnpm' }, { login: 'googleapis' }],
       html_url: 'https://github.com/illia-m-b/veils-js/issues/56',
@@ -36,14 +35,14 @@ void describe('A GitHub issue adapter', { concurrency: true }, () => {
       status: issue.status(),
       url: issue.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'Actual issue fields were not projected correctly',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('defaults assignees to an empty array when omitted', () => {
+  it('defaults assignees to an empty array when omitted', () => {
     const payload: IssuePayload = {
       html_url: 'https://github.com/illia-m-b/veils-js/issues/51',
       labels: ['wontfix'],
@@ -53,10 +52,10 @@ void describe('A GitHub issue adapter', { concurrency: true }, () => {
     const issue = ghIssue(payload);
     const assignees = issue.assignees();
     const empty: readonly string[] = [];
-    assert.deepStrictEqual(
+
+    expect(
       assignees,
-      empty,
       'Assignees were not defaulted to an empty array when omitted from the payload',
-    );
+    ).toStrictEqual(empty);
   });
 });

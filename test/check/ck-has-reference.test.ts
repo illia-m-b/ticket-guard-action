@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckHasReference } from '#check/ck-has-reference.ts';
@@ -12,8 +11,8 @@ import { ckOk } from '#check/ck-ok.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-void describe('A reference presence check', { concurrency: true }, () => {
-  void it('returns a passed check when reference is present', () => {
+describe('a reference presence check', () => {
+  it('returns a passed check when reference is present', () => {
     const present = rfGitHub('Closes #1020');
     const actual = ckHasReference(present);
     const check = {
@@ -27,14 +26,14 @@ void describe('A reference presence check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A reference presence check failed even though the reference is present',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when reference is absent', () => {
+  it('returns a failed check when reference is absent', () => {
     const absent = rfEmpty();
     const actual = ckHasReference(absent);
     const check = {
@@ -51,10 +50,10 @@ void describe('A reference presence check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'A reference presence check passed even though the reference is absent',
-    );
+    ).toStrictEqual(failed);
   });
 });

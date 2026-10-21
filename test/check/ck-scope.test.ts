@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { Repository } from '#repository/repository.ts';
 
@@ -13,8 +12,8 @@ import { ckOk } from '#check/ck-ok.ts';
 import { ckScope } from '#check/ck-scope.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-void describe('A scope verification check', { concurrency: true }, () => {
-  void it('bypasses validation when scope is set to "any"', () => {
+describe('a scope verification check', () => {
+  it('bypasses validation when scope is set to "any"', () => {
     const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
     const other = rpPlain({ owner: 'googleapis', repo: 'release-please' });
     const actual = ckScope('any', repository, other);
@@ -29,14 +28,14 @@ void describe('A scope verification check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A scope verification check did not bypass validation when scope is "any"',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('bypasses validation when scope is set to "any" even if coordinates cannot be determined', () => {
+  it('bypasses validation when scope is set to "any" even if coordinates cannot be determined', () => {
     const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
     const ticket: Repository = {
       name: () => {
@@ -58,15 +57,15 @@ void describe('A scope verification check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A scope verification check did not bypass validation when scope is "any" and coordinates cannot be determined',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void describe('"same-org" scope', { concurrency: true }, () => {
-    void it('passes when repositories belong to the same organization', () => {
+  describe('"same-org" scope', () => {
+    it('passes when repositories belong to the same organization', () => {
       const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
       const other = rpPlain({ owner: 'pnpm', repo: 'pnpm' });
       const actual = ckScope('same-org', repository, other);
@@ -81,14 +80,14 @@ void describe('A scope verification check', { concurrency: true }, () => {
         reason: ok.reason(),
         valid: ok.valid(),
       };
-      assert.deepStrictEqual(
+
+      expect(
         check,
-        passed,
         'A scope verification check did not succeed when scope is "same-org" and repositories belong to the same organization',
-      );
+      ).toStrictEqual(passed);
     });
 
-    void it('fails when repositories belong to different organizations', () => {
+    it('fails when repositories belong to different organizations', () => {
       const target = rpPlain({ owner: 'pnpm', repo: 'setup' });
       const ticket = rpPlain({ owner: 'googleapis', repo: 'release-please' });
       const actual = ckScope('same-org', target, ticket);
@@ -106,14 +105,14 @@ void describe('A scope verification check', { concurrency: true }, () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-      assert.deepStrictEqual(
+
+      expect(
         check,
-        failed,
         'A scope verification check succeeded when scope is "same-org" but repositories belong to different organizations',
-      );
+      ).toStrictEqual(failed);
     });
 
-    void it('fails when ticket repository coordinates cannot be determined', () => {
+    it('fails when ticket repository coordinates cannot be determined', () => {
       const target = rpPlain({ owner: 'pnpm', repo: 'setup' });
       const ticket: Repository = {
         name: () => {
@@ -138,16 +137,16 @@ void describe('A scope verification check', { concurrency: true }, () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-      assert.deepStrictEqual(
+
+      expect(
         check,
-        failed,
         'A scope verification check did not fail when ticket repository coordinates cannot be determined in "same-org" scope',
-      );
+      ).toStrictEqual(failed);
     });
   });
 
-  void describe('"current-repo" scope', { concurrency: true }, () => {
-    void it('passes when repositories are identical', () => {
+  describe('"current-repo" scope', () => {
+    it('passes when repositories are identical', () => {
       const repository = rpPlain({ owner: 'illia-m-b', repo: 'veils-js' });
       const clone = rpPlain({
         owner: repository.owner(),
@@ -165,14 +164,14 @@ void describe('A scope verification check', { concurrency: true }, () => {
         reason: ok.reason(),
         valid: ok.valid(),
       };
-      assert.deepStrictEqual(
+
+      expect(
         check,
-        passed,
         'A scope verification check did not succeed when scope is "current-repo" and repositories are identical',
-      );
+      ).toStrictEqual(passed);
     });
 
-    void it('fails when repositories belong to the same organization but have different names', () => {
+    it('fails when repositories belong to the same organization but have different names', () => {
       const owner = 'octocat';
       const one = 'octo-repo';
       const other = one.split('').toReversed().join('');
@@ -193,14 +192,14 @@ void describe('A scope verification check', { concurrency: true }, () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-      assert.deepStrictEqual(
+
+      expect(
         check,
-        failed,
         'A scope verification check succeeded when scope is "current-repo", repositories belong to the same organization, but have different names',
-      );
+      ).toStrictEqual(failed);
     });
 
-    void it('fails when ticket repository coordinates cannot be determined', () => {
+    it('fails when ticket repository coordinates cannot be determined', () => {
       const target = rpPlain({ owner: 'octocat', repo: 'octo-repo' });
       const ticket: Repository = {
         name: () => {
@@ -225,11 +224,11 @@ void describe('A scope verification check', { concurrency: true }, () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-      assert.deepStrictEqual(
+
+      expect(
         check,
-        failed,
         'A scope verification check did not fail when ticket repository coordinates cannot be determined in "current-repo" scope',
-      );
+      ).toStrictEqual(failed);
     });
   });
 });

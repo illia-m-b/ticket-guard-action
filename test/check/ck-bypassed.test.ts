@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckBypassed } from '#check/ck-bypassed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { fkCheck } from '#check/fk-check.ts';
 
-void describe('A bypassed check', { concurrency: true }, () => {
-  void it('evaluates condition lazily', () => {
+describe('a bypassed check', () => {
+  it('evaluates condition lazily', () => {
     let called = 0;
     const never = 0;
     const shouldBypass = (): boolean => {
@@ -19,14 +18,13 @@ void describe('A bypassed check', { concurrency: true }, () => {
       return true;
     };
     ckBypassed(shouldBypass, () => fkCheck());
-    assert.equal(
-      called,
+
+    expect(called, 'A condition was eagerly executed upon creation').toBe(
       never,
-      'A condition was eagerly executed upon creation',
     );
   });
 
-  void it('short-circuits immediately with a passed check and default message when bypass predicate is true', () => {
+  it('short-circuits immediately with a passed check and default message when bypass predicate is true', () => {
     const actual = ckBypassed(
       () => true,
       () => fkCheck({ valid: false }),
@@ -42,14 +40,14 @@ void describe('A bypassed check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A bypassed check did not produce a passed check with default message when predicate was true',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('short-circuits immediately with a passed check and custom message when bypass predicate is true', () => {
+  it('short-circuits immediately with a passed check and custom message when bypass predicate is true', () => {
     const message = String(Date.now());
     const actual = ckBypassed(
       () => true,
@@ -67,14 +65,14 @@ void describe('A bypassed check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A bypassed check did not produce a passed check with custom message when predicate was true',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('delegates to the wrapped check when bypass predicate is false', () => {
+  it('delegates to the wrapped check when bypass predicate is false', () => {
     const fake = fkCheck({ valid: false });
     const delegated = {
       message: fake.message(),
@@ -90,10 +88,10 @@ void describe('A bypassed check', { concurrency: true }, () => {
       reason: actual.reason(),
       valid: actual.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      delegated,
       'The wrapped check was unexpectedly bypassed when predicate was false',
-    );
+    ).toStrictEqual(delegated);
   });
 });

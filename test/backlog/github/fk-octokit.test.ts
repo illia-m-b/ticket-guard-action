@@ -3,30 +3,32 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { IssuePayload } from '#backlog/github/octokit.ts';
 
 import { fkOctokit } from '#backlog/github/fk-octokit.ts';
 
-void describe('An in-memory Octokit client', { concurrency: true }, () => {
-  void it('throws an error when status is 4xx', async () => {
+describe('an in-memory Octokit client', () => {
+  it('throws an error when status is 4xx', async () => {
     const status = 400 + new Date().getDay();
     const octokit = fkOctokit({ status });
-    await assert.rejects(
-      async () =>
-        octokit.rest.issues.get({
-          issue_number: Date.now(),
-          owner: 'googleapis',
-          repo: 'release-please-action',
-        }),
-      { message: `HTTP ${status} from GitHub API`, name: 'HttpError', status },
+
+    await expect(
+      octokit.rest.issues.get({
+        issue_number: Date.now(),
+        owner: 'googleapis',
+        repo: 'release-please-action',
+      }),
       'An issue was silently returned despite passing a 4xx status',
-    );
+    ).rejects.toMatchObject({
+      message: `HTTP ${status} from GitHub API`,
+      name: 'HttpError',
+      status,
+    });
   });
 
-  void it('projects actual fields', async () => {
+  it('projects actual fields', async () => {
     const status = 399 - new Date().getDay();
     const owner = 'google';
     const repository = 'guava';
@@ -49,14 +51,14 @@ void describe('An in-memory Octokit client', { concurrency: true }, () => {
         ...issue,
       },
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'Actual issue fields were not projected correctly',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('handles missing fields', async () => {
+  it('handles missing fields', async () => {
     const status = 399 - 31 + new Date().getDate();
     const owner = 'pnpm';
     const repository = 'pnpm';
@@ -76,10 +78,10 @@ void describe('An in-memory Octokit client', { concurrency: true }, () => {
         state: 'open',
       },
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'Undefined issue fields were not defaulted to their expected values',
-    );
+    ).toStrictEqual(expected);
   });
 });

@@ -3,26 +3,25 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { captured } from './captured.ts';
 
-void describe('A captured stdout execution wrapper', () => {
-  void it('returns standard output emitted during callback execution', () => {
+describe('a captured stdout execution wrapper', () => {
+  it('returns standard output emitted during callback execution', () => {
     const expected = `irregular-${randomInt(10, 1000)}\n`;
     const result = captured(() => {
       process.stdout.write(expected);
     });
-    assert.equal(
+
+    expect(
       result,
-      expected,
       'The standard output stream was not captured by the execution wrapper',
-    );
+    ).toBe(expected);
   });
 
-  void it('restores standard output stream on abnormal termination', () => {
+  it('restores standard output stream on abnormal termination', () => {
     // eslint-disable-next-line unicorn/consistent-boolean-name
     const original = process.stdout.write.bind(process.stdout);
     try {
@@ -32,10 +31,10 @@ void describe('A captured stdout execution wrapper', () => {
     } catch {
       //
     }
-    assert.equal(
+
+    expect(
       process.stdout.write.name,
-      original.name,
       'Standard output stream write method was not restored after callback threw an error',
-    );
+    ).toBe(original.name);
   });
 });

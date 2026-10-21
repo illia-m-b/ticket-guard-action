@@ -3,9 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { PullRequest } from '#pull-request/pull-request.ts';
 import type { Reference } from '#reference/reference.ts';
@@ -15,8 +14,8 @@ import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfTargets } from '#reference/rf-targets.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
-void describe('A multi-target reference scanner', { concurrency: true }, () => {
-  void it('extracts reference from pull request title when configured', () => {
+describe('a multi-target reference scanner', () => {
+  it('extracts reference from pull request title when configured', () => {
     const id = String(randomInt(100, 10_000));
     const token = `#${id}`;
     const pr = fkPullRequest({
@@ -33,14 +32,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       present: true,
       raw: token,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'The scanner failed to extract the expected reference from pull request title',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('extracts reference from pull request body when configured', () => {
+  it('extracts reference from pull request body when configured', () => {
     const id = String(randomInt(100, 10_000));
     const token = `#${id}`;
     const pr = fkPullRequest({
@@ -57,14 +56,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       present: true,
       raw: token,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'The scanner failed to extract the expected reference from pull request body',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('falls back to body when title contains no reference', () => {
+  it('falls back to body when title contains no reference', () => {
     const id = String(randomInt(100, 10_000));
     const token = `#${id}`;
     const pr = fkPullRequest({
@@ -82,14 +81,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       present: true,
       raw: token,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'The scanner failed to resolve reference from fallback body target',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('prioritizes title when title precedes body in target order', () => {
+  it('prioritizes title when title precedes body in target order', () => {
     const titleId = String(randomInt(100, 10_000));
     const bodyId = String(randomInt(100, 10_000));
     const pr = fkPullRequest({
@@ -97,14 +96,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       title: `feat: support feature (#${titleId})`,
     });
     const reference = rfTargets(['pr-title', 'pr-body'], pr);
-    assert.equal(
+
+    expect(
       reference.id(),
-      titleId,
       'The scanner did not prioritize the title reference when title was ordered first',
-    );
+    ).toBe(titleId);
   });
 
-  void it('prioritizes body when body precedes title in target order', () => {
+  it('prioritizes body when body precedes title in target order', () => {
     const titleId = String(randomInt(100, 10_000));
     const bodyId = String(randomInt(100, 10_000));
     const pr = fkPullRequest({
@@ -112,14 +111,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       title: `feat: support feature (#${titleId})`,
     });
     const reference = rfTargets(['pr-body', 'pr-title'], pr);
-    assert.equal(
+
+    expect(
       reference.id(),
-      bodyId,
       'The scanner did not prioritize the body reference when body was ordered first',
-    );
+    ).toBe(bodyId);
   });
 
-  void it('yields empty reference representation when no target contains an issue reference', () => {
+  it('yields empty reference representation when no target contains an issue reference', () => {
     const pr = fkPullRequest({
       body: 'No ticket mentioned in description',
       title: 'chore: internal refactoring without issue',
@@ -133,27 +132,27 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       present: false,
       raw: '',
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'An unreferenced pull request did not yield an empty reference representation',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('throws an error when accessing id on an unreferenced pull request', () => {
+  it('throws an error when accessing id on an unreferenced pull request', () => {
     const pr = fkPullRequest({
       body: 'No ticket mentioned in description',
       title: 'chore: internal refactoring without issue',
     });
     const reference = rfTargets(['pr-title', 'pr-body'], pr);
-    assert.throws(
+
+    expect(
       () => reference.id(),
-      { message: 'Reference is empty', name: 'TypeError' },
       'Accessing the id on an empty reference was unexpectedly permitted',
-    );
+    ).toThrow(new TypeError('Reference is empty'));
   });
 
-  void it('yields empty reference when target list is empty', () => {
+  it('yields empty reference when target list is empty', () => {
     const id = String(randomInt(100, 10_000));
     const pr = fkPullRequest({
       body: `Fixes #${id}`,
@@ -168,14 +167,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       present: false,
       raw: '',
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'A reference was unexpectedly found when no targets were configured to scan',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('defers evaluation until reference methods are accessed', () => {
+  it('defers evaluation until reference methods are accessed', () => {
     let accessed = 0;
     const never = 0;
     const pr: PullRequest = {
@@ -191,14 +190,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       },
     };
     rfTargets(['pr-title', 'pr-body'], pr);
-    assert.equal(
+
+    expect(
       accessed,
-      never,
       'The pull request targets were eagerly accessed upon scanner creation',
-    );
+    ).toBe(never);
   });
 
-  void it('avoids reading subsequent targets once an earlier target yields a reference', () => {
+  it('avoids reading subsequent targets once an earlier target yields a reference', () => {
     let accessed = 0;
     const never = 0;
     const id = String(randomInt(100, 10_000));
@@ -213,14 +212,14 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
     };
     const reference = rfTargets(['pr-title', 'pr-body'], pr);
     reference.present();
-    assert.equal(
+
+    expect(
       accessed,
-      never,
       'The pull request body was accessed even though the title already satisfied reference discovery',
-    );
+    ).toBe(never);
   });
 
-  void it('uses custom extracted supplier when provided', () => {
+  it('uses custom extracted supplier when provided', () => {
     const id = `PROJ-${randomInt(100, 10_000)}`;
     const custom: Reference = {
       id: () => id,
@@ -241,10 +240,10 @@ void describe('A multi-target reference scanner', { concurrency: true }, () => {
       present: true,
       raw: id,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'The custom extracted supplier did not return the expected reference values',
-    );
+    ).toStrictEqual(expected);
   });
 });

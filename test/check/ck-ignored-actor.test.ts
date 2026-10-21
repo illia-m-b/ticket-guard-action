@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckIgnoredActor } from '#check/ck-ignored-actor.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-void describe('An ignored actor check', { concurrency: true }, () => {
-  void it('returns a passed check when author is in ignore-actors', () => {
+describe('an ignored actor check', () => {
+  it('returns a passed check when author is in ignore-actors', () => {
     const actors = ['dependabot[bot]', 'renovate[bot]', 'github-actions[bot]'];
     const author = actors[randomInt(actors.length)] ?? 'renovate[bot]';
     const actual = ckIgnoredActor(author, actors);
@@ -29,14 +28,14 @@ void describe('An ignored actor check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An ignored actor check failed even though author is in ignore-actors',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('performs case-insensitive matching against ignore-actors', () => {
+  it('performs case-insensitive matching against ignore-actors', () => {
     const actors = ['dependaBOT[bot]', 'renoVATE[BOT]'];
     const author = 'RENOvate[bot]';
     const actual = ckIgnoredActor(author, actors);
@@ -53,14 +52,14 @@ void describe('An ignored actor check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An ignored actor check failed case-insensitive matching against ignore-actors',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when author is not in ignore-actors', () => {
+  it('returns a failed check when author is not in ignore-actors', () => {
     const actors = ['dependabot[bot]', 'renovate[bot]'];
     const author = 'octocat';
     const actual = ckIgnoredActor(author, actors);
@@ -78,14 +77,14 @@ void describe('An ignored actor check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An ignored actor check passed even though author is not in ignore-actors',
-    );
+    ).toStrictEqual(failed);
   });
 
-  void it('returns a failed check when ignore-actors list is empty', () => {
+  it('returns a failed check when ignore-actors list is empty', () => {
     const actors: readonly string[] = [];
     const author = 'renovate[bot]';
     const actual = ckIgnoredActor(author, actors);
@@ -103,10 +102,10 @@ void describe('An ignored actor check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An ignored actor check passed even though ignore-actors list is empty',
-    );
+    ).toStrictEqual(failed);
   });
 });

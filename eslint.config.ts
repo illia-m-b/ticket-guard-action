@@ -4,6 +4,7 @@
  */
 
 import eslint from '@eslint/js';
+import vitest from '@vitest/eslint-plugin';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import packageJson from 'eslint-plugin-package-json';
 import perfectionist from 'eslint-plugin-perfectionist';
@@ -95,6 +96,20 @@ export default defineConfig([
       'unicorn/no-process-exit': 'off',
       'unicorn/no-repeated-call-wrappers': 'error',
       'unicorn/no-unnecessary-default-arguments': 'error',
+    },
+  },
+  {
+    files: ['test/**/*.test.ts'],
+    plugins: { vitest },
+    rules: {
+      ...vitest.configs.all.rules,
+      'vitest/prefer-expect-assertions': 'off',
+      'vitest/valid-expect': [
+        'error',
+        {
+          maxArgs: 2,
+        },
+      ],
     },
   },
   {
