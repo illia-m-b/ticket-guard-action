@@ -9,6 +9,8 @@ import type { Outputs } from '#outputs/outputs.ts';
 import type { PullRequest } from '#pull-request/pull-request.ts';
 import type { Reference } from '#reference/reference.ts';
 
+import { fkTicket } from '#backlog/fk-ticket.ts';
+import { ckIgnoredActor } from '#check/ck-ignored-actor.ts';
 import { ckTraceability } from '#check/ck-traceability.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 import { rfTargets } from '#reference/rf-targets.ts';
@@ -40,9 +42,15 @@ export const ticketGuard = (
   extracted: (text: string) => Reference = rfGitHub,
 ): Action => ({
   run: async () => {
+    const actor = ckIgnoredActor(pr.author(), inputs.ignoreActors());
     const reference = rfTargets(inputs.extractFrom(), pr, extracted);
-    const ticket = await backlog.ticket(reference);
-    const check = ckTraceability(inputs, pr, reference, ticket);
+    const ticket =
+      actor.valid() || !reference.present()
+        ? fkTicket()
+        : await backlog.ticket(reference);
+    const check = actor.valid()
+      ? actor
+      : ckTraceability(inputs, pr, reference, ticket);
     outputs.output('is-valid', String(check.valid()));
     outputs.output('ticket-id', ticket.present() ? ticket.id() : '');
     outputs.output('ticket-url', ticket.url());

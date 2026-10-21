@@ -67,29 +67,6 @@ void describe(
       );
     });
 
-    void it('passes with bypass message when actor is ignored', () => {
-      const pr = fkPullRequest({ author: 'renovate[BOT]' });
-      const actual = ckTraceability(fkInputs(), pr, rfEmpty(), fkTicket());
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const ok = ckOk(
-        `Validation bypassed: author "${pr.author()}" is in ignore-actors`,
-      );
-      const passed = {
-        message: ok.message(),
-        reason: ok.reason(),
-        valid: ok.valid(),
-      };
-      assert.deepStrictEqual(
-        check,
-        passed,
-        'A composite traceability check failed even though pull request author is ignored',
-      );
-    });
-
     void it('fails with "no-ticket-found" reason when no reference is found', () => {
       const actual = ckTraceability(
         fkInputs(),

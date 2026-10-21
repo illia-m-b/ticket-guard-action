@@ -7,6 +7,7 @@ import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
 import { describe, it } from 'node:test';
 
+import type { Backlog } from '#backlog/backlog.ts';
 import type { OutputsStorage } from '#outputs/fk-outputs.ts';
 import type { Output } from '#outputs/outputs.ts';
 import type { Reference } from '#reference/reference.ts';
@@ -122,6 +123,53 @@ void describe('Ticket Guard GitHub action', { concurrency: true }, () => {
         result,
         bypassed,
         'Ticket Guard action did not bypass and succeed when author is an ignored actor',
+      );
+    });
+
+    void it('bypasses backlog queries when author is ignored', async () => {
+      const pr = fkPullRequest({
+        author: 'Renovate[BOT]',
+        body: `Closes #${randomInt(100, 10_000)}`,
+      });
+      const backlog: Backlog = {
+        ticket: () => {
+          throw new Error('Unexpected backlog lookup');
+        },
+      };
+      const outputs = new Map<Output, string>();
+      await ticketGuard(
+        pr,
+        fkInputs({ extractFrom: ['pr-body'] }),
+        backlog,
+        fkOutputs({ outputs }),
+      ).run();
+      assert.equal(
+        outputs.get('is-valid'),
+        'true',
+        'Ticket Guard action did not bypass backlog lookup for ignored author',
+      );
+    });
+
+    void it('bypasses backlog queries when no issue reference is found', async () => {
+      const pr = fkPullRequest({
+        body: 'A regular pull request without issue reference',
+      });
+      const backlog: Backlog = {
+        ticket: () => {
+          throw new Error('Unexpected backlog lookup when reference is absent');
+        },
+      };
+      const outputs = new Map<Output, string>();
+      await ticketGuard(
+        pr,
+        fkInputs({ extractFrom: ['pr-body'] }),
+        backlog,
+        fkOutputs({ outputs }),
+      ).run();
+      assert.equal(
+        outputs.get('error-message'),
+        'no-ticket-found',
+        'Ticket Guard action did not report no-ticket-found when reference is absent',
       );
     });
   });
