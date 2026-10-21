@@ -25,20 +25,19 @@ import { ckScope } from './ck-scope.ts';
 import { ckStatus } from './ck-status.ts';
 
 /**
- * Creates a composite {@link Check} enforcing the complete traceability policy
- * against a pull request and its referenced ticket.
+ * Creates a composite {@link Check} enforcing the traceability policy against a
+ * pull request and its referenced ticket.
  *
  * Evaluation sequence:
  *
- * 1. Bypasses validation if the pull request author is listed in `ignore-actors`.
- * 2. Asserts issue reference presence (fails with `'no-ticket-found'`).
- * 3. Asserts ticket existence in the tracker (fails with `'ticket-not-found'`).
- * 4. Asserts repository scope compliance (fails with `'scope-violation'`).
- * 5. Asserts allowed lifecycle status if configured (fails with
+ * 1. Asserts issue reference presence (fails with `'no-ticket-found'`).
+ * 2. Asserts ticket existence in the tracker (fails with `'ticket-not-found'`).
+ * 3. Asserts repository scope compliance (fails with `'scope-violation'`).
+ * 4. Asserts allowed lifecycle status if configured (fails with
  *    `'status-not-allowed'`).
- * 6. Asserts mandatory required labels (fails with `'missing-required-label'`).
- * 7. Asserts absence of forbidden labels (fails with `'forbidden-label'`).
- * 8. Asserts author assignment if required (fails with `'author-not-assigned'`).
+ * 5. Asserts mandatory required labels (fails with `'missing-required-label'`).
+ * 6. Asserts absence of forbidden labels (fails with `'forbidden-label'`).
+ * 7. Asserts author assignment if required (fails with `'author-not-assigned'`).
  *
  * @param inputs - Action configuration inputs.
  * @param pr - The pull request under verification.
@@ -53,32 +52,22 @@ export const ckTraceability = (
   reference: Reference,
   ticket: Ticket,
 ): Check =>
-  ckBypassed(
-    () => {
-      const author = pr.author().toLowerCase();
-      return inputs
-        .ignoreActors()
-        .some((actor) => actor.toLowerCase() === author);
-    },
-    () =>
-      ckChained([
-        ckHasReference(reference),
-        ckPresentTicket(ticket),
-        ckScope(inputs.scope(), pr.repository(), rpUrl(ticket.url())),
-        ckBypassed(
-          () => inputs.allowedStatuses().length === 0,
-          () => ckStatus(ticket.status(), inputs.allowedStatuses()),
-        ),
-        ckRequiredLabels(
-          ticket.labels(),
-          inputs.requiredLabels(),
-          inputs.requireAllLabels(),
-        ),
-        ckForbiddenLabels(ticket.labels(), inputs.forbiddenLabels()),
-        ckBypassed(
-          () => !inputs.requireAuthorAssigned(),
-          () => ckAuthorAssigned(pr.author(), ticket.assignees()),
-        ),
-      ]),
-    `Validation bypassed: author "${pr.author()}" is in ignore-actors`,
-  );
+  ckChained([
+    ckHasReference(reference),
+    ckPresentTicket(ticket),
+    ckScope(inputs.scope(), pr.repository(), rpUrl(ticket.url())),
+    ckBypassed(
+      () => inputs.allowedStatuses().length === 0,
+      () => ckStatus(ticket.status(), inputs.allowedStatuses()),
+    ),
+    ckRequiredLabels(
+      ticket.labels(),
+      inputs.requiredLabels(),
+      inputs.requireAllLabels(),
+    ),
+    ckForbiddenLabels(ticket.labels(), inputs.forbiddenLabels()),
+    ckBypassed(
+      () => !inputs.requireAuthorAssigned(),
+      () => ckAuthorAssigned(pr.author(), ticket.assignees()),
+    ),
+  ]);
