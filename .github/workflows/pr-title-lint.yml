@@ -4,12 +4,16 @@
 # yamllint disable rule:line-length
 name: pr-title-lint
 'on':
-  pull_request_target:
+  pull_request:
     types:
       - opened
       - reopened
       - edited
       - synchronize
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 jobs:
   pr-title-lint:
     runs-on: ubuntu-slim
@@ -18,7 +22,7 @@ jobs:
     steps:
       - uses: amannn/action-semantic-pull-request@48f256284bd46cdaab1048c3721360e808335d50 # v6.1.1
         with:
-          subjectPattern: ^(?![A-Z])(?!.*\(#.*\)$).*$
+          subjectPattern: ^(?![A-Z])(?!.*\(#\S+\)\s*$).+$
           subjectPatternError: |
             The subject "{subject}" found in the pull request title "{title}"
             didn't match the configured pattern. Please ensure that the subject
