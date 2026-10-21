@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckStatus } from '#check/ck-status.ts';
 
-void describe('A status check', { concurrency: true }, () => {
-  void it('returns a passed check when status is allowed', () => {
+describe('a status check', () => {
+  it('returns a passed check when status is allowed', () => {
     const status = 'open';
     const allowed = [status];
     const actual = ckStatus(status, allowed);
@@ -26,14 +25,14 @@ void describe('A status check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A status check failed even though the status is allowed',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when status is not allowed', () => {
+  it('returns a failed check when status is not allowed', () => {
     const status = 'closed';
     const allowed = ['open'];
     const actual = ckStatus(status, allowed);
@@ -51,10 +50,10 @@ void describe('A status check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'A status check passed even though the status is not allowed',
-    );
+    ).toStrictEqual(failed);
   });
 });

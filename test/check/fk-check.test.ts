@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { FakeCheck } from '#check/fk-check.ts';
 
 import { fkCheck } from '#check/fk-check.ts';
 
-void describe('An in-memory fake check instance', { concurrency: true }, () => {
-  void it('returns default values', () => {
+describe('an in-memory fake check instance', () => {
+  it('returns default values', () => {
     const check = fkCheck();
     const actual = {
       message: check.message(),
@@ -23,14 +22,14 @@ void describe('An in-memory fake check instance', { concurrency: true }, () => {
       reason: 'ok',
       valid: true,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      defaults,
       'The default check values deviated from the expected initial successful state',
-    );
+    ).toStrictEqual(defaults);
   });
 
-  void it('preserves custom overrides', () => {
+  it('preserves custom overrides', () => {
     const custom: FakeCheck = {
       message: 'Author is exempt from ticket validation',
       reason: 'ok',
@@ -42,10 +41,10 @@ void describe('An in-memory fake check instance', { concurrency: true }, () => {
       reason: check.reason(),
       valid: check.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      custom,
       'Custom overrides were not preserved by the fake check instance',
-    );
+    ).toStrictEqual(custom);
   });
 });

@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckAuthorAssigned } from '#check/ck-author-assigned.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-void describe('An author assignment check', { concurrency: true }, () => {
-  void it('returns a passed check when author is among assignees', () => {
+describe('an author assignment check', () => {
+  it('returns a passed check when author is among assignees', () => {
     const assignees = ['OcToCaT', 'pNPM', 'AnoN'];
     const author = (
       assignees[randomInt(assignees.length)] ?? 'pNPM'
@@ -29,14 +28,14 @@ void describe('An author assignment check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An author assignment check failed even though the author is among assignees',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when author is not assigned', () => {
+  it('returns a failed check when author is not assigned', () => {
     const assignees = ['NiCkNaMe', 'AbbR', 'LoREM'];
     const author =
       (assignees[randomInt(assignees.length)] ?? 'NpM')
@@ -58,14 +57,14 @@ void describe('An author assignment check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An author assignment check passed even though the author is not assigned',
-    );
+    ).toStrictEqual(failed);
   });
 
-  void it('returns a failed check when the assignees list is empty', () => {
+  it('returns a failed check when the assignees list is empty', () => {
     const assignees: readonly string[] = [];
     const author = 'octocat';
     const actual = ckAuthorAssigned(author, assignees);
@@ -83,10 +82,10 @@ void describe('An author assignment check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An author assignment check passed even though the assignees list is empty',
-    );
+    ).toStrictEqual(failed);
   });
 });

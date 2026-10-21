@@ -3,13 +3,12 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckOk } from '#check/ck-ok.ts';
 
-void describe('A passed check', { concurrency: true }, () => {
-  void it('returns default success message and valid status', () => {
+describe('a passed check', () => {
+  it('returns default success message and valid status', () => {
     const check = ckOk();
     const actual = {
       message: check.message(),
@@ -21,14 +20,14 @@ void describe('A passed check', { concurrency: true }, () => {
       reason: 'ok',
       valid: true,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'A default passed check did not yield the expected successful outcome',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('preserves custom message and valid status', () => {
+  it('preserves custom message and valid status', () => {
     const message = "It's gonna be OK.";
     const check = ckOk(message);
     const actual = {
@@ -41,10 +40,10 @@ void describe('A passed check', { concurrency: true }, () => {
       reason: 'ok',
       valid: true,
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'A custom success message was not preserved by the passed check',
-    );
+    ).toStrictEqual(expected);
   });
 });

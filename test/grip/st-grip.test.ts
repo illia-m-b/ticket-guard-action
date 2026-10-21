@@ -3,14 +3,13 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { stGrip } from '#grip/st-grip.ts';
 
-void describe('A sticky grip', { concurrency: true }, () => {
-  void it('does not call the origin function upon initialization', () => {
+describe('a sticky grip', () => {
+  it('does not call the origin function upon initialization', () => {
     let called = 0;
     const never = 0;
     const origin = (): number => {
@@ -18,14 +17,13 @@ void describe('A sticky grip', { concurrency: true }, () => {
       return randomInt(Date.now());
     };
     stGrip(origin);
-    assert.equal(
-      called,
+
+    expect(called, 'A sticky grip eagerly executed the supplier function').toBe(
       never,
-      'A sticky grip eagerly executed the supplier function',
     );
   });
 
-  void it('calls the origin function only once', () => {
+  it('calls the origin function only once', () => {
     let called = 0;
     const once = 1;
     const origin = (): number => {
@@ -36,55 +34,70 @@ void describe('A sticky grip', { concurrency: true }, () => {
     grip();
     grip();
     grip();
-    assert.equal(
+
+    expect(
       called,
-      once,
       'A sticky grip evaluated the supplier function more than once',
-    );
+    ).toBe(once);
   });
 
-  void it('returns the identical value produced by the origin across successive calls', () => {
+  it('returns the identical value produced by the origin across successive calls', () => {
     const grip = stGrip(() => ({
       time: Date.now(),
     }));
     const first = grip();
     const second = grip();
-    assert.equal(
+
+    expect(
       first,
-      second,
       'A sticky grip returned different values across multiple calls',
-    );
+    ).toBe(second);
   });
 
-  void it('does not re-evaluate the origin function when it returns nullish values', () => {
-    // eslint-disable-next-line unicorn/no-null
-    for (const nullish of [null, undefined]) {
-      let called = 0;
-      const once = 1;
-      const origin = (): null | undefined => {
-        called += 1;
-        return nullish;
-      };
-      const grip = stGrip(origin);
-      grip();
-      grip();
-      grip();
-      assert.equal(
-        called,
-        once,
-        'A sticky grip re-evaluated the origin function when it yielded a nullish value',
-      );
-    }
+  it('does not re-evaluate the origin function when it returns null', () => {
+    let called = 0;
+    const once = 1;
+    const origin = (): null => {
+      called += 1;
+      // eslint-disable-next-line unicorn/no-null
+      return null;
+    };
+    const grip = stGrip(origin);
+    grip();
+    grip();
+    grip();
+
+    expect(
+      called,
+      'A sticky grip re-evaluated the origin function when it yielded null',
+    ).toBe(once);
   });
 
-  void it('propagates errors thrown by the origin function', () => {
+  it('does not re-evaluate the origin function when it returns undefined', () => {
+    let called = 0;
+    const once = 1;
+    const origin = (): void => {
+      called += 1;
+    };
+    const grip = stGrip(origin);
+    grip();
+    grip();
+    grip();
+
+    expect(
+      called,
+      'A sticky grip re-evaluated the origin function when it yielded undefined',
+    ).toBe(once);
+  });
+
+  it('propagates errors thrown by the origin function', () => {
     const grip = stGrip((): never => {
       throw new Error('I realized what is wrong with me');
     });
-    assert.throws(
+
+    expect(
       () => grip(),
-      { message: 'I realized what is wrong with me', name: 'Error' },
       'A sticky grip silently ignored or modified errors from the origin function',
-    );
+    ).toThrow(new Error('I realized what is wrong with me'));
   });
 });

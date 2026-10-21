@@ -3,22 +3,20 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { rfGitHub } from '#reference/rf-git-hub.ts';
 
-void describe('A GitHub issue reference', { concurrency: true }, () => {
-  void it('confirms presence when a valid issue reference is provided', () => {
-    assert.equal(
+describe('a GitHub issue reference', () => {
+  it('confirms presence when a valid issue reference is provided', () => {
+    expect(
       rfGitHub('fixes #42').present(),
-      true,
       'A valid issue reference was unexpectedly marked as not present',
-    );
+    ).toBe(true);
   });
 
-  void describe('id extraction', { concurrency: true }, () => {
-    for (const { expected, input, message, title } of [
+  describe('id extraction', () => {
+    it.for([
       {
         expected: '143',
         input: 'fixes #143',
@@ -144,15 +142,13 @@ void describe('A GitHub issue reference', { concurrency: true }, () => {
           'The issue id was not extracted from a URL containing query parameters',
         title: 'extracts id from URL with query parameters',
       },
-    ]) {
-      void it(title, () => {
-        assert.equal(rfGitHub(input).id(), expected, message);
-      });
-    }
+    ])('$title', ({ expected, input, message }) => {
+      expect(rfGitHub(input).id(), message).toBe(expected);
+    });
   });
 
-  void describe('raw string capture', { concurrency: true }, () => {
-    for (const { expected, input, message, title } of [
+  describe('raw string capture', () => {
+    it.for([
       {
         expected: '#982',
         input: 'resolves #982',
@@ -175,51 +171,46 @@ void describe('A GitHub issue reference', { concurrency: true }, () => {
           'The raw string does not match the complete canonical issue URL',
         title: 'captures raw canonical URL',
       },
-    ]) {
-      void it(title, () => {
-        assert.equal(rfGitHub(input).raw(), expected, message);
-      });
-    }
+    ])('$title', ({ expected, input, message }) => {
+      expect(rfGitHub(input).raw(), message).toBe(expected);
+    });
   });
 
-  void describe('complex environments', { concurrency: true }, () => {
-    void it('selects the first ticket reference when multiple issues exist', () => {
-      assert.equal(
+  describe('complex environments', () => {
+    it('selects the first ticket reference when multiple issues exist', () => {
+      expect(
         rfGitHub('fixes #12 and resolves #88').id(),
-        '12',
         'The first ticket reference was not selected when multiple issue references were present in text',
-      );
+      ).toBe('12');
     });
 
-    void it('processes a ten-thousand character hostile body within performance limits', () => {
+    it('processes a ten-thousand character hostile body within performance limits', () => {
       const hostile =
         'ab/cd-'.repeat(1600) + ' fixes #42 ' + '-cd/ab'.repeat(1600);
-      assert.equal(
+
+      expect(
         rfGitHub(hostile).id(),
-        '42',
         'Failed to extract issue id from large hostile text within performance limits',
-      );
+      ).toBe('42');
     });
   });
 
-  void describe('syntax rejections', { concurrency: true }, () => {
-    void it('fails when requesting id from an unmentioned ticket', () => {
-      assert.throws(
+  describe('syntax rejections', () => {
+    it('fails when requesting id from an unmentioned ticket', () => {
+      expect(
         () => rfGitHub('chore: update dependencies').id(),
-        { message: 'Reference is empty', name: 'TypeError' },
         'Requesting id from an invalid reference did not throw the expected TypeError',
-      );
+      ).toThrow(new TypeError('Reference is empty'));
     });
 
-    void it('returns empty raw string when ticket was not mentioned', () => {
-      assert.equal(
+    it('returns empty raw string when ticket was not mentioned', () => {
+      expect(
         rfGitHub('chore: update dependencies').raw(),
-        '',
         'An unmentioned ticket reference produced a non-empty raw string',
-      );
+      ).toBe('');
     });
 
-    for (const { input, message, title } of [
+    it.for([
       {
         input: '#0',
         message:
@@ -320,10 +311,8 @@ void describe('A GitHub issue reference', { concurrency: true }, () => {
           'An anchor fragment on an external repository URL was mistakenly treated as a scoped issue reference',
         title: 'rejects anchor fragments on external URLs',
       },
-    ]) {
-      void it(title, () => {
-        assert.equal(rfGitHub(input).present(), false, message);
-      });
-    }
+    ])('$title', ({ input, message }) => {
+      expect(rfGitHub(input).present(), message).toBe(false);
+    });
   });
 });

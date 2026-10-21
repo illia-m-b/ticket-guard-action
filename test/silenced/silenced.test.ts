@@ -3,22 +3,22 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { randomInt } from 'node:crypto';
+import { describe, expect, it } from 'vitest';
 
 import { silenced } from './silenced.ts';
 
-void describe('A silenced stdout execution wrapper', () => {
-  void it('returns the result yielded by the callback', () => {
-    const expected = 42;
-    assert.equal(
+describe('a silenced stdout execution wrapper', () => {
+  it('returns the result yielded by the callback', () => {
+    const expected = `value-${randomInt(10, 1000)}`;
+
+    expect(
       silenced(() => expected),
-      expected,
       'The wrapped callback result was not returned by the execution wrapper',
-    );
+    ).toBe(expected);
   });
 
-  void it('restores standard output stream on abnormal termination', () => {
+  it('restores standard output stream on abnormal termination', () => {
     // eslint-disable-next-line unicorn/consistent-boolean-name
     const original = process.stdout.write.bind(process.stdout);
     try {
@@ -28,10 +28,10 @@ void describe('A silenced stdout execution wrapper', () => {
     } catch {
       //
     }
-    assert.equal(
+
+    expect(
       process.stdout.write.name,
-      original.name,
       'Standard output stream write method was not restored after callback threw an error',
-    );
+    ).toBe(original.name);
   });
 });

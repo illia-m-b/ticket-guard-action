@@ -3,8 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { FakeCheck } from '#check/fk-check.ts';
 
@@ -13,8 +12,8 @@ import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { fkCheck } from '#check/fk-check.ts';
 
-void describe('A composite check', { concurrency: true }, () => {
-  void it('returns a passed check when all checks pass', () => {
+describe('a composite check', () => {
+  it('returns a passed check when all checks pass', () => {
     const ok = ckOk();
     const fake = fkCheck();
     const checks = [ok, fake];
@@ -29,14 +28,14 @@ void describe('A composite check', { concurrency: true }, () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       result,
-      passed,
       'The composite check outcome differs from a passed check even though all checks are valid',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a passed check when check list is empty', () => {
+  it('returns a passed check when check list is empty', () => {
     const chained = ckChained([]);
     const ok = ckOk();
     const passed = {
@@ -49,14 +48,14 @@ void describe('A composite check', { concurrency: true }, () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       result,
-      passed,
       'An empty composite check did not default to a passed check',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns the first failing check', () => {
+  it('returns the first failing check', () => {
     const failed: FakeCheck = {
       message: 'Happiness for misery I want it',
       reason: 'scope-violation',
@@ -75,10 +74,10 @@ void describe('A composite check', { concurrency: true }, () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       result,
-      failed,
       'The composite check did not return the first failing check in the chain',
-    );
+    ).toStrictEqual(failed);
   });
 });

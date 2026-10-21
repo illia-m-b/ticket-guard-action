@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckEnvelope } from '#check/ck-envelope.ts';
 import { fkCheck } from '#check/fk-check.ts';
 import { rtGrip } from '#grip/rt-grip.ts';
 
-void describe('A check envelope', { concurrency: true }, () => {
-  void it('delegates all methods to the encapsulated check', () => {
+describe('a check envelope', () => {
+  it('delegates all methods to the encapsulated check', () => {
     const origin = fkCheck();
     const envelope = ckEnvelope(() => origin);
     const expected = {
@@ -24,14 +23,14 @@ void describe('A check envelope', { concurrency: true }, () => {
       reason: envelope.reason(),
       valid: envelope.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      expected,
       'The check envelope returned values that differ from the encapsulated check',
-    );
+    ).toStrictEqual(expected);
   });
 
-  void it('evaluates the origin function only once across multiple accessors by default', () => {
+  it('evaluates the origin function only once across multiple accessors by default', () => {
     let called = 0;
     const once = 1;
     const envelope = ckEnvelope(() => {
@@ -41,14 +40,14 @@ void describe('A check envelope', { concurrency: true }, () => {
     envelope.valid();
     envelope.reason();
     envelope.message();
-    assert.equal(
+
+    expect(
       called,
-      once,
       'The check envelope evaluated the origin function more than once under default grip',
-    );
+    ).toBe(once);
   });
 
-  void it('re-evaluates the origin function for each accessor when configured with a real-time grip', () => {
+  it('re-evaluates the origin function for each accessor when configured with a real-time grip', () => {
     let called = 0;
     const times = 3;
     const envelope = ckEnvelope(() => {
@@ -58,10 +57,10 @@ void describe('A check envelope', { concurrency: true }, () => {
     envelope.valid();
     envelope.reason();
     envelope.message();
-    assert.equal(
+
+    expect(
       called,
-      times,
       'The check envelope did not re-evaluate the origin function for each accessor under real-time grip',
-    );
+    ).toBe(times);
   });
 });

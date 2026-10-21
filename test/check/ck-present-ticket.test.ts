@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { fkTicket } from '#backlog/fk-ticket.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 import { ckPresentTicket } from '#check/ck-present-ticket.ts';
 
-void describe('A ticket presence check', { concurrency: true }, () => {
-  void it('returns a passed check when ticket is present', () => {
+describe('a ticket presence check', () => {
+  it('returns a passed check when ticket is present', () => {
     const ticket = fkTicket({ present: true });
     const actual = ckPresentTicket(ticket);
     const check = {
@@ -26,14 +25,14 @@ void describe('A ticket presence check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'A ticket presence check failed even though the ticket is present',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when ticket is absent', () => {
+  it('returns a failed check when ticket is absent', () => {
     const ticket = fkTicket();
     const actual = ckPresentTicket(ticket);
     const check = {
@@ -50,10 +49,10 @@ void describe('A ticket presence check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'A ticket presence check passed even though the ticket is absent',
-    );
+    ).toStrictEqual(failed);
   });
 });

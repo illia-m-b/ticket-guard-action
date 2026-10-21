@@ -3,16 +3,15 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
 import { randomInt } from 'node:crypto';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import { ckAllLabels } from '#check/ck-all-labels.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
 
-void describe('An all-labels check', { concurrency: true }, () => {
-  void it('returns a passed check when there are no required labels', () => {
+describe('an all-labels check', () => {
+  it('returns a passed check when there are no required labels', () => {
     const required: readonly string[] = [];
     const labels = ['wontfix', 'invalid', 'duplicate'];
     const actual = ckAllLabels(labels, required);
@@ -27,14 +26,14 @@ void describe('An all-labels check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An all-labels check failed even though no labels are required',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a passed check when all required labels are present', () => {
+  it('returns a passed check when all required labels are present', () => {
     const required = ['approved', 'bug'];
     const labels = [...required, 'documentation'];
     const actual = ckAllLabels(labels, required);
@@ -49,14 +48,14 @@ void describe('An all-labels check', { concurrency: true }, () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      passed,
       'An all-labels check failed even though all required labels are present',
-    );
+    ).toStrictEqual(passed);
   });
 
-  void it('returns a failed check when at least one required label is missing', () => {
+  it('returns a failed check when at least one required label is missing', () => {
     const required = ['help wanted', 'documentation', 'bug', 'approved'];
     const labels = required.slice(randomInt(1, required.length));
     const actual = ckAllLabels(labels, required);
@@ -74,14 +73,14 @@ void describe('An all-labels check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An all-labels check passed even though not all required labels are present',
-    );
+    ).toStrictEqual(failed);
   });
 
-  void it('returns a failed check when no required labels are present', () => {
+  it('returns a failed check when no required labels are present', () => {
     const required = ['question', 'invalid', 'bug'];
     const labels: readonly string[] = [];
     const actual = ckAllLabels(labels, required);
@@ -99,10 +98,10 @@ void describe('An all-labels check', { concurrency: true }, () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       check,
-      failed,
       'An all-labels check passed even though no required labels are present',
-    );
+    ).toStrictEqual(failed);
   });
 });

@@ -3,15 +3,14 @@
  * SPDX-License-Identifier: MIT
  */
 
-import assert from 'node:assert/strict';
-import { describe, it } from 'node:test';
+import { describe, expect, it } from 'vitest';
 
 import type { FakeTicket } from '#backlog/fk-ticket.ts';
 
 import { fkTicket } from '#backlog/fk-ticket.ts';
 
-void describe('An in-memory ticket instance', { concurrency: true }, () => {
-  void it('returns default values when absent', () => {
+describe('an in-memory ticket instance', () => {
+  it('returns default values when absent', () => {
     const defaults: Omit<FakeTicket, 'id'> = {
       assignees: [],
       labels: [],
@@ -27,33 +26,32 @@ void describe('An in-memory ticket instance', { concurrency: true }, () => {
       status: fake.status(),
       url: fake.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      defaults,
       'Unexpected default values were used for absent ticket',
-    );
+    ).toStrictEqual(defaults);
   });
 
-  void it('throws TypeError when reading the id of an absent ticket', () => {
+  it('throws TypeError when reading the id of an absent ticket', () => {
     const fake = fkTicket();
-    assert.throws(
+
+    expect(
       () => fake.id(),
-      new TypeError('Ticket is absent'),
       'Accessing an absent ticket was silently permitted',
-    );
+    ).toThrow(new TypeError('Ticket is absent'));
   });
 
-  void it('uses an empty string when marked as present without overrides', () => {
+  it('uses an empty string when marked as present without overrides', () => {
     const id = fkTicket({ present: true }).id();
     const empty = '';
-    assert.equal(
-      id,
+
+    expect(id, 'A non-empty id was assigned to the fake present ticket').toBe(
       empty,
-      'A non-empty id was assigned to the fake present ticket',
     );
   });
 
-  void it('preserves custom overrides', () => {
+  it('preserves custom overrides', () => {
     const custom: FakeTicket = {
       assignees: ['octocat'],
       id: String(Date.now()),
@@ -71,10 +69,10 @@ void describe('An in-memory ticket instance', { concurrency: true }, () => {
       status: fake.status(),
       url: fake.url(),
     };
-    assert.deepStrictEqual(
+
+    expect(
       actual,
-      custom,
       'Custom overrides were not preserved by the fake ticket instance',
-    );
+    ).toStrictEqual(custom);
   });
 });
