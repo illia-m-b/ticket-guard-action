@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: MIT
  */
 
-import { defineConfig } from 'vitest/config';
+import { configDefaults, defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
@@ -23,42 +23,18 @@ export default defineConfig({
       },
     },
     environment: 'node',
+    exclude: [...configDefaults.exclude, '.stryker-tmp/**'],
+    include: ['test/**/*.test.ts'],
+    isolate: true,
     onConsoleLog(): never {
       throw new Error('Logs are forbidden in test suites');
     },
     pool: 'threads',
-    projects: [
-      {
-        test: {
-          include: [
-            'test/inputs/gh-inputs.test.ts',
-            'test/outputs/rt-outputs.test.ts',
-          ],
-          isolate: true,
-          name: 'isolated',
-          sequence: {
-            concurrent: false,
-            shuffle: true,
-          },
-        },
-      },
-      {
-        test: {
-          exclude: [
-            'test/inputs/gh-inputs.test.ts',
-            'test/outputs/rt-outputs.test.ts',
-          ],
-          include: ['test/**/*.test.ts'],
-          isolate: false,
-          name: 'unit',
-          sequence: {
-            concurrent: true,
-            shuffle: true,
-          },
-        },
-      },
-    ],
     reporters: ['dot'],
+    sequence: {
+      concurrent: false,
+      shuffle: true,
+    },
     slowTestThreshold: 100,
     testTimeout: 2000,
   },

@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
+  "packageManager": "pnpm",
+  "testRunner": "vitest",
+  "concurrency": 4,
+  "coverageAnalysis": "perTest",
+  "inPlace": true,
+  "incremental": true,
+  "incrementalFile": "reports/stryker-incremental.json",
+  "mutate": ["src/**/*.ts", "!src/index.ts"],
+  "ignorePatterns": [
+    ".idea",
+    "coverage",
+    "reports",
+    ".stryker-tmp",
+    "stryker-setup-*.js",
+    "eslint.config.ts",
+    "tsdown.config.ts"
+  ],
+  "plugins": ["@stryker-mutator/vitest-runner"],
+  "reporters": ["clear-text", "progress", "dashboard"],
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": 70
+  }
+}
