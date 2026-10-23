@@ -10,6 +10,8 @@ import {
   setSecret,
 } from '@actions/core';
 
+import type { Grip } from '#grip/grip.ts';
+
 import { stGrip } from '#grip/st-grip.ts';
 
 import type { Inputs } from './inputs.ts';
@@ -28,9 +30,7 @@ import { isScope, isTarget, SCOPES, TARGETS } from './inputs.ts';
  *
  * @returns An {@link Inputs} implementation reading from workflow inputs.
  */
-export const ghInputs = (
-  grip: <T>(origin: () => T) => () => T = stGrip,
-): Inputs => ({
+export const ghInputs = (grip: Grip = stGrip): Inputs => ({
   allowedStatuses: grip(() => getMultilineInput('allowed-statuses')),
   extractFrom: grip(() => {
     const raw = getMultilineInput('extract-from');

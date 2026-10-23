@@ -7,10 +7,11 @@
  * Defines a supplier endomorphism that governs how an encapsulated supplier
  * function is evaluated and retained.
  *
- * @typeParam T - The return type yielded by the supplier function.
+ * @typeParam T - The return type yielded by the supplier function. Defaults to
+ *   unknown.
  *
  * @param origin - The underlying supplier function to wrap.
  *
  * @returns A supplier function governed by the grip's evaluation discipline.
  */
-export type Grip<T> = (origin: () => T) => () => T;
+export type Grip<T = unknown> = <R extends T = T>(origin: () => R) => () => R;
