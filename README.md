@@ -5,12 +5,12 @@ issues referenced in pull requests._
 
 [![EO principles respected here](https://www.elegantobjects.org/badge.svg)](https://www.elegantobjects.org)
 
-[![CI](https://img.shields.io/github/actions/workflow/status/illia-m-b/veils-js/pnpm.yml?branch=main&label=CI)](https://github.com/illia-m-b/veils-js/actions/workflows/pnpm.yml)
+[![CI](https://img.shields.io/github/actions/workflow/status/illia-m-b/ticket-guard-action/pnpm.yml?branch=main&label=CI)](https://github.com/illia-m-b/ticket-guard-action/actions/workflows/pnpm.yml)
 [![Node.js](https://img.shields.io/badge/Node.js-24.x-3c873a)](https://nodejs.org)
-[![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)](https://github.com/illia-m-b/veils-js/blob/main/vitest.config.ts)
+[![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)](https://github.com/illia-m-b/ticket-guard-action/blob/main/vitest.config.ts)
 [![Mutation score](https://img.shields.io/endpoint?style=flat&url=https%3A%2F%2Fbadge-api.stryker-mutator.io%2Fgithub.com%2Fillia-m-b%2Fticket-guard-action%2Fmain)](https://dashboard.stryker-mutator.io/reports/github.com/illia-m-b/ticket-guard-action/main)
 [![TypeScript](https://img.shields.io/badge/TypeScript-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
-[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/illia-m-b/veils/blob/main/LICENSE.txt)
+[![License](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://github.com/illia-m-b/ticket-guard-action/blob/main/LICENSE.txt)
 
 [Features](#features) &bull;
 [Quick Start](#quick-start) &bull;
