@@ -3,8 +3,6 @@
  * SPDX-License-Identifier: MIT
  */
 
-/* eslint-disable unicorn/max-nested-calls */
-
 import type { Ticket } from '#backlog/ticket.ts';
 import type { Inputs } from '#inputs/inputs.ts';
 import type { PullRequest } from '#pull-request/pull-request.ts';
@@ -53,21 +51,32 @@ export const ckTraceability = (
   ticket: Ticket,
 ): Check =>
   ckChained([
-    ckHasReference(reference),
-    ckPresentTicket(ticket),
-    ckScope(inputs.scope(), pr.repository(), rpUrl(ticket.url())),
-    ckBypassed(
-      () => inputs.allowedStatuses().length === 0,
-      () => ckStatus(ticket.status(), inputs.allowedStatuses()),
-    ),
-    ckRequiredLabels(
-      ticket.labels(),
-      inputs.requiredLabels(),
-      inputs.requireAllLabels(),
-    ),
-    ckForbiddenLabels(ticket.labels(), inputs.forbiddenLabels()),
-    ckBypassed(
-      () => !inputs.requireAuthorAssigned(),
-      () => ckAuthorAssigned(pr.author(), ticket.assignees()),
-    ),
+    () => ckHasReference(reference),
+    () => ckPresentTicket(ticket),
+    () => ckScope(inputs.scope(), pr.repository(), rpUrl(ticket.url())),
+    () =>
+      ckBypassed(
+        () => inputs.allowedStatuses().length === 0,
+        () => ckStatus(ticket.status(), inputs.allowedStatuses()),
+      ),
+    () =>
+      ckBypassed(
+        () => inputs.requiredLabels().length === 0,
+        () =>
+          ckRequiredLabels(
+            ticket.labels(),
+            inputs.requiredLabels(),
+            inputs.requireAllLabels(),
+          ),
+      ),
+    () =>
+      ckBypassed(
+        () => inputs.forbiddenLabels().length === 0,
+        () => ckForbiddenLabels(ticket.labels(), inputs.forbiddenLabels()),
+      ),
+    () =>
+      ckBypassed(
+        () => !inputs.requireAuthorAssigned(),
+        () => ckAuthorAssigned(pr.author(), ticket.assignees()),
+      ),
   ]);

@@ -6,6 +6,8 @@
 import { randomInt } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 
+import type { Ticket } from '#backlog/ticket.ts';
+
 import { fkTicket } from '#backlog/fk-ticket.ts';
 import { ckFailed } from '#check/ck-failed.ts';
 import { ckOk } from '#check/ck-ok.ts';
@@ -88,6 +90,98 @@ describe('a composite traceability policy check', () => {
     expect(
       check,
       'A composite traceability check did not fail due to reference absence',
+    ).toStrictEqual(failed);
+  });
+
+  it('fails without querying ticket accessors when reference is absent', () => {
+    const ticket: Ticket = {
+      assignees: () => {
+        throw new Error('assignees queried on absent ticket');
+      },
+      id: () => {
+        throw new Error('id queried on absent ticket');
+      },
+      labels: () => {
+        throw new Error('labels queried on absent ticket');
+      },
+      present: () => false,
+      status: () => {
+        throw new Error('status queried on absent ticket');
+      },
+      url: () => {
+        throw new Error('url queried on absent ticket');
+      },
+    };
+    const actual = ckTraceability(
+      fkInputs(),
+      fkPullRequest(),
+      rfEmpty(),
+      ticket,
+    );
+    const check = {
+      message: actual.message(),
+      reason: actual.reason(),
+      valid: actual.valid(),
+    };
+    const expected = ckFailed(
+      'no-ticket-found',
+      'No issue reference found in the pull request',
+    );
+    const failed = {
+      message: expected.message(),
+      reason: expected.reason(),
+      valid: expected.valid(),
+    };
+
+    expect(
+      check,
+      'A composite traceability check evaluated ticket accessors despite reference absence',
+    ).toStrictEqual(failed);
+  });
+
+  it('fails without querying ticket accessors when ticket is absent in backlog', () => {
+    const ticket: Ticket = {
+      assignees: () => {
+        throw new Error('assignees queried on absent ticket');
+      },
+      id: () => {
+        throw new Error('id queried on absent ticket');
+      },
+      labels: () => {
+        throw new Error('labels queried on absent ticket');
+      },
+      present: () => false,
+      status: () => {
+        throw new Error('status queried on absent ticket');
+      },
+      url: () => {
+        throw new Error('url queried on absent ticket');
+      },
+    };
+    const actual = ckTraceability(
+      fkInputs(),
+      fkPullRequest(),
+      rfGitHub('Fixes #9021'),
+      ticket,
+    );
+    const check = {
+      message: actual.message(),
+      reason: actual.reason(),
+      valid: actual.valid(),
+    };
+    const expected = ckFailed(
+      'ticket-not-found',
+      'Ticket not found. Check your backlog',
+    );
+    const failed = {
+      message: expected.message(),
+      reason: expected.reason(),
+      valid: expected.valid(),
+    };
+
+    expect(
+      check,
+      'A composite traceability check evaluated ticket accessors despite ticket absence in backlog',
     ).toStrictEqual(failed);
   });
 
@@ -377,5 +471,46 @@ describe('a composite traceability policy check', () => {
       check,
       'A composite traceability check did not pass when author assignment is not required',
     ).toStrictEqual(bypassed);
+  });
+
+  it('bypasses label checks without querying ticket labels when unconfigured', () => {
+    const inputs = fkInputs({
+      allowedStatuses: [],
+      forbiddenLabels: [],
+      requiredLabels: [],
+      scope: 'any',
+    });
+    const ticket: Ticket = {
+      assignees: () => [],
+      id: () => '1',
+      labels: () => {
+        throw new Error('labels queried when unconfigured');
+      },
+      present: () => true,
+      status: () => 'open',
+      url: () => 'https://github.com/octo-org/octo-repo/issues/1',
+    };
+    const actual = ckTraceability(
+      inputs,
+      fkPullRequest(),
+      rfGitHub('Closes #1'),
+      ticket,
+    );
+    const check = {
+      message: actual.message(),
+      reason: actual.reason(),
+      valid: actual.valid(),
+    };
+    const ok = ckOk();
+    const passed = {
+      message: ok.message(),
+      reason: ok.reason(),
+      valid: ok.valid(),
+    };
+
+    expect(
+      check,
+      'A composite traceability check queried ticket labels when no label checks were configured',
+    ).toStrictEqual(passed);
   });
 });

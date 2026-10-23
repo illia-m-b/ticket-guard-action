@@ -16,7 +16,7 @@ describe('a composite check', () => {
   it('returns a passed check when all checks pass', () => {
     const ok = ckOk();
     const fake = fkCheck();
-    const checks = [ok, fake];
+    const checks = [() => ok, () => fake];
     const chained = ckChained(checks);
     const passed = {
       message: ok.message(),
@@ -63,10 +63,10 @@ describe('a composite check', () => {
     };
     const fake = fkCheck(failed);
     const checks = [
-      ckOk(),
-      fake,
-      fkCheck(),
-      ckFailed('unauthorized', 'This is not what we want'),
+      () => ckOk(),
+      () => fake,
+      () => fkCheck(),
+      () => ckFailed('unauthorized', 'This is not what we want'),
     ];
     const chained = ckChained(checks);
     const result = {
@@ -78,6 +78,31 @@ describe('a composite check', () => {
     expect(
       result,
       'The composite check did not return the first failing check in the chain',
+    ).toStrictEqual(failed);
+  });
+
+  it('short-circuits evaluation without invoking downstream suppliers', () => {
+    const failed: FakeCheck = {
+      message: 'Initial failure',
+      reason: 'no-ticket-found',
+      valid: false,
+    };
+    const checks = [
+      () => fkCheck(failed),
+      () => {
+        throw new Error('Downstream supplier must not be evaluated');
+      },
+    ];
+    const chained = ckChained(checks);
+    const result = {
+      message: chained.message(),
+      reason: chained.reason(),
+      valid: chained.valid(),
+    };
+
+    expect(
+      result,
+      'The composite check did not short-circuit before invoking downstream suppliers',
     ).toStrictEqual(failed);
   });
 });
