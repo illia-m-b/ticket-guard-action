@@ -34,6 +34,19 @@
     "dependencyDashboardApproval": false,
     "prConcurrentLimit": 0
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update @yegor256/dogent in GitHub Actions workflows",
+      "managerFilePatterns": ["/(^|/)\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "(?<depName>@yegor256/dogent)@(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+[^\\s]*)"
+      ],
+      "datasourceTemplate": "npm",
+      "versioningTemplate": "npm",
+      "depTypeTemplate": "action"
+    }
+  ],
   "packageRules": [
     {
       "matchPackageNames": ["lefthook"],
@@ -67,7 +80,7 @@
     },
     {
       "description": "Batch non-major GitHub Actions digests and versions into a single Sunday PR",
-      "matchManagers": ["github-actions"],
+      "matchManagers": ["github-actions", "custom.regex"],
       "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
       "groupName": "GitHub Actions workflows",
       "semanticCommitType": "ci",
