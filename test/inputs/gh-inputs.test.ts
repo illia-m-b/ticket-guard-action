@@ -5,6 +5,7 @@
 
 import { describe, expect, it } from 'vitest';
 
+import { rtGrip } from '#grip/rt-grip.ts';
 import { ghInputs } from '#inputs/gh-inputs.ts';
 
 import { silenced } from '../silenced/silenced.ts';
@@ -152,5 +153,41 @@ describe('a GitHub-backed action inputs adapter', () => {
       () => ghInputs().scope(),
       'An invalid repository scope did not throw a TypeError',
     ).toThrow(TypeError);
+  });
+
+  it('preserves allowed statuses reference identity across repeated calls', () => {
+    process.env['INPUT_ALLOWED-STATUSES'] = 'opened\nclosed';
+    const inputs = ghInputs();
+    const first = inputs.allowedStatuses();
+    const second = inputs.allowedStatuses();
+
+    expect(
+      first,
+      'Allowed statuses array reference changed between subsequent calls',
+    ).toBe(second);
+  });
+
+  it('preserves memoized value when environment changes after first call', () => {
+    process.env['INPUT_ALLOWED-STATUSES'] = 'opened';
+    const inputs = ghInputs();
+    inputs.allowedStatuses();
+    process.env['INPUT_ALLOWED-STATUSES'] = 'closed';
+
+    expect(
+      inputs.allowedStatuses(),
+      'The allowed statuses were not memoized across environment mutations',
+    ).toStrictEqual(['opened']);
+  });
+
+  it('re-reads environment values when configured with real-time grip', () => {
+    process.env['INPUT_ALLOWED-STATUSES'] = 'opened';
+    const inputs = ghInputs(rtGrip);
+    inputs.allowedStatuses();
+    process.env['INPUT_ALLOWED-STATUSES'] = 'closed';
+
+    expect(
+      inputs.allowedStatuses(),
+      'The allowed statuses did not reflect environment updates under real-time grip',
+    ).toStrictEqual(['closed']);
   });
 });

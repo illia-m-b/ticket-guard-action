@@ -10,6 +10,8 @@ import {
   setSecret,
 } from '@actions/core';
 
+import { stGrip } from '#grip/st-grip.ts';
+
 import type { Inputs } from './inputs.ts';
 
 import { isScope, isTarget, SCOPES, TARGETS } from './inputs.ts';
@@ -21,11 +23,16 @@ import { isScope, isTarget, SCOPES, TARGETS } from './inputs.ts';
  * Reads values from `@actions/core` and automatically masks sensitive
  * credentials.
  *
+ * @param grip - The grip strategy governing evaluation and caching. Defaults to
+ *   {@link stGrip}.
+ *
  * @returns An {@link Inputs} implementation reading from workflow inputs.
  */
-export const ghInputs = (): Inputs => ({
-  allowedStatuses: () => getMultilineInput('allowed-statuses'),
-  extractFrom: () => {
+export const ghInputs = (
+  grip: <T>(origin: () => T) => () => T = stGrip,
+): Inputs => ({
+  allowedStatuses: grip(() => getMultilineInput('allowed-statuses')),
+  extractFrom: grip(() => {
     const raw = getMultilineInput('extract-from');
     return raw.map((value) => {
       if (!isTarget(value)) {
@@ -35,19 +42,19 @@ export const ghInputs = (): Inputs => ({
       }
       return value;
     });
-  },
-  failOnError: () => getBooleanInput('fail-on-error'),
-  forbiddenLabels: () => getMultilineInput('forbidden-labels'),
-  gitHubToken: () => {
+  }),
+  failOnError: grip(() => getBooleanInput('fail-on-error')),
+  forbiddenLabels: grip(() => getMultilineInput('forbidden-labels')),
+  gitHubToken: grip(() => {
     const token = getInput('github-token');
     setSecret(token);
     return token;
-  },
-  ignoreActors: () => getMultilineInput('ignore-actors'),
-  requireAllLabels: () => getBooleanInput('require-all-labels'),
-  requireAuthorAssigned: () => getBooleanInput('require-author-assigned'),
-  requiredLabels: () => getMultilineInput('required-labels'),
-  scope: () => {
+  }),
+  ignoreActors: grip(() => getMultilineInput('ignore-actors')),
+  requireAllLabels: grip(() => getBooleanInput('require-all-labels')),
+  requireAuthorAssigned: grip(() => getBooleanInput('require-author-assigned')),
+  requiredLabels: grip(() => getMultilineInput('required-labels')),
+  scope: grip(() => {
     const raw = getInput('scope');
     if (!isScope(raw)) {
       throw new TypeError(
@@ -55,5 +62,5 @@ export const ghInputs = (): Inputs => ({
       );
     }
     return raw;
-  },
+  }),
 });
