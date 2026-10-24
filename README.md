@@ -28,7 +28,6 @@ mandatory/forbidden labels, and author assignment.
 > for repository issues and pull requests:
 >
 > ```yaml
-> contents: read
 > issues: read
 > pull-requests: read
 > ```
@@ -65,11 +64,11 @@ name: ticket-guard
       - reopened
       - edited
       - synchronize
+permissions: {}
 jobs:
   ticket-guard:
     runs-on: ubuntu-slim
     permissions:
-      contents: read
       issues: read
       pull-requests: read
     steps:
@@ -158,21 +157,29 @@ name: ticket-guard
       - reopened
       - edited
       - synchronize
-permissions:
-  contents: read
-  issues: read
-  pull-requests: write
+permissions: {}
 jobs:
   ticket-guard:
     runs-on: ubuntu-slim
+    permissions:
+      issues: read
+      pull-requests: read
+    outputs:
+      is-valid: ${{ steps.guard.outputs.is-valid }}
+      error-message: ${{ steps.guard.outputs.error-message }}
     steps:
       - uses: illia-m-b/ticket-guard-action@v0 # x-release-please-major
         id: guard
         with:
           fail-on-error: false
-
+  pr-comment:
+    needs: ticket-guard
+    runs-on: ubuntu-slim
+    permissions:
+      pull-requests: write
+    steps:
       - name: Explain missing ticket
-        if: steps.guard.outputs.is-valid == 'false'
+        if: needs.ticket-guard.outputs.is-valid == 'false'
         uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: ticket-guard-notice
@@ -184,11 +191,11 @@ jobs:
             project plans. Please reference an issue in your pull request title
             or body (e.g., `Closes #123` or `Fixes org/repo#123`).
 
-            **Details**: `${{ steps.guard.outputs.error-message }}`
+            **Details**: `${{ needs.ticket-guard.outputs.error-message }}`
 
       # Automatically remove notice once an issue is linked
       - name: Clear notice
-        if: steps.guard.outputs.is-valid == 'true'
+        if: needs.ticket-guard.outputs.is-valid == 'true'
         uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: ticket-guard-notice
