@@ -17,15 +17,14 @@ import { ghIssue } from './gh-issue.ts';
  * Creates an {@link Backlog} backed by the GitHub REST API.
  *
  * @param octokit - Authenticated Octokit client instance.
- * @param repository - Target repository coordinates.
  *
  * @returns An {@link Backlog} implementation retrieving issues via GitHub API.
  */
-export const ghIssues = (
-  octokit: Octokit,
-  repository: Repository,
-): Backlog => ({
-  ticket: async (reference: Reference): Promise<Ticket> => {
+export const ghIssues = (octokit: Octokit): Backlog => ({
+  ticket: async (
+    reference: Reference,
+    repository: Repository,
+  ): Promise<Ticket> => {
     if (!reference.present()) {
       return fkTicket();
     }
@@ -37,13 +36,16 @@ export const ghIssues = (
       });
       return ghIssue(payload.data);
     } catch (error: unknown) {
-      if (
-        typeof error === 'object' &&
-        error !== null &&
-        'status' in error &&
-        error.status === 404
-      ) {
-        return fkTicket();
+      if (typeof error === 'object' && error !== null && 'status' in error) {
+        if (error.status === 404) {
+          return fkTicket();
+        }
+        if (error.status === 401 || error.status === 403) {
+          throw new Error(
+            `GitHub token lacks permissions to access issues in "${repository.owner()}/${repository.name()}"`,
+            { cause: error },
+          );
+        }
       }
       throw error;
     }

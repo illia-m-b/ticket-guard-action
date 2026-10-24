@@ -26,8 +26,8 @@ Publish verification results and diagnostic codes to workflow outputs.
 
 1. Bypass verification when pull request author matches ignore-actors.
 2. Assert presence of ticket reference in designated targets.
-3. Assert ticket existence in backlog tracker.
-4. Assert ticket repository scope compliance.
+3. Assert ticket repository scope compliance.
+4. Assert ticket existence in backlog tracker.
 5. Assert ticket status against allowed-statuses configuration.
 6. Assert ticket carries required labels according to matching mode.
 7. Assert ticket contains zero forbidden labels.

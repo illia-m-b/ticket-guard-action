@@ -221,6 +221,7 @@ describe('a multi-target reference scanner', () => {
 
   it('uses custom extracted supplier when provided', () => {
     const id = `PROJ-${randomInt(100, 10_000)}`;
+    const pr = fkPullRequest({ title: `${id}: integration task` });
     const custom: Reference = {
       id: () => id,
       present: () => true,
@@ -228,7 +229,6 @@ describe('a multi-target reference scanner', () => {
     };
     const extracted = (text: string): Reference =>
       text.includes('PROJ-') ? custom : rfEmpty();
-    const pr = fkPullRequest({ title: `${id}: integration task` });
     const reference = rfTargets(['pr-title'], pr, extracted);
     const actual = {
       id: reference.id(),

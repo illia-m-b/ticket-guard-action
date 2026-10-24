@@ -7,11 +7,11 @@
 
 import { ticketGuard } from '#action/ticket-guard.ts';
 import { ghIssues } from '#backlog/github/gh-issues.ts';
+import { ckTraceability } from '#check/ck-traceability.ts';
 import { ghInputs } from '#inputs/gh-inputs.ts';
 import { rtOutputs } from '#outputs/rt-outputs.ts';
 import { ghPullRequest } from '#pull-request/gh-pull-request.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
-import { rpPlain } from '#repository/rp-plain.ts';
 
 const outputs = rtOutputs();
 try {
@@ -27,14 +27,18 @@ try {
   }
   const inputs = ghInputs();
   await ticketGuard(
-    ghPullRequest({
-      payload: { pull_request: pr },
-      repo,
-    }),
-    inputs,
-    ghIssues(getOctokit(inputs.gitHubToken()), rpPlain(repo)),
+    async () =>
+      ckTraceability(
+        inputs,
+        ghPullRequest({
+          payload: { pull_request: pr },
+          repo,
+        }),
+        ghIssues(getOctokit(inputs.gitHubToken())),
+        rfGitHub,
+      ),
     outputs,
-    rfGitHub,
+    inputs,
   ).run();
 } catch (error: unknown) {
   outputs.fail(error instanceof Error ? error.message : String(error));

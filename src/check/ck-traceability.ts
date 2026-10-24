@@ -3,80 +3,61 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { Ticket } from '#backlog/ticket.ts';
+import type { Backlog } from '#backlog/backlog.ts';
 import type { Inputs } from '#inputs/inputs.ts';
 import type { PullRequest } from '#pull-request/pull-request.ts';
 import type { Reference } from '#reference/reference.ts';
 
-import { rpUrl } from '#repository/rp-url.ts';
+import { rfGitHub } from '#reference/rf-git-hub.ts';
+import { rfTargets } from '#reference/rf-targets.ts';
+import { rpReference } from '#repository/rp-reference.ts';
 
-import type { Check } from './check.ts';
+import type { Traceability } from './traceability.ts';
 
-import { ckAuthorAssigned } from './ck-author-assigned.ts';
-import { ckBypassed } from './ck-bypassed.ts';
-import { ckChained } from './ck-chained.ts';
-import { ckForbiddenLabels } from './ck-forbidden-labels.ts';
-import { ckHasReference } from './ck-has-reference.ts';
-import { ckPresentTicket } from './ck-present-ticket.ts';
-import { ckRequiredLabels } from './ck-required-labels.ts';
-import { ckScope } from './ck-scope.ts';
-import { ckStatus } from './ck-status.ts';
+import { ckCandidate } from './ck-candidate.ts';
+import { ckIgnoredActor } from './ck-ignored-actor.ts';
+import { ckTicket } from './ck-ticket.ts';
+import { trPlain } from './tr-plain.ts';
 
 /**
- * Creates a composite {@link Check} enforcing the traceability policy against a
- * pull request and its referenced ticket.
+ * Enforces the complete traceability verification policy against a pull request
+ * and its referenced backlog ticket.
  *
- * Evaluation sequence:
+ * Sequence:
  *
- * 1. Asserts issue reference presence (fails with `'no-ticket-found'`).
- * 2. Asserts ticket existence in the tracker (fails with `'ticket-not-found'`).
- * 3. Asserts repository scope compliance (fails with `'scope-violation'`).
- * 4. Asserts allowed lifecycle status if configured (fails with
- *    `'status-not-allowed'`).
- * 5. Asserts mandatory required labels (fails with `'missing-required-label'`).
- * 6. Asserts absence of forbidden labels (fails with `'forbidden-label'`).
- * 7. Asserts author assignment if required (fails with `'author-not-assigned'`).
+ * 1. Bypasses verification when pull request author matches ignore-actors.
+ * 2. Asserts presence of ticket reference in designated targets.
+ * 3. Assert ticket repository scope compliance.
+ * 4. Queries backlog tracker for referenced ticket.
+ * 5. Asserts ticket existence and policy criteria (lifecycle status, labels,
+ *    author assignment).
  *
  * @param inputs - Action configuration inputs.
  * @param pr - The pull request under verification.
- * @param reference - The referenced ticket identifier.
- * @param ticket - The resolved backlog ticket.
+ * @param backlog - The ticket repository or tracker client.
+ * @param extracted - The reference extractor parsing candidate text. Defaults
+ *   to {@link rfGitHub}.
  *
- * @returns A {@link Check} representing the traceability outcome.
+ * @returns A promise resolving to the {@link Traceability} verification outcome.
  */
-export const ckTraceability = (
+export const ckTraceability = async (
   inputs: Inputs,
   pr: PullRequest,
-  reference: Reference,
-  ticket: Ticket,
-): Check =>
-  ckChained([
-    () => ckHasReference(reference),
-    () => ckPresentTicket(ticket),
-    () => ckScope(inputs.scope(), pr.repository(), rpUrl(ticket.url())),
-    () =>
-      ckBypassed(
-        () => inputs.allowedStatuses().length === 0,
-        () => ckStatus(ticket.status(), inputs.allowedStatuses()),
-      ),
-    () =>
-      ckBypassed(
-        () => inputs.requiredLabels().length === 0,
-        () =>
-          ckRequiredLabels(
-            ticket.labels(),
-            inputs.requiredLabels(),
-            inputs.requireAllLabels(),
-          ),
-      ),
-    () =>
-      ckBypassed(
-        () => inputs.forbiddenLabels().length === 0,
-        () => ckForbiddenLabels(ticket.labels(), inputs.forbiddenLabels()),
-      ),
-    () =>
-      ckBypassed(
-        () => !inputs.requireAuthorAssigned(),
-        () => ckAuthorAssigned(pr.author(), ticket.assignees()),
-      ),
-  ]);
+  backlog: Backlog,
+  extracted: (text: string) => Reference = rfGitHub,
+): Promise<Traceability> => {
+  const actor = ckIgnoredActor(pr.author(), inputs.ignoreActors());
+  if (actor.valid()) {
+    return trPlain(actor);
+  }
+  const reference = rfTargets(inputs.extractFrom(), pr, extracted);
+  const candidate = ckCandidate(inputs, pr, reference);
+  if (!candidate.valid()) {
+    return trPlain(candidate);
+  }
+  const ticket = await backlog.ticket(
+    reference,
+    rpReference(reference, pr.repository()),
+  );
+  return trPlain(ckTicket(inputs, pr, ticket), ticket);
+};

@@ -11,7 +11,7 @@ import { rfGitHub } from '#reference/rf-git-hub.ts';
 
 describe('a reference envelope', () => {
   it('delegates all methods to the encapsulated reference', () => {
-    const origin = rfGitHub(`Closes #${new Date().getDate()}`);
+    const origin = rfGitHub(`Closes octo/repo#${new Date().getDate()}`);
     const envelope = rfEnvelope(() => origin);
     const expected = {
       id: origin.id(),
@@ -35,7 +35,7 @@ describe('a reference envelope', () => {
     const once = 1;
     const envelope = rfEnvelope(() => {
       called += 1;
-      return rfGitHub('#123');
+      return rfGitHub('octo/repo#123');
     });
     envelope.id();
     envelope.present();
@@ -52,7 +52,7 @@ describe('a reference envelope', () => {
     const times = 3;
     const envelope = rfEnvelope(() => {
       called += 1;
-      return rfGitHub('#123');
+      return rfGitHub('octo/repo#123');
     }, rtGrip);
     envelope.id();
     envelope.present();

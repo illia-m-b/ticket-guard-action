@@ -12,12 +12,14 @@ import { fkBacklog } from '#backlog/fk-backlog.ts';
 import { fkTicket } from '#backlog/fk-ticket.ts';
 import { rfEmpty } from '#reference/rf-empty.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
+import { rpPlain } from '#repository/rp-plain.ts';
 
 describe('an in-memory backlog instance', () => {
   it('returns fake ticket when reference is absent', async () => {
     const backlog = fkBacklog([]);
     const reference = rfEmpty();
-    const retrieved = await backlog.ticket(reference);
+    const repository = rpPlain({ owner: 'octo', repo: 'app' });
+    const retrieved = await backlog.ticket(reference, repository);
     let actualId: unknown;
     try {
       actualId = retrieved.id();
@@ -61,7 +63,8 @@ describe('an in-memory backlog instance', () => {
       present: () => true,
       raw: () => `#${Number.MAX_SAFE_INTEGER}`,
     };
-    const retrieved = await backlog.ticket(reference);
+    const repository = rpPlain({ owner: 'octo', repo: 'app' });
+    const retrieved = await backlog.ticket(reference, repository);
     let actualId: unknown;
     try {
       actualId = retrieved.id();
@@ -110,8 +113,12 @@ describe('an in-memory backlog instance', () => {
     };
     const ticket = fkTicket(expected);
     const reference = rfGitHub(`Closes #${number}.`);
+    const repository = rpPlain({
+      owner: 'illia-m-b',
+      repo: 'ticket-guard-action',
+    });
     const backlog = fkBacklog([ticket]);
-    const found = await backlog.ticket(reference);
+    const found = await backlog.ticket(reference, repository);
     const actual = {
       assignees: found.assignees(),
       id: found.id(),
