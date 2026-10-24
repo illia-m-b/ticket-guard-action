@@ -4,6 +4,7 @@
  */
 
 import type { Reference } from '#reference/reference.ts';
+import type { Repository } from '#repository/repository.ts';
 
 import type { Backlog } from './backlog.ts';
 import type { Ticket } from './ticket.ts';
@@ -18,7 +19,10 @@ import { fkTicket } from './fk-ticket.ts';
  * @returns A test {@link Backlog} implementation.
  */
 export const fkBacklog = (tickets: readonly Ticket[]): Backlog => ({
-  ticket: async (reference: Reference): Promise<Ticket> =>
+  ticket: async (
+    reference: Reference,
+    _repository: Repository,
+  ): Promise<Ticket> =>
     reference.present()
       ? (tickets.find(
           (ticket) => ticket.present() && ticket.id() === reference.id(),

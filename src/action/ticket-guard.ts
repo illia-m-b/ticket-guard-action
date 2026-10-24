@@ -3,17 +3,9 @@
  * SPDX-License-Identifier: MIT
  */
 
-import type { Backlog } from '#backlog/backlog.ts';
+import type { Traceability } from '#check/traceability.ts';
 import type { Inputs } from '#inputs/inputs.ts';
 import type { Outputs } from '#outputs/outputs.ts';
-import type { PullRequest } from '#pull-request/pull-request.ts';
-import type { Reference } from '#reference/reference.ts';
-
-import { fkTicket } from '#backlog/fk-ticket.ts';
-import { ckIgnoredActor } from '#check/ck-ignored-actor.ts';
-import { ckTraceability } from '#check/ck-traceability.ts';
-import { rfGitHub } from '#reference/rf-git-hub.ts';
-import { rfTargets } from '#reference/rf-targets.ts';
 
 import type { Action } from './action.ts';
 
@@ -21,50 +13,37 @@ import type { Action } from './action.ts';
  * Creates an {@link Action} that enforces ticket traceability across pull
  * requests.
  *
- * Scans configured pull request targets for issue references, queries the
- * backlog for the referenced ticket, evaluates the traceability policy rules,
- * and publishes execution outputs and diagnostic messages.
+ * Evaluates the supplied traceability check and publishes workflow outputs and
+ * diagnostic log messages.
  *
- * @param pr - The pull request under verification.
- * @param inputs - Action configuration inputs.
- * @param backlog - The ticket repository or tracker client.
+ * @param trace - The deferred traceability verification thunk.
  * @param outputs - Workflow outputs and diagnostic messaging sink.
- * @param extracted - The reference extractor parsing candidate text. Defaults
- *   to {@link rfGitHub}.
+ * @param inputs - Action configuration inputs.
  *
  * @returns An {@link Action} executing the ticket guard verification.
  */
 export const ticketGuard = (
-  pr: PullRequest,
-  inputs: Inputs,
-  backlog: Backlog,
+  trace: () => Promise<Traceability>,
   outputs: Outputs,
-  extracted: (text: string) => Reference = rfGitHub,
+  inputs: Inputs,
 ): Action => ({
   run: async () => {
-    const actor = ckIgnoredActor(pr.author(), inputs.ignoreActors());
-    const reference = rfTargets(inputs.extractFrom(), pr, extracted);
-    const ticket =
-      actor.valid() || !reference.present()
-        ? fkTicket()
-        : await backlog.ticket(reference);
-    const check = actor.valid()
-      ? actor
-      : ckTraceability(inputs, pr, reference, ticket);
-    outputs.output('is-valid', String(check.valid()));
+    const result = await trace();
+    const ticket = result.ticket();
+    outputs.output('is-valid', String(result.valid()));
     outputs.output('ticket-id', ticket.present() ? ticket.id() : '');
     outputs.output('ticket-url', ticket.url());
     outputs.output('ticket-status', ticket.status());
     outputs.output('ticket-labels', JSON.stringify(ticket.labels()));
-    outputs.output('error-message', check.valid() ? '' : check.reason());
-    if (check.valid()) {
-      outputs.info(check.message());
+    outputs.output('error-message', result.valid() ? '' : result.reason());
+    if (result.valid()) {
+      outputs.info(result.message());
       return;
     }
     if (inputs.failOnError()) {
-      outputs.fail(check.message());
+      outputs.fail(result.message());
       return;
     }
-    outputs.warn(check.message());
+    outputs.warn(result.message());
   },
 });
