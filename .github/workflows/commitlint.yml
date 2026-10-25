@@ -7,17 +7,37 @@ name: commitlint
   pull_request:
     branches:
       - main
-permissions:
-  contents: read
-  pull-requests: read
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   commitlint:
-    timeout-minutes: 15
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
+    timeout-minutes: 3
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@b948419dd99f3fd78a6548d48f94e3df7f6bf3ed # v6.2.1
-        with:
-          failOnWarnings: true
+          persist-credentials: false
+          show-progress: false
+      - run: |
+          set -euo pipefail
+          npm exec --prefix "${RUNNER_TEMP}" \
+            --yes \
+            --ignore-scripts \
+            --no-audit \
+            --no-fund \
+            --package=@commitlint/cli@21.2.4 \
+            --package=@commitlint/config-conventional@21.2.4 \
+            -- \
+            commitlint \
+            --default-config \
+            --from="${FROM_SHA}" \
+            --to="${TO_SHA}" \
+            --verbose
+        env:
+          FROM_SHA: ${{ github.event.pull_request.base.sha }}
+          TO_SHA: ${{ github.event.pull_request.head.sha }}

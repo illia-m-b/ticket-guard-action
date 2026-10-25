@@ -37,13 +37,36 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update @yegor256/dogent in GitHub Actions workflows",
+      "description": "Update npm packages in GitHub Actions workflows",
       "managerFilePatterns": ["/(^|/)\\.github/workflows/.+\\.ya?ml$/"],
       "matchStrings": [
-        "(?<depName>@yegor256/dogent)@(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+[^\\s]*)"
+        "(?:--package[= ]|-p[= ])['\"]?(?<depName>@?[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)?)@(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+[^\\s'\"\\\\]*)"
       ],
       "datasourceTemplate": "npm",
       "versioningTemplate": "npm",
+      "depTypeTemplate": "action"
+    },
+    {
+      "customType": "regex",
+      "description": "Update pipx CLI tools in GitHub Actions workflows",
+      "managerFilePatterns": ["/(^|/)\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "pipx\\s+run\\s+['\"]?(?<depName>[a-zA-Z0-9_.-]+)==(?<currentValue>[0-9][a-zA-Z0-9_.-]*)"
+      ],
+      "datasourceTemplate": "pypi",
+      "versioningTemplate": "pep440",
+      "depTypeTemplate": "action"
+    },
+    {
+      "customType": "regex",
+      "description": "Update actionlint binary in GitHub Actions workflows",
+      "managerFilePatterns": ["/(^|/)\\.github/workflows/actionlint\\.ya?ml$/"],
+      "matchStrings": [
+        "VERSION:\\s*['\"]?(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+[^\\s'\"\\\\]*)"
+      ],
+      "depNameTemplate": "rhysd/actionlint",
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.+)$",
       "depTypeTemplate": "action"
     }
   ],

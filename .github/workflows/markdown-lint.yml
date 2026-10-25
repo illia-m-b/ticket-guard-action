@@ -4,21 +4,27 @@
 # yamllint disable rule:line-length
 name: markdown-lint
 'on':
-  push:
+  push: &filter
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    paths:
+      - '**.md'
+      - '.github/workflows/markdown-lint.yml'
+      - .markdownlint-cli2.jsonc
+  pull_request: *filter
+permissions: {}
 concurrency:
-  group: markdown-lint-${{ github.ref }}
-  cancel-in-progress: true
-permissions:
-  contents: read
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   markdown-lint:
-    timeout-minutes: 15
     runs-on: ubuntu-slim
+    timeout-minutes: 3
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          show-progress: false
       - uses: DavidAnson/markdownlint-cli2-action@21c1be1b93ad9ed58fa840aacc3f279cde2a72ff # v24.2.0

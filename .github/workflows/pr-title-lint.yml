@@ -12,11 +12,12 @@ name: pr-title-lint
       - synchronize
 permissions: {}
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
   pr-title-lint:
     runs-on: ubuntu-slim
+    timeout-minutes: 3
     permissions:
       pull-requests: read
     steps:

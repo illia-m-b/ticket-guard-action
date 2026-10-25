@@ -4,20 +4,28 @@
 # yamllint disable rule:line-length
 name: stryker
 'on':
-  push:
+  push: &filter
     branches:
       - main
-  pull_request:
-    branches:
-      - main
+    paths:
+      - 'src/**'
+      - 'test/**'
+      - 'stryker.config.json'
+      - 'vitest.config.ts'
+      - 'tsconfig.json'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - 'patches/**'
+      - '.github/workflows/stryker.yml'
+  pull_request: *filter
 permissions: {}
 concurrency:
-  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  cancel-in-progress: true
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   stryker:
-    timeout-minutes: 15
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     permissions:
       contents: read
     steps:
@@ -33,7 +41,7 @@ jobs:
       - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: reports/stryker-incremental.json
-          key: stryker-${{ runner.os }}-${{ github.head_ref || github.ref_name }}-${{ github.sha }}
+          key: stryker-${{ runner.os }}-${{ github.head_ref || github.ref_name }}-${{ hashFiles('src/**', 'test/**', 'stryker.config.json', 'vitest.config.ts', 'tsconfig.json', 'pnpm-lock.yaml', 'package.json', 'patches/**') }}
           restore-keys: |
             stryker-${{ runner.os }}-${{ github.head_ref || github.ref_name }}-
             stryker-${{ runner.os }}-main-
