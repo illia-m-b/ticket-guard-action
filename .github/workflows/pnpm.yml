@@ -4,20 +4,25 @@
 # yamllint disable rule:line-length
 name: pnpm
 'on':
-  push:
+  push: &filter
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-permissions:
-  contents: read
+  pull_request: *filter
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   pnpm:
-    timeout-minutes: 15
     runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          show-progress: false
       - uses: pnpm/setup@a0881977cd8ea73b1ed212236c99ca10dcc80cf4 # v3.1.1
         with:
           cache: true

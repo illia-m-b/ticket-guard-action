@@ -4,28 +4,20 @@
 # yamllint disable rule:line-length
 name: codeql
 'on':
-  push:
+  push: &filter
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    paths:
-      - 'action.yml'
-      - 'src/**'
-      - 'package.json'
-      - 'pnpm-lock.yaml'
-      - 'tsconfig.json'
-      - '.github/workflows/**'
+  pull_request: *filter
   schedule:
     - cron: '37 3 * * 0'
+permissions: {}
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   codeql:
-    timeout-minutes: 15
     runs-on: ubuntu-24.04
+    timeout-minutes: 15
     permissions:
       security-events: write
       actions: read
@@ -40,16 +32,22 @@ jobs:
             build-mode: none
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+          show-progress: false
       - uses: github/codeql-action/init@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
           config: |
             paths-ignore:
-              - 'node_modules'
-              - 'dist'
-              - 'coverage'
-              - 'test'
+              - 'node_modules/**'
+              - 'dist/**'
+              - 'coverage/**'
+              - '.stryker-tmp/**'
+              - 'reports/**'
+              - 'test/**'
               - '**/*.test.ts'
               - '**/*.test-d.ts'
       - uses: github/codeql-action/analyze@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0

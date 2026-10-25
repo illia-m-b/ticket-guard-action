@@ -4,18 +4,49 @@
 # yamllint disable rule:line-length
 name: actionlint
 'on':
-  push:
+  push: &filter
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-permissions:
-  contents: read
+    paths:
+      - '.github/workflows/**'
+      - '.github/actionlint.yml'
+      - 'action.yml'
+  pull_request: *filter
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   actionlint:
-    timeout-minutes: 15
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-slim
+    timeout-minutes: 3
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - uses: reviewdog/action-actionlint@b76d06f8570118465db3190c9a08f1b29d341aa1 # v1.80.3
+        with:
+          persist-credentials: false
+          show-progress: false
+          sparse-checkout: |
+            .github
+      - run: |
+          set -euo pipefail
+          TOOL_DIR="${RUNNER_TEMP}/actionlint"
+          mkdir -p "${TOOL_DIR}"
+          cd "${TOOL_DIR}"
+          ARCHIVE="actionlint_${VERSION}_linux_amd64.tar.gz"
+          gh release download "v${VERSION}" \
+            --repo rhysd/actionlint \
+            --pattern "${ARCHIVE}"
+          gh attestation verify -R rhysd/actionlint "${ARCHIVE}"
+          tar -xzf "${ARCHIVE}" actionlint
+          echo "${TOOL_DIR}" >> "${GITHUB_PATH}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: 1.7.12
+      - run: |
+          set -euo pipefail
+          if [ -f .github/actionlint-matcher.json ]; then
+            echo "::add-matcher::.github/actionlint-matcher.json"
+          fi
+          actionlint -color
