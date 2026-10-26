@@ -25,7 +25,7 @@ SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = [
-    "patches/@stryker-mutator__vitest-runner.patch"
+    "patches/@stryker-mutator__typescript-checker.patch"
 ]
 SPDX-FileCopyrightText = "Stryker Mutator contributors"
 SPDX-License-Identifier = "Apache-2.0"

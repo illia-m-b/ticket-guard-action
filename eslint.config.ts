@@ -18,7 +18,13 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   {
-    ignores: ['.github/**', '.stryker-tmp/**', 'coverage/**', 'dist/**'],
+    ignores: [
+      '.github/**',
+      '.stryker-tmp/**',
+      'coverage/**',
+      'dist/**',
+      'stryker-setup-*.js',
+    ],
   },
   eslint.configs.recommended,
   unicorn.configs.recommended,

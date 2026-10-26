@@ -1,0 +1,43 @@
+diff --git a/dist/src/fs/script-file.js b/dist/src/fs/script-file.js
+index ce936a0d47df02a3e38a1777844a0069e6503fc2..35d81ebf7e91ebc1bc50d8110b2f5ed8e9f81e28 100644
+--- a/dist/src/fs/script-file.js
++++ b/dist/src/fs/script-file.js
+@@ -27,7 +27,16 @@ export class ScriptFile {
+         if (!this.sourceFile) {
+             this.sourceFile = ts.createSourceFile(this.fileName, this.content, ts.ScriptTarget.Latest, false, undefined);
+         }
+-        return this.sourceFile.getPositionOfLineAndCharacter(pos.line, pos.column);
++        try {
++            return this.sourceFile.getPositionOfLineAndCharacter(pos.line, pos.column);
++        }
++        catch {
++            const lineStarts = this.sourceFile.getLineStarts();
++            const safeLine = Math.min(Math.max(0, pos.line), lineStarts.length - 1);
++            const lineStart = lineStarts[safeLine] ?? 0;
++            const lineEnd = safeLine < lineStarts.length - 1 ? (lineStarts[safeLine + 1] ?? this.content.length) : this.content.length;
++            return Math.min(lineStart + Math.max(0, pos.column), lineEnd);
++        }
+     }
+     resetMutant() {
+         this.guardMutationIsWatched();
+diff --git a/src/fs/script-file.ts b/src/fs/script-file.ts
+index 597b4234777ea7aa4c538f6bdd5f439673175dc1..49c48a004b16f721104c618533d15c710e37459c 100644
+--- a/src/fs/script-file.ts
++++ b/src/fs/script-file.ts
+@@ -38,7 +38,15 @@ export class ScriptFile {
+         undefined,
+       );
+     }
+-    return this.sourceFile.getPositionOfLineAndCharacter(pos.line, pos.column);
++    try {
++      return this.sourceFile.getPositionOfLineAndCharacter(pos.line, pos.column);
++    } catch {
++      const lineStarts = this.sourceFile.getLineStarts();
++      const safeLine = Math.min(Math.max(0, pos.line), lineStarts.length - 1);
++      const lineStart = lineStarts[safeLine] ?? 0;
++      const lineEnd = safeLine < lineStarts.length - 1 ? (lineStarts[safeLine + 1] ?? this.content.length) : this.content.length;
++      return Math.min(lineStart + Math.max(0, pos.column), lineEnd);
++    }
+   }
+ 
+   public resetMutant(): void {
