@@ -48,7 +48,7 @@
     "format:code": "prettier --ignore-unknown --log-level=warn",
     "format:code:check": "pnpm format:code --check .",
     "format:code:fix": "pnpm format:code --cache --cache-strategy=metadata --write",
-    "lint:agents": "dogent --hints --offline AGENTS.md",
+    "lint:agents": "dogent --hints --offline --verbose AGENTS.md",
     "lint:ts": "eslint --cache --exit-on-fatal-error --no-warn-ignored --flag=unstable_native_nodejs_ts_config",
     "lint:ts:check": "pnpm lint:ts --max-warnings=0",
     "lint:ts:fix": "pnpm lint:ts --fix",

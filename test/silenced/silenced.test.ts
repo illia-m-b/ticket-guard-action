@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: Copyright (c) 2026 Illia Brashkin
+ * SPDX-FileCopyrightText: 2026 Illia Brashkin
  * SPDX-License-Identifier: MIT
  */
 
