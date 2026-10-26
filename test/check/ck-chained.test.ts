@@ -28,7 +28,6 @@ describe('a composite check', () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-
     expect(
       result,
       'The composite check outcome differs from a passed check even though all checks are valid',
@@ -48,7 +47,6 @@ describe('a composite check', () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-
     expect(
       result,
       'An empty composite check did not default to a passed check',
@@ -74,7 +72,6 @@ describe('a composite check', () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-
     expect(
       result,
       'The composite check did not return the first failing check in the chain',
@@ -99,7 +96,6 @@ describe('a composite check', () => {
       reason: chained.reason(),
       valid: chained.valid(),
     };
-
     expect(
       result,
       'The composite check did not short-circuit before invoking downstream suppliers',

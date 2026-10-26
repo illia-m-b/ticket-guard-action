@@ -26,7 +26,6 @@ describe('an all-labels check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'An all-labels check failed even though no labels are required',
@@ -48,7 +47,6 @@ describe('an all-labels check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'An all-labels check failed even though all required labels are present',
@@ -73,7 +71,6 @@ describe('an all-labels check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'An all-labels check passed even though not all required labels are present',
@@ -98,7 +95,6 @@ describe('an all-labels check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'An all-labels check passed even though no required labels are present',

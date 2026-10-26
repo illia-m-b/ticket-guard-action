@@ -14,7 +14,6 @@ describe('a reference repository resolver', () => {
   it('fails when resolving coordinates of an empty reference', () => {
     const fallback = rpPlain({ owner: 'octo-org', repo: 'octo-repo' });
     const repository = rpReference(rfEmpty(), fallback);
-
     expect(
       () => repository.name(),
       'Resolving repository coordinates of an empty reference did not throw TypeError',
@@ -33,7 +32,6 @@ describe('a reference repository resolver', () => {
       name: 'octo-repo',
       owner: 'octo-org',
     };
-
     expect(
       actual,
       'The resolved repository coordinates did not match the provided fallback repository',
@@ -52,7 +50,6 @@ describe('a reference repository resolver', () => {
       name: 'ava',
       owner: 'avajs',
     };
-
     expect(
       actual,
       'The resolved repository coordinates did not match the scoped autolink reference',
@@ -71,7 +68,6 @@ describe('a reference repository resolver', () => {
       name: 'node',
       owner: 'nodejs',
     };
-
     expect(
       actual,
       'The resolved repository coordinates did not match the canonical issue URL',

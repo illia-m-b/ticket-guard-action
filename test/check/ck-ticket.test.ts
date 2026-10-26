@@ -40,7 +40,6 @@ describe('a ticket criteria check', () => {
       reason: ckOk().reason(),
       valid: ckOk().valid(),
     };
-
     expect(
       result,
       'The ticket check failed even though all validation criteria were satisfied',
@@ -60,7 +59,6 @@ describe('a ticket criteria check', () => {
       reason: 'ticket-not-found',
       valid: false,
     };
-
     expect(
       result,
       'The ticket check did not fail with ticket-not-found when ticket is absent',
@@ -85,7 +83,6 @@ describe('a ticket criteria check', () => {
       reason: 'scope-violation',
       valid: false,
     };
-
     expect(
       result,
       'The ticket check did not fail with scope-violation when ticket URL points to external repository',
@@ -111,7 +108,6 @@ describe('a ticket criteria check', () => {
       reason: 'status-not-allowed',
       valid: false,
     };
-
     expect(
       result,
       'The ticket check did not fail with status-not-allowed when ticket status was closed',
@@ -138,7 +134,6 @@ describe('a ticket criteria check', () => {
       reason: 'missing-required-label',
       valid: false,
     };
-
     expect(
       result,
       'The ticket check did not fail with missing-required-label when ticket lacked approved label',
@@ -165,7 +160,6 @@ describe('a ticket criteria check', () => {
       reason: 'forbidden-label',
       valid: false,
     };
-
     expect(
       result,
       'The ticket check did not fail with forbidden-label when ticket carried wontfix label',
@@ -193,7 +187,6 @@ describe('a ticket criteria check', () => {
       reason: 'author-not-assigned',
       valid: false,
     };
-
     expect(
       result,
       'The ticket check did not fail with author-not-assigned when author was absent from assignees',

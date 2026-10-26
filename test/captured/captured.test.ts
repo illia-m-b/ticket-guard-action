@@ -14,7 +14,6 @@ describe('a captured stdout execution wrapper', () => {
     const result = captured(() => {
       process.stdout.write(expected);
     });
-
     expect(
       result,
       'The standard output stream was not captured by the execution wrapper',
@@ -22,7 +21,6 @@ describe('a captured stdout execution wrapper', () => {
   });
 
   it('restores standard output stream on abnormal termination', () => {
-    // eslint-disable-next-line unicorn/consistent-boolean-name
     const original = process.stdout.write.bind(process.stdout);
     try {
       captured(() => {
@@ -31,7 +29,6 @@ describe('a captured stdout execution wrapper', () => {
     } catch {
       //
     }
-
     expect(
       process.stdout.write.name,
       'Standard output stream write method was not restored after callback threw an error',

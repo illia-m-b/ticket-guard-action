@@ -25,7 +25,6 @@ describe('a ticket presence check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A ticket presence check failed even though the ticket is present',
@@ -49,7 +48,6 @@ describe('a ticket presence check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'A ticket presence check passed even though the ticket is absent',

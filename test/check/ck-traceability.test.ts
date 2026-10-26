@@ -58,7 +58,6 @@ describe('a composite traceability policy check', () => {
       ticket: id,
       valid: true,
     };
-
     expect(
       result,
       'A composite traceability check failed even though no policy violations were detected',
@@ -85,7 +84,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail due to reference absence',
@@ -117,7 +115,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check evaluated backlog despite reference absence',
@@ -162,7 +159,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check evaluated ticket accessors despite ticket absence in backlog',
@@ -189,7 +185,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail due to ticket absence in backlog',
@@ -213,7 +208,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail due to ticket scope violation',
@@ -242,7 +236,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail when ticket url is not a valid github repository url',
@@ -275,7 +268,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail due to a disallowed ticket status',
@@ -302,7 +294,6 @@ describe('a composite traceability policy check', () => {
       reason: ckOk().reason(),
       valid: ckOk().valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not pass with closed ticket even though no allowed statuses were specified',
@@ -341,7 +332,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail even though ticket is missing required labels',
@@ -380,7 +370,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail even though ticket contains a forbidden label',
@@ -415,7 +404,6 @@ describe('a composite traceability policy check', () => {
       reason: expected.reason(),
       valid: expected.valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not fail even though author is not assigned and assignment is required',
@@ -441,7 +429,6 @@ describe('a composite traceability policy check', () => {
       reason: ckOk().reason(),
       valid: ckOk().valid(),
     };
-
     expect(
       result,
       'A composite traceability check did not pass when author assignment is not required',
@@ -477,7 +464,6 @@ describe('a composite traceability policy check', () => {
       reason: ckOk().reason(),
       valid: ckOk().valid(),
     };
-
     expect(
       result,
       'A composite traceability check queried ticket labels when no label checks were configured',
@@ -499,7 +485,6 @@ describe('a composite traceability policy check', () => {
       reason: 'ok',
       valid: true,
     };
-
     expect(
       result,
       'A composite traceability check did not bypass validation for an ignored actor',
@@ -537,7 +522,6 @@ describe('a composite traceability policy check', () => {
       id: 'JIRA-456',
       valid: true,
     };
-
     expect(
       result,
       'A composite traceability check did not support custom reference extractor',

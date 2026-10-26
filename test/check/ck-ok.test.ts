@@ -20,7 +20,6 @@ describe('a passed check', () => {
       reason: 'ok',
       valid: true,
     };
-
     expect(
       actual,
       'A default passed check did not yield the expected successful outcome',
@@ -40,7 +39,6 @@ describe('a passed check', () => {
       reason: 'ok',
       valid: true,
     };
-
     expect(
       actual,
       'A custom success message was not preserved by the passed check',

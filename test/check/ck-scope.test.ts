@@ -28,7 +28,6 @@ describe('a scope verification check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A scope verification check did not bypass validation when scope is "any"',
@@ -57,7 +56,6 @@ describe('a scope verification check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A scope verification check did not bypass validation when scope is "any" and coordinates cannot be determined',
@@ -80,7 +78,6 @@ describe('a scope verification check', () => {
         reason: ok.reason(),
         valid: ok.valid(),
       };
-
       expect(
         check,
         'A scope verification check did not succeed when scope is "same-org" and repositories belong to the same organization',
@@ -105,7 +102,6 @@ describe('a scope verification check', () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-
       expect(
         check,
         'A scope verification check succeeded when scope is "same-org" but repositories belong to different organizations',
@@ -137,7 +133,6 @@ describe('a scope verification check', () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-
       expect(
         check,
         'A scope verification check did not fail when ticket repository coordinates cannot be determined in "same-org" scope',
@@ -164,7 +159,6 @@ describe('a scope verification check', () => {
         reason: ok.reason(),
         valid: ok.valid(),
       };
-
       expect(
         check,
         'A scope verification check did not succeed when scope is "current-repo" and repositories are identical',
@@ -192,7 +186,6 @@ describe('a scope verification check', () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-
       expect(
         check,
         'A scope verification check succeeded when scope is "current-repo", repositories belong to the same organization, but have different names',
@@ -224,7 +217,6 @@ describe('a scope verification check', () => {
         reason: expected.reason(),
         valid: expected.valid(),
       };
-
       expect(
         check,
         'A scope verification check did not fail when ticket repository coordinates cannot be determined in "current-repo" scope',

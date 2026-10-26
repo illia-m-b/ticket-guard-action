@@ -22,7 +22,6 @@ describe('an in-memory fake check instance', () => {
       reason: 'ok',
       valid: true,
     };
-
     expect(
       actual,
       'The default check values deviated from the expected initial successful state',
@@ -41,7 +40,6 @@ describe('an in-memory fake check instance', () => {
       reason: check.reason(),
       valid: check.valid(),
     };
-
     expect(
       actual,
       'Custom overrides were not preserved by the fake check instance',

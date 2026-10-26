@@ -26,7 +26,6 @@ describe('a forbidden labels check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A forbidden labels check failed even though no forbidden labels are present',
@@ -48,7 +47,6 @@ describe('a forbidden labels check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A forbidden labels check failed even though the forbidden list is empty',
@@ -73,7 +71,6 @@ describe('a forbidden labels check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'A forbidden labels check passed even though a forbidden label is present',

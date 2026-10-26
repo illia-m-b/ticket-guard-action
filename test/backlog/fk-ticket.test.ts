@@ -26,7 +26,6 @@ describe('an in-memory ticket instance', () => {
       status: fake.status(),
       url: fake.url(),
     };
-
     expect(
       actual,
       'Unexpected default values were used for absent ticket',
@@ -35,7 +34,6 @@ describe('an in-memory ticket instance', () => {
 
   it('throws TypeError when reading the id of an absent ticket', () => {
     const fake = fkTicket();
-
     expect(
       () => fake.id(),
       'Accessing an absent ticket was silently permitted',
@@ -45,7 +43,6 @@ describe('an in-memory ticket instance', () => {
   it('uses an empty string when marked as present without overrides', () => {
     const id = fkTicket({ present: true }).id();
     const empty = '';
-
     expect(id, 'A non-empty id was assigned to the fake present ticket').toBe(
       empty,
     );
@@ -69,7 +66,6 @@ describe('an in-memory ticket instance', () => {
       status: fake.status(),
       url: fake.url(),
     };
-
     expect(
       actual,
       'Custom overrides were not preserved by the fake ticket instance',

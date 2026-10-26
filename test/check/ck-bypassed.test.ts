@@ -18,7 +18,6 @@ describe('a bypassed check', () => {
       return true;
     };
     ckBypassed(shouldBypass, () => fkCheck());
-
     expect(called, 'A condition was eagerly executed upon creation').toBe(
       never,
     );
@@ -40,7 +39,6 @@ describe('a bypassed check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A bypassed check did not produce a passed check with default message when predicate was true',
@@ -65,7 +63,6 @@ describe('a bypassed check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A bypassed check did not produce a passed check with custom message when predicate was true',
@@ -88,7 +85,6 @@ describe('a bypassed check', () => {
       reason: actual.reason(),
       valid: actual.valid(),
     };
-
     expect(
       check,
       'The wrapped check was unexpectedly bypassed when predicate was false',

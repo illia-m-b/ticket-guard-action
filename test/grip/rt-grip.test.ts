@@ -17,7 +17,6 @@ describe('a real-time grip', () => {
       return randomInt(Date.now());
     };
     rtGrip(origin);
-
     expect(
       called,
       'A real-time grip eagerly executed the supplier function',
@@ -35,7 +34,6 @@ describe('a real-time grip', () => {
     for (let index = 0; index < times; index += 1) {
       isDumbGrp();
     }
-
     expect(
       called,
       'A real-time grip did not delegate every call to the origin function',
@@ -46,7 +44,6 @@ describe('a real-time grip', () => {
     const grip = rtGrip(() => ({ time: Date.now() }));
     const first = grip();
     const second = grip();
-
     expect(
       first,
       'A real-time grip yielded the same value across multiple calls',
@@ -65,7 +62,6 @@ describe('a real-time grip', () => {
     for (let index = 0; index < times; index += 1) {
       grip();
     }
-
     expect(
       called,
       'A real-time grip did not re-evaluate the origin function when it yielded null',
@@ -82,7 +78,6 @@ describe('a real-time grip', () => {
     for (let index = 0; index < times; index += 1) {
       grip();
     }
-
     expect(
       called,
       'A real-time grip did not re-evaluate the origin function when it yielded undefined',
@@ -93,7 +88,6 @@ describe('a real-time grip', () => {
     const grip = rtGrip((): never => {
       throw new Error('I realized what is wrong with me');
     });
-
     expect(
       () => grip(),
       'A real-time grip silently ignored or modified errors from the origin function',

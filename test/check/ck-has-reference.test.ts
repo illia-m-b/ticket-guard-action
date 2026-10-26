@@ -26,7 +26,6 @@ describe('a reference presence check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A reference presence check failed even though the reference is present',
@@ -50,7 +49,6 @@ describe('a reference presence check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'A reference presence check passed even though the reference is absent',

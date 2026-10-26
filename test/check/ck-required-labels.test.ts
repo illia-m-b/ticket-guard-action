@@ -29,7 +29,6 @@ describe('a required-labels check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A required-labels check was executed even though no required labels are specified',
@@ -52,7 +51,6 @@ describe('a required-labels check', () => {
       reason: original.reason(),
       valid: original.valid(),
     };
-
     expect(
       check,
       'A required-labels check was not delegated to the all-labels check',
@@ -75,7 +73,6 @@ describe('a required-labels check', () => {
       reason: original.reason(),
       valid: original.valid(),
     };
-
     expect(
       check,
       'A required-labels check was not delegated to the any-label check',

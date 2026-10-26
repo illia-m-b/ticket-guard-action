@@ -22,7 +22,6 @@ describe('a failed check', () => {
       reason,
       valid: false,
     };
-
     expect(
       actual,
       'A failed check did not preserve the supplied reason code, message, or invalid status',

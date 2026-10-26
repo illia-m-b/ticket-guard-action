@@ -23,7 +23,6 @@ describe('a reference envelope', () => {
       present: envelope.present(),
       raw: envelope.raw(),
     };
-
     expect(
       actual,
       'The reference envelope returned values that differ from the encapsulated reference',
@@ -40,7 +39,6 @@ describe('a reference envelope', () => {
     envelope.id();
     envelope.present();
     envelope.raw();
-
     expect(
       called,
       'The reference envelope evaluated the origin function more than once under default grip',
@@ -57,7 +55,6 @@ describe('a reference envelope', () => {
     envelope.id();
     envelope.present();
     envelope.raw();
-
     expect(
       called,
       'The reference envelope did not re-evaluate the origin function for each accessor under real-time grip',

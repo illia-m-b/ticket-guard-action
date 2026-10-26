@@ -36,7 +36,6 @@ describe('an in-memory fake inputs instance', () => {
       requiredLabels: fake.requiredLabels(),
       scope: fake.scope(),
     };
-
     expect(
       actual,
       'The default input values deviated from the configuration defaults specified in action.yml',
@@ -69,7 +68,6 @@ describe('an in-memory fake inputs instance', () => {
       requiredLabels: fake.requiredLabels(),
       scope: fake.scope(),
     };
-
     expect(
       actual,
       'Custom input overrides were not preserved by the fake inputs instance',

@@ -28,7 +28,6 @@ describe('an ignored actor check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'An ignored actor check failed even though author is in ignore-actors',
@@ -52,7 +51,6 @@ describe('an ignored actor check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'An ignored actor check failed case-insensitive matching against ignore-actors',
@@ -77,7 +75,6 @@ describe('an ignored actor check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'An ignored actor check passed even though author is not in ignore-actors',
@@ -102,7 +99,6 @@ describe('an ignored actor check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'An ignored actor check passed even though ignore-actors list is empty',
