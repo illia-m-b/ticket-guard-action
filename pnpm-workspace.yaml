@@ -13,4 +13,4 @@ autoInstallPeers: true
 allowBuilds:
   lefthook: true
 patchedDependencies:
-  '@stryker-mutator/vitest-runner': patches/@stryker-mutator__vitest-runner.patch
+  '@stryker-mutator/typescript-checker': patches/@stryker-mutator__typescript-checker.patch
