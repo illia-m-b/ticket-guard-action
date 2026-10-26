@@ -17,7 +17,6 @@ describe('a sticky grip', () => {
       return randomInt(Date.now());
     };
     stGrip(origin);
-
     expect(called, 'A sticky grip eagerly executed the supplier function').toBe(
       never,
     );
@@ -34,7 +33,6 @@ describe('a sticky grip', () => {
     grip();
     grip();
     grip();
-
     expect(
       called,
       'A sticky grip evaluated the supplier function more than once',
@@ -47,7 +45,6 @@ describe('a sticky grip', () => {
     }));
     const first = grip();
     const second = grip();
-
     expect(
       first,
       'A sticky grip returned different values across multiple calls',
@@ -66,7 +63,6 @@ describe('a sticky grip', () => {
     grip();
     grip();
     grip();
-
     expect(
       called,
       'A sticky grip re-evaluated the origin function when it yielded null',
@@ -83,7 +79,6 @@ describe('a sticky grip', () => {
     grip();
     grip();
     grip();
-
     expect(
       called,
       'A sticky grip re-evaluated the origin function when it yielded undefined',
@@ -94,7 +89,6 @@ describe('a sticky grip', () => {
     const grip = stGrip((): never => {
       throw new Error('I realized what is wrong with me');
     });
-
     expect(
       () => grip(),
       'A sticky grip silently ignored or modified errors from the origin function',

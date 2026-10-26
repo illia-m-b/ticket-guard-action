@@ -31,7 +31,6 @@ describe('ticket guard GitHub action', () => {
       fkOutputs(),
       fkInputs(),
     );
-
     expect(
       isCalled,
       'The action evaluated the traceability check eagerly upon instantiation',
@@ -79,7 +78,6 @@ describe('ticket guard GitHub action', () => {
           'ticket-url': url,
         },
       };
-
       expect(
         actual,
         'Ticket Guard action did not publish expected outputs and info logs upon verification success',
@@ -113,7 +111,6 @@ describe('ticket guard GitHub action', () => {
           'ticket-url': '',
         },
       };
-
       expect(
         actual,
         'Ticket Guard action did not publish empty ticket outputs when verification succeeded without ticket',
@@ -136,7 +133,6 @@ describe('ticket guard GitHub action', () => {
         fkInputs(),
       ).run();
       const failed = ['No issue reference found in the pull request'];
-
       expect(
         fails,
         'Ticket Guard action did not emit a failure message even though failOnError is enabled',
@@ -157,7 +153,6 @@ describe('ticket guard GitHub action', () => {
         fkInputs({ failOnError: false }),
       ).run();
       const warned = ['No issue reference found in the pull request'];
-
       expect(
         warns,
         'Ticket Guard action did not emit a warning message even though failOnError is disabled',
@@ -186,7 +181,6 @@ describe('ticket guard GitHub action', () => {
         'ticket-status': '',
         'ticket-url': '',
       };
-
       expect(
         actual,
         'Ticket Guard action did not record failure outputs properly when policy failed',
@@ -211,7 +205,6 @@ describe('ticket guard GitHub action', () => {
         fkOutputs({ outputs }),
         inputs,
       ).run();
-
       expect(
         outputs.get('ticket-id'),
         'The integrated ticket guard action failed to resolve the ticket identifier',

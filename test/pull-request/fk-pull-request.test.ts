@@ -27,7 +27,6 @@ describe('an in-memory pull request instance', () => {
       repository: fake.repository().name(),
       title: fake.title(),
     };
-
     expect(actual, 'Unexpected default values were used').toStrictEqual(
       defaults,
     );
@@ -55,7 +54,6 @@ describe('an in-memory pull request instance', () => {
       repository: fake.repository().name(),
       title: fake.title(),
     };
-
     expect(
       actual,
       'Custom overrides were not preserved by the fake PR instance',

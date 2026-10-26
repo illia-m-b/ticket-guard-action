@@ -32,7 +32,6 @@ describe('a multi-target reference scanner', () => {
       present: true,
       raw: token,
     };
-
     expect(
       actual,
       'The scanner failed to extract the expected reference from pull request title',
@@ -56,7 +55,6 @@ describe('a multi-target reference scanner', () => {
       present: true,
       raw: token,
     };
-
     expect(
       actual,
       'The scanner failed to extract the expected reference from pull request body',
@@ -81,7 +79,6 @@ describe('a multi-target reference scanner', () => {
       present: true,
       raw: token,
     };
-
     expect(
       actual,
       'The scanner failed to resolve reference from fallback body target',
@@ -96,7 +93,6 @@ describe('a multi-target reference scanner', () => {
       title: `feat: support feature (#${titleId})`,
     });
     const reference = rfTargets(['pr-title', 'pr-body'], pr);
-
     expect(
       reference.id(),
       'The scanner did not prioritize the title reference when title was ordered first',
@@ -111,7 +107,6 @@ describe('a multi-target reference scanner', () => {
       title: `feat: support feature (#${titleId})`,
     });
     const reference = rfTargets(['pr-body', 'pr-title'], pr);
-
     expect(
       reference.id(),
       'The scanner did not prioritize the body reference when body was ordered first',
@@ -132,7 +127,6 @@ describe('a multi-target reference scanner', () => {
       present: false,
       raw: '',
     };
-
     expect(
       actual,
       'An unreferenced pull request did not yield an empty reference representation',
@@ -145,7 +139,6 @@ describe('a multi-target reference scanner', () => {
       title: 'chore: internal refactoring without issue',
     });
     const reference = rfTargets(['pr-title', 'pr-body'], pr);
-
     expect(
       () => reference.id(),
       'Accessing the id on an empty reference was unexpectedly permitted',
@@ -167,7 +160,6 @@ describe('a multi-target reference scanner', () => {
       present: false,
       raw: '',
     };
-
     expect(
       actual,
       'A reference was unexpectedly found when no targets were configured to scan',
@@ -190,7 +182,6 @@ describe('a multi-target reference scanner', () => {
       },
     };
     rfTargets(['pr-title', 'pr-body'], pr);
-
     expect(
       accessed,
       'The pull request targets were eagerly accessed upon scanner creation',
@@ -212,7 +203,6 @@ describe('a multi-target reference scanner', () => {
     };
     const reference = rfTargets(['pr-title', 'pr-body'], pr);
     reference.present();
-
     expect(
       accessed,
       'The pull request body was accessed even though the title already satisfied reference discovery',
@@ -240,7 +230,6 @@ describe('a multi-target reference scanner', () => {
       present: true,
       raw: id,
     };
-
     expect(
       actual,
       'The custom extracted supplier did not return the expected reference values',

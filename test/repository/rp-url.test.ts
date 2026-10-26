@@ -10,7 +10,6 @@ import { rpUrl } from '#repository/rp-url.ts';
 describe('a repository URL', () => {
   it('defers evaluation until coordinates are accessed', () => {
     const repository = rpUrl('invalid input');
-
     expect(
       repository.owner,
       'Constructing repository coordinates from an invalid input threw eagerly',
@@ -98,7 +97,7 @@ describe('a repository URL', () => {
       },
       {
         expected: { name: 'eslint', owner: 'eslint' },
-        // eslint-disable-next-line sonarjs/no-clear-text-protocols, unicorn/prefer-https
+        // eslint-disable-next-line unicorn/prefer-https
         input: 'http://github.com/eslint/eslint',
         message:
           'The repository coordinates were not extracted from an insecure http URL',
@@ -268,7 +267,6 @@ describe('a repository URL', () => {
       },
     ])('$title', ({ expected, input, message }) => {
       const repository = rpUrl(input);
-
       expect(
         { name: repository.name(), owner: repository.owner() },
         message,
@@ -294,7 +292,6 @@ describe('a repository URL', () => {
       },
     ])('$title', ({ expected, input, message }) => {
       const repository = rpUrl(input);
-
       expect(
         { name: repository.name(), owner: repository.owner() },
         message,
@@ -307,7 +304,6 @@ describe('a repository URL', () => {
       const repository = rpUrl(
         'fixes https://github.com/nodejs/node/issues/52109 and resolves https://github.com/eslint/eslint/issues/18900',
       );
-
       expect(
         { name: repository.name(), owner: repository.owner() },
         'The first repository reference was not selected when multiple repository URLs were present in text',
@@ -320,7 +316,6 @@ describe('a repository URL', () => {
         ' https://github.com/nodejs/node/issues/52109 ' +
         '-cd-ab'.repeat(1600);
       const repository = rpUrl(hostile);
-
       expect(
         { name: repository.name(), owner: repository.owner() },
         'Failed to extract repository coordinates from large hostile text within performance limits',

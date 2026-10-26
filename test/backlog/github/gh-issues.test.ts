@@ -50,7 +50,6 @@ describe('a GitHub issues adapter', () => {
       status: retrieved.status(),
       url: retrieved.url(),
     };
-
     expect(
       actual,
       'Retrieved fields differ from fake ticket defaults when reference is absent',
@@ -94,7 +93,6 @@ describe('a GitHub issues adapter', () => {
       status: retrieved.status(),
       url: retrieved.url(),
     };
-
     expect(
       actual,
       'Retrieved fields differ from fake ticket defaults when ticket is not found',
@@ -132,7 +130,6 @@ describe('a GitHub issues adapter', () => {
       status: retrieved.status(),
       url: retrieved.url(),
     };
-
     expect(
       actual,
       'Retrieved ticket does not match the expected backlog issue',
@@ -144,7 +141,6 @@ describe('a GitHub issues adapter', () => {
     const repository = rpPlain({ owner: 'scoped-org', repo: 'scoped-repo' });
     const backlog = ghIssues(fkOctokit());
     const retrieved = await backlog.ticket(reference, repository);
-
     expect(
       retrieved.url(),
       'Retrieved ticket URL did not match the scoped repository in the reference',
@@ -155,7 +151,6 @@ describe('a GitHub issues adapter', () => {
     const reference = rfGitHub('Closes #10');
     const repository = rpPlain({ owner: 'octo', repo: 'app' });
     const backlog = ghIssues(fkOctokit({ status: 401 }));
-
     await expect(
       backlog.ticket(reference, repository),
       'An unauthorized token error did not fail with the expected message',
@@ -170,7 +165,6 @@ describe('a GitHub issues adapter', () => {
     const reference = rfGitHub('Closes #10');
     const repository = rpPlain({ owner: 'octo', repo: 'app' });
     const backlog = ghIssues(fkOctokit({ status: 403 }));
-
     await expect(
       backlog.ticket(reference, repository),
       'A forbidden token permissions error did not fail with the expected message',
@@ -194,7 +188,6 @@ describe('a GitHub issues adapter', () => {
     const reference = rfGitHub('Closes #91');
     const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
     const backlog = ghIssues(buggy);
-
     await expect(
       backlog.ticket(reference, repository),
       'An unknown error from the Octokit client was silently ignored',
@@ -217,7 +210,6 @@ describe('a GitHub issues adapter', () => {
     const reference = rfGitHub('Closes #99');
     const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
     const backlog = ghIssues(failing);
-
     await expect(
       backlog.ticket(reference, repository),
       'A server error carrying HTTP status 500 was not rethrown',

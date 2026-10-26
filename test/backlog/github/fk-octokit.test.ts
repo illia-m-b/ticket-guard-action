@@ -13,7 +13,6 @@ describe('an in-memory Octokit client', () => {
   it('throws an error when status is 4xx', async () => {
     const status = 400 + new Date().getDay();
     const octokit = fkOctokit({ status });
-
     await expect(
       octokit.rest.issues.get({
         issue_number: Date.now(),
@@ -51,7 +50,6 @@ describe('an in-memory Octokit client', () => {
         ...issue,
       },
     };
-
     expect(
       actual,
       'Actual issue fields were not projected correctly',
@@ -78,7 +76,6 @@ describe('an in-memory Octokit client', () => {
         state: 'open',
       },
     };
-
     expect(
       actual,
       'Undefined issue fields were not defaulted to their expected values',

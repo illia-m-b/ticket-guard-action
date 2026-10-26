@@ -24,7 +24,6 @@ describe('a repository coordinates envelope', () => {
       name: envelope.name(),
       owner: envelope.owner(),
     };
-
     expect(
       delegated,
       'The repo coords envelope returned values that differ from the encapsulated coords',
@@ -40,7 +39,6 @@ describe('a repository coordinates envelope', () => {
     });
     envelope.owner();
     envelope.name();
-
     expect(
       called,
       'The repo coords envelope evaluated the origin function more than once under default grip',
@@ -56,7 +54,6 @@ describe('a repository coordinates envelope', () => {
     }, rtGrip);
     envelope.owner();
     envelope.name();
-
     expect(
       called,
       'The repo coords envelope did not re-evaluate the origin function for each accessor under real-time grip',

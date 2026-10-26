@@ -19,7 +19,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     process.env.GITHUB_OUTPUT = 'node_modules/.test-gh-output.txt';
     const value = `value-${randomInt(100, 9999)}`;
     rtOutputs().output('ticket-id', value);
-
     expect(
       readFileSync('node_modules/.test-gh-output.txt', 'utf8'),
       'The action output parameter was not written to the runner output file',
@@ -36,7 +35,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
         process.exitCode = 0;
       }
     });
-
     expect(code, 'The process exit code was not marked as failure').toBe(1);
   });
 
@@ -50,7 +48,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
         process.exitCode = 0;
       }
     });
-
     expect(code, 'The process exit code was not marked as failure').toBe(1);
   });
 
@@ -59,7 +56,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().info(message);
     });
-
     expect(
       result,
       'The informational message was not written to standard output',
@@ -71,7 +67,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().debug(message);
     });
-
     expect(
       result,
       'The debug annotation was not written to standard output',
@@ -83,7 +78,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().warn(message);
     });
-
     expect(
       result,
       'The warning annotation was not written to standard output',
@@ -95,7 +89,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().warn(new Error(message));
     });
-
     expect(
       result,
       'The warning annotation was not written to standard output',
@@ -107,7 +100,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().error(message);
     });
-
     expect(
       result,
       'The error annotation was not written to standard output',
@@ -119,7 +111,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().error(new Error(message));
     });
-
     expect(
       result,
       'The error annotation was not written to standard output',
@@ -131,7 +122,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().notice(message);
     });
-
     expect(
       result,
       'The notice annotation was not written to standard output',
@@ -143,7 +133,6 @@ describe('a real-time GitHub Actions outputs adapter', () => {
     const result = captured(() => {
       rtOutputs().notice(new Error(message));
     });
-
     expect(
       result,
       'The notice annotation was not written to standard output',

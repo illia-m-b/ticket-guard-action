@@ -49,7 +49,6 @@ describe('an in-memory backlog instance', () => {
       status: fake.status(),
       url: fake.url(),
     };
-
     expect(
       actual,
       'A ticket with nondefault fields was returned though reference is absent',
@@ -94,7 +93,6 @@ describe('an in-memory backlog instance', () => {
       status: fake.status(),
       url: fake.url(),
     };
-
     expect(
       actual,
       'A ticket with nondefault fields was returned though search failed',
@@ -127,7 +125,6 @@ describe('an in-memory backlog instance', () => {
       status: found.status(),
       url: found.url(),
     };
-
     expect(
       actual,
       'The retrieved ticket did not match the expected preset ticket values',

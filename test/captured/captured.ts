@@ -14,7 +14,6 @@
  */
 export const captured = (action: () => void): string => {
   const chunks: string[] = [];
-  // eslint-disable-next-line unicorn/consistent-boolean-name
   const original = process.stdout.write.bind(process.stdout);
   process.stdout.write = (chunk: string | Uint8Array): boolean => {
     chunks.push(String(chunk));

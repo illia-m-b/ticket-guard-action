@@ -24,7 +24,6 @@ describe('a plain traceability outcome', () => {
       reason: origin.reason(),
       valid: origin.valid(),
     };
-
     expect(
       actual,
       'The plain traceability outcome did not delegate accessors to the wrapped check',
@@ -40,7 +39,6 @@ describe('a plain traceability outcome', () => {
       url: 'https://github.com/octo-org/octo-repo/issues/42',
     });
     const traceability = trPlain(origin, ticket);
-
     expect(
       traceability.ticket(),
       'The plain traceability outcome did not return the provided ticket instance',
@@ -50,7 +48,6 @@ describe('a plain traceability outcome', () => {
   it('defaults to absent ticket when ticket parameter is omitted', () => {
     const origin = ckOk();
     const traceability = trPlain(origin);
-
     expect(
       traceability.ticket().present(),
       'The plain traceability outcome did not default to an absent ticket',

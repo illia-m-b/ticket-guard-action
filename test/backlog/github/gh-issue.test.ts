@@ -36,7 +36,6 @@ describe('a GitHub issue adapter', () => {
       status: issue.status(),
       url: issue.url(),
     };
-
     expect(
       actual,
       'Actual issue fields were not projected correctly',
@@ -53,7 +52,6 @@ describe('a GitHub issue adapter', () => {
     const issue = ghIssue(payload);
     const assignees = issue.assignees();
     const empty: readonly string[] = [];
-
     expect(
       assignees,
       'Assignees were not defaulted to an empty array when omitted from the payload',
@@ -70,7 +68,6 @@ describe('a GitHub issue adapter', () => {
     const issue = ghIssue(payload);
     const first = issue.labels();
     const second = issue.labels();
-
     expect(
       first,
       'Labels array reference changed between subsequent calls',
@@ -88,7 +85,6 @@ describe('a GitHub issue adapter', () => {
     const issue = ghIssue(payload);
     const first = issue.assignees();
     const second = issue.assignees();
-
     expect(
       first,
       'Assignees array reference changed between subsequent calls',
@@ -105,7 +101,6 @@ describe('a GitHub issue adapter', () => {
     const issue = ghIssue(payload, rtGrip);
     const first = issue.labels();
     const second = issue.labels();
-
     expect(
       first,
       'Labels array reference remained identical under real-time grip',

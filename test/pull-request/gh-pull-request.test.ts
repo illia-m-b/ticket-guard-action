@@ -39,7 +39,6 @@ describe('a GitHub-backed pull request adapter', () => {
       repoOwner: context.repo.owner,
       title: context.payload.pull_request.title,
     };
-
     expect(actual, 'Actual PR data was not projected correctly').toStrictEqual(
       expected,
     );
@@ -68,7 +67,6 @@ describe('a GitHub-backed pull request adapter', () => {
       repoOwner: context.repo.owner,
       title: '',
     };
-
     expect(
       actual,
       'Undefined PR field must default to empty strings',

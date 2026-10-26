@@ -25,7 +25,6 @@ describe('a status check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'A status check failed even though the status is allowed',
@@ -50,7 +49,6 @@ describe('a status check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'A status check passed even though the status is not allowed',

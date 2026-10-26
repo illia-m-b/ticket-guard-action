@@ -16,7 +16,6 @@ describe('an in-memory fake outputs instance', () => {
     const outputs = fkOutputs({ debugs });
     const message = String(Date.now());
     outputs.debug(message);
-
     expect(
       debugs,
       'A fake outputs instance failed to write the provided debug message to its storage',
@@ -30,7 +29,6 @@ describe('an in-memory fake outputs instance', () => {
     const error = new EvalError(String(new Date().getMilliseconds()));
     outputs.error(message);
     outputs.error(error);
-
     expect(
       errors,
       'A fake outputs instance failed to populate error storage with both plain strings and messages from Error instances',
@@ -44,7 +42,6 @@ describe('an in-memory fake outputs instance', () => {
     const error = new EvalError(String(new Date().getMilliseconds()));
     outputs.fail(message);
     outputs.fail(error);
-
     expect(
       fails,
       'A fake outputs instance failed to populate failure storage with both plain strings and messages from Error instances',
@@ -56,7 +53,6 @@ describe('an in-memory fake outputs instance', () => {
     const outputs = fkOutputs({ infos });
     const message = String(Date.now());
     outputs.info(message);
-
     expect(
       infos,
       'A fake outputs instance failed to write the provided informational message to its storage',
@@ -70,7 +66,6 @@ describe('an in-memory fake outputs instance', () => {
     const error = new EvalError(String(new Date().getMilliseconds()));
     outputs.notice(message);
     outputs.notice(error);
-
     expect(
       notices,
       'A fake outputs instance failed to populate notice storage with both plain strings and messages from Error instances',
@@ -91,7 +86,6 @@ describe('an in-memory fake outputs instance', () => {
     for (const [name, value] of pairs) {
       outputs.output(name, value);
     }
-
     expect(
       Object.fromEntries(storage),
       'A fake outputs instance failed to populate output storage with the given entries',
@@ -105,7 +99,6 @@ describe('an in-memory fake outputs instance', () => {
     const error = new EvalError(String(new Date().getMilliseconds()));
     outputs.warn(message);
     outputs.warn(error);
-
     expect(
       warns,
       'A fake outputs instance failed to populate warning storage with both plain strings and messages from Error instances',

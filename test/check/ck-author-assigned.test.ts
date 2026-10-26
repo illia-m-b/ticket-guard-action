@@ -28,7 +28,6 @@ describe('an author assignment check', () => {
       reason: ok.reason(),
       valid: ok.valid(),
     };
-
     expect(
       check,
       'An author assignment check failed even though the author is among assignees',
@@ -57,7 +56,6 @@ describe('an author assignment check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'An author assignment check passed even though the author is not assigned',
@@ -82,7 +80,6 @@ describe('an author assignment check', () => {
       reason: invalid.reason(),
       valid: invalid.valid(),
     };
-
     expect(
       check,
       'An author assignment check passed even though the assignees list is empty',

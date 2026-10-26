@@ -23,7 +23,6 @@ describe('a check envelope', () => {
       reason: envelope.reason(),
       valid: envelope.valid(),
     };
-
     expect(
       actual,
       'The check envelope returned values that differ from the encapsulated check',
@@ -40,7 +39,6 @@ describe('a check envelope', () => {
     envelope.valid();
     envelope.reason();
     envelope.message();
-
     expect(
       called,
       'The check envelope evaluated the origin function more than once under default grip',
@@ -57,7 +55,6 @@ describe('a check envelope', () => {
     envelope.valid();
     envelope.reason();
     envelope.message();
-
     expect(
       called,
       'The check envelope did not re-evaluate the origin function for each accessor under real-time grip',

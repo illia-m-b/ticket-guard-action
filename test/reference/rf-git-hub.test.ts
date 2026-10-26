@@ -187,7 +187,6 @@ describe('a GitHub issue reference', () => {
     it('processes a ten-thousand character hostile body within performance limits', () => {
       const hostile =
         'ab/cd-'.repeat(1600) + ' fixes #42 ' + '-cd/ab'.repeat(1600);
-
       expect(
         rfGitHub(hostile).id(),
         'Failed to extract issue id from large hostile text within performance limits',

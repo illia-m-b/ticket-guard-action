@@ -31,7 +31,6 @@ describe('a candidate reference check', () => {
       reason: ckOk().reason(),
       valid: ckOk().valid(),
     };
-
     expect(
       result,
       'The candidate check failed for a present and in-scope issue reference',
@@ -50,7 +49,6 @@ describe('a candidate reference check', () => {
       reason: 'no-ticket-found',
       valid: false,
     };
-
     expect(
       result,
       'The candidate check did not fail with no-ticket-found for an empty reference',
@@ -72,7 +70,6 @@ describe('a candidate reference check', () => {
       reason: 'scope-violation',
       valid: false,
     };
-
     expect(
       result,
       'The candidate check did not fail with scope-violation when reference belongs to foreign repository',

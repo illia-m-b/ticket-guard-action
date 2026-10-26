@@ -24,7 +24,6 @@ describe('plain text repository coordinates', () => {
       owner: repository.owner(),
       repo: repository.name(),
     };
-
     expect(
       coordinates,
       'Repository coordinates differs from original lowercased ones',
