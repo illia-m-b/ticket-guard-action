@@ -37,28 +37,6 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Update npm packages in GitHub Actions workflows",
-      "managerFilePatterns": ["/(^|/)\\.github/workflows/.+\\.ya?ml$/"],
-      "matchStrings": [
-        "(?:--package[= ]|-p[= ])['\"]?(?<depName>@?[a-zA-Z0-9_.-]+(?:/[a-zA-Z0-9_.-]+)?)@(?<currentValue>[0-9]+\\.[0-9]+\\.[0-9]+[^\\s'\"\\\\]*)"
-      ],
-      "datasourceTemplate": "npm",
-      "versioningTemplate": "npm",
-      "depTypeTemplate": "action"
-    },
-    {
-      "customType": "regex",
-      "description": "Update pipx CLI tools in GitHub Actions workflows",
-      "managerFilePatterns": ["/(^|/)\\.github/workflows/.+\\.ya?ml$/"],
-      "matchStrings": [
-        "pipx\\s+run\\s+['\"]?(?<depName>[a-zA-Z0-9_.-]+)==(?<currentValue>[0-9][a-zA-Z0-9_.-]*)"
-      ],
-      "datasourceTemplate": "pypi",
-      "versioningTemplate": "pep440",
-      "depTypeTemplate": "action"
-    },
-    {
-      "customType": "regex",
       "description": "Update actionlint binary in GitHub Actions workflows",
       "managerFilePatterns": ["/(^|/)\\.github/workflows/actionlint\\.ya?ml$/"],
       "matchStrings": [

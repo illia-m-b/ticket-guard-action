@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: Copyright (c) 2026 Illia Brashkin
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
@@ -14,7 +14,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
   reuse:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-24.04
     timeout-minutes: 3
     permissions:
       contents: read
@@ -23,4 +23,4 @@ jobs:
         with:
           persist-credentials: false
           show-progress: false
-      - run: pipx run reuse==6.2.0 lint
+      - uses: fsfe/reuse-action@676e2d560c9a403aa252096d99fcab3e1132b0f5 # v6.0.0

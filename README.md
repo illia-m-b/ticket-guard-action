@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: 2026 Illia Brashkin
+SPDX-License-Identifier: MIT
+-->
+
 # Ticket Guard Action
 
 _Traceability enforcer—validates business state, labels, and lifecycle status of
