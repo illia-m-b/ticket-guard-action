@@ -1,0 +1,37 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: pr-cleanup
+'on':
+  pull_request:
+    types:
+      - closed
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+jobs:
+  pr-cleanup:
+    runs-on: ubuntu-slim
+    timeout-minutes: 3
+    permissions:
+      actions: write
+    steps:
+      - run: |
+          set -euo pipefail
+          echo "Fetching cache keys for ref: ${BRANCH}"
+          cache_ids=$(gh cache list --ref "${BRANCH}" --limit 100 --json id --jq '.[].id')
+          if [ -z "${cache_ids}" ]; then
+            echo "No caches found for ref: ${BRANCH}"
+            exit 0
+          fi
+          echo "Deleting caches for ref: ${BRANCH}"
+          for cache_id in ${cache_ids}; do
+            gh cache delete "${cache_id}" || true
+          done
+          echo "Finished cache cleanup"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          BRANCH: refs/pull/${{ github.event.pull_request.number }}/merge
