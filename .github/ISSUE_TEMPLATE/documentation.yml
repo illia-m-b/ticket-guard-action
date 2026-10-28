@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: Documentation
+description: Propose documentation improvements or corrections.
+title: 'docs: '
+labels:
+  - documentation
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Accurate, Concise Documentation
+        Propose corrections or additions to `README.md`, `CONTRIBUTING.md`, or typings.
+  - type: textarea
+    id: target
+    attributes:
+      label: Target Documentation
+      description: File, section, or input table to improve.
+      placeholder: README.md inputs table or CONTRIBUTING.md workflow.
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Proposed Changes
+      description: Explain what is missing, outdated, or inaccurate.
+      placeholder: Detail the text or concept that needs updating.
+    validations:
+      required: true
+  - type: textarea
+    id: suggested-content
+    attributes:
+      label: Suggested Content
+      description: Replacement or additional markdown text.
+      render: markdown
+    validations:
+      required: false

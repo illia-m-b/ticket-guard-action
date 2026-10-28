@@ -1,0 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+blank_issues_enabled: false
+contact_links:
+  - name: Architecture and Contributing Guide
+    url: https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md
+    about: Read about Elegant Objects, Angry Tests, and development guidelines.

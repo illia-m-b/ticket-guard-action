@@ -1,0 +1,62 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: Feature Request
+description: Propose an enhancement that earns its keep and satisfies YAGNI.
+title: 'feat: '
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Whole Before Parts, Composition Before Ingredients
+        Review [CONTRIBUTING.md][contributing] before submitting an enhancement proposal.
+
+        [contributing]: https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md
+  - type: textarea
+    id: yagni
+    attributes:
+      label: Are We Gonna Need It?
+      description: |
+        Justify immediate necessity over speculative complexity. Explain what
+        concrete problem this solves today that existing inputs cannot address
+        (see [YAGNI](https://martinfowler.com/bliki/Yagni.html)).
+      placeholder: Describe why this capability is an immediate necessity.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed Solution
+      description: Specification of the new behavior, inputs, or outputs.
+      placeholder: Describe the requested behavior and interface changes.
+    validations:
+      required: true
+  - type: textarea
+    id: workflow-example
+    attributes:
+      label: Workflow Usage Example
+      description: Configuration snippet for `.github/workflows/ticket-guard.yml`.
+      render: yaml
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Considered Alternatives
+      description: Alternative designs or workarounds evaluated.
+      placeholder: Describe alternative designs considered.
+    validations:
+      required: false
+  - type: checkboxes
+    id: alignment
+    attributes:
+      label: Architectural Compliance
+      description: Confirm alignment with project design principles.
+      options:
+        - label: I understand this action maintains zero runtime dependencies.
+          required: true
+        - label: I am willing to implement a test for this feature.
+          required: false
