@@ -1,0 +1,34 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: Question
+description: Inquire about configuration or behavior.
+title: 'question: '
+labels:
+  - question
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Questions and Clarifications
+        Review [README.md][readme] and [CONTRIBUTING.md][contributing] before submitting.
+
+        [readme]: https://github.com/illia-m-b/ticket-guard-action/blob/main/README.md
+        [contributing]: https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: State your question clearly with relevant context.
+      placeholder: What behavior or configuration needs clarification?
+    validations:
+      required: true
+  - type: textarea
+    id: workflow-context
+    attributes:
+      label: Relevant Workflow Configuration
+      description: Workflow snippet relevant to the question.
+      render: yaml
+    validations:
+      required: false

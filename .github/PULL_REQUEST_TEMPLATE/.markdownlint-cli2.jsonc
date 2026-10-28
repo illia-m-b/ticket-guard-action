@@ -1,0 +1,9 @@
+/*
+ * SPDX-FileCopyrightText: 2026 Illia Brashkin
+ * SPDX-License-Identifier: MIT
+ */
+{
+  "config": {
+    "MD013": false,
+  },
+}
