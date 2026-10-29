@@ -8,7 +8,7 @@
 import { ticketGuard } from '#action/ticket-guard.ts';
 import { ghIssues } from '#backlog/github/gh-issues.ts';
 import { ckTraceability } from '#check/ck-traceability.ts';
-import { ghInputs } from '#inputs/gh-inputs.ts';
+import { rtInputs } from '#inputs/rt-inputs.ts';
 import { rtOutputs } from '#outputs/rt-outputs.ts';
 import { ghPullRequest } from '#pull-request/gh-pull-request.ts';
 import { rfGitHub } from '#reference/rf-git-hub.ts';
@@ -25,7 +25,7 @@ try {
       `Unsupported event "${context.eventName}". Ticket Guard action requires a "pull_request" event payload.`,
     );
   }
-  const inputs = ghInputs();
+  const inputs = rtInputs();
   await ticketGuard(
     async () =>
       ckTraceability(

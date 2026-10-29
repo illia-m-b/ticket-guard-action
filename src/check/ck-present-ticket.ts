@@ -7,9 +7,8 @@ import type { Ticket } from '#backlog/ticket.ts';
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
+import { ckAssert } from './ck-assert.ts';
 import { ckFailed } from './ck-failed.ts';
-import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that a backlog ticket exists.
@@ -22,8 +21,7 @@ import { ckOk } from './ck-ok.ts';
  * @returns A {@link Check} representing the ticket presence outcome.
  */
 export const ckPresentTicket = (ticket: Ticket): Check =>
-  ckEnvelope(() =>
-    ticket.present()
-      ? ckOk()
-      : ckFailed('ticket-not-found', 'Ticket not found. Check your backlog'),
+  ckAssert(
+    () => ticket.present(),
+    () => ckFailed('ticket-not-found', 'Ticket not found. Check your backlog'),
   );

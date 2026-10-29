@@ -18,10 +18,10 @@ inputs:
     default: ${{ github.token }}
   scope:
     description: |
-      Allowed repository scope for referenced tickets: `current-repo`,
-      `same-org`, or `any`. Cross-repo validation requires an elevated token.
+      Allowed ticket repository scope (one per line). Accepts repository
+      coordinates (`owner/repo`). Defaults to the host repository.
     required: false
-    default: current-repo
+    default: ${{ github.repository }}
   extract-from:
     description: |
       Target locations to scan for ticket references: `pr-title`, or `pr-body`.

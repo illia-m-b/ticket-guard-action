@@ -21,7 +21,7 @@ describe('an in-memory fake inputs instance', () => {
       requireAllLabels: false,
       requireAuthorAssigned: false,
       requiredLabels: [],
-      scope: 'current-repo',
+      scope: ['octo-org/octo-repo'],
     };
     const fake = fkInputs();
     const actual: FakeInputs = {
@@ -53,7 +53,7 @@ describe('an in-memory fake inputs instance', () => {
       requireAllLabels: true,
       requireAuthorAssigned: true,
       requiredLabels: ['bug'],
-      scope: 'same-org',
+      scope: ['acme/custom-issues'],
     };
     const fake = fkInputs(custom);
     const actual: FakeInputs = {

@@ -21,21 +21,8 @@ export interface Inputs {
   readonly requireAllLabels: () => boolean;
   readonly requireAuthorAssigned: () => boolean;
   readonly requiredLabels: () => readonly string[];
-  readonly scope: () => Scope;
+  readonly scope: () => readonly string[];
 }
-
-/**
- * Permissible repository scopes for referenced tickets.
- */
-export const SCOPES = ['any', 'current-repo', 'same-org'] as const;
-
-/**
- * Allowed repository scope type.
- */
-export type Scope = (typeof SCOPES)[number];
-
-export const isScope = (value: string): value is Scope =>
-  SCOPES.includes(value as Scope);
 
 /**
  * Permissible target locations to scan for ticket references.

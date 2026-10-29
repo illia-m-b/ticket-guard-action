@@ -15,7 +15,7 @@ Compose validation logic through standalone functional objects.
 Extract issue identifiers from pull request titles and descriptions.
 Treat pull request metadata and issue descriptions as untrusted data.
 Fetch referenced issue records from configured backlog service.
-Restrict issue repository scope to current-repo, same-org, or any.
+Restrict issue repository scope to configured allowlist.
 Validate issue lifecycle states against configured allowed statuses.
 Match issue labels against required-labels and forbidden-labels lists.
 Evaluate required labels using either conjunctive or disjunctive matching.

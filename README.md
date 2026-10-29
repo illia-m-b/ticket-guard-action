@@ -42,8 +42,8 @@ mandatory/forbidden labels, and author assignment.
 - **Automated Reference Extraction**: Detects local issue references (e.g.
   `#42`), cross-repository references (e.g. `owner/repo#42`), and canonical
   GitHub issue URLs in pull request titles and descriptions.
-- **Repository Scope Boundary**: Restricts referenced tickets to `current-repo`,
-  `same-org`, or `any`.
+- **Repository Scope Boundary**: Restricts referenced tickets to an allowlist
+  of repository coordinates (defaults to the host repository).
 - **Status & Lifecycle Verification**: Ensures pull requests only link to
   tickets matching specified statuses (defaults to `open`).
 - **Label Governance**: Validates presence of mandatory labels (matching all or
@@ -85,7 +85,7 @@ jobs:
 | Input                     | Description                                                                                                                            | Required | Default                              |
 | :------------------------ | :------------------------------------------------------------------------------------------------------------------------------------- | :------: | :----------------------------------- |
 | `github-token`            | GitHub token used to authenticate API requests.                                                                                        |    No    | `${{ github.token }}`                |
-| `scope`                   | Allowed repository scope for tickets: `current-repo`, `same-org`, or `any`. Cross-repo validation requires an elevated token.          |    No    | `current-repo`                       |
+| `scope`                   | Allowed ticket repository coordinates (`owner/repo`), one per line. Cross-repo validation requires an elevated token.                  |    No    | `${{ github.repository }}`           |
 | `extract-from`            | Locations to scan for references (`pr-title`, `pr-body`). Multi-line input.                                                            |    No    | `pr-title`<br>`pr-body`              |
 | `required-labels`         | List of labels required on the issue (one per line).                                                                                   |    No    | `''`                                 |
 | `require-all-labels`      | If `'true'`, ticket must contain **all** labels in `required-labels`. If `'false'`, matching **any** single label satisfies the check. |    No    | `'false'`                            |
@@ -131,6 +131,19 @@ fails,`error-message` contains one of the following machine-readable codes:
 
 ## Examples
 
+### Centralized or Multi-Repository Backlog
+
+Allow pull requests to link to issues in the current repository as well as a
+dedicated backlog repository:
+
+```yaml
+- uses: illia-m-b/ticket-guard-action@v0 # x-release-please-major
+  with:
+    scope: |
+      ${{ github.repository }}
+      my-org/central-backlog
+```
+
 ### Enforcing Specific Labels
 
 Require linked issues to have either `ready-for-dev` or `accepted`, while
@@ -142,7 +155,6 @@ rejecting any issue marked `duplicate` or `wontfix`:
     required-labels: |
       ready-for-dev
       accepted
-    require-all-labels: false
     forbidden-labels: |
       duplicate
       wontfix

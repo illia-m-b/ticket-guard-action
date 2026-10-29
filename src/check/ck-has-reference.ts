@@ -7,9 +7,8 @@ import type { Reference } from '#reference/reference.ts';
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
+import { ckAssert } from './ck-assert.ts';
 import { ckFailed } from './ck-failed.ts';
-import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that an issue reference is present.
@@ -22,11 +21,11 @@ import { ckOk } from './ck-ok.ts';
  * @returns A {@link Check} representing the reference presence outcome.
  */
 export const ckHasReference = (reference: Reference): Check =>
-  ckEnvelope(() =>
-    reference.present()
-      ? ckOk()
-      : ckFailed(
-          'no-ticket-found',
-          'No issue reference found in the pull request',
-        ),
+  ckAssert(
+    () => reference.present(),
+    () =>
+      ckFailed(
+        'no-ticket-found',
+        'No issue reference found in the pull request',
+      ),
   );

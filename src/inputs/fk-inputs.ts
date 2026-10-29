@@ -33,7 +33,7 @@ export const fkInputs = ({
   requireAllLabels = false,
   requireAuthorAssigned = false,
   requiredLabels = [],
-  scope = 'current-repo',
+  scope = ['octo-org/octo-repo'],
 }: Partial<FakeInputs> = {}): Inputs => ({
   allowedStatuses: () => allowedStatuses,
   extractFrom: () => extractFrom,

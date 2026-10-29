@@ -6,16 +6,17 @@
 import { describe, expect, it } from 'vitest';
 
 import { rtGrip } from '#grip/rt-grip.ts';
-import { ghInputs } from '#inputs/gh-inputs.ts';
+import { stGrip } from '#grip/st-grip.ts';
+import { rtInputs } from '#inputs/rt-inputs.ts';
 
 import { silenced } from '../silenced/silenced.ts';
 
-describe('a GitHub-backed action inputs adapter', () => {
+describe('a real-time action inputs adapter', () => {
   it('extracts allowed statuses from environment', () => {
     const expected = ['opened', 'closed', 'in_progress'];
     process.env['INPUT_ALLOWED-STATUSES'] = expected.join('\n');
     expect(
-      ghInputs().allowedStatuses(),
+      rtInputs().allowedStatuses(),
       'The allowed statuses do not match the configured action input',
     ).toStrictEqual(expected);
   });
@@ -24,7 +25,7 @@ describe('a GitHub-backed action inputs adapter', () => {
     const expected = ['pr-body', 'pr-title'];
     process.env['INPUT_EXTRACT-FROM'] = expected.join('\n');
     expect(
-      ghInputs().extractFrom(),
+      rtInputs().extractFrom(),
       'The extraction targets do not match the configured action input',
     ).toStrictEqual(expected);
   });
@@ -33,7 +34,7 @@ describe('a GitHub-backed action inputs adapter', () => {
     const invalid = ['pr-body', 'commit-message'];
     process.env['INPUT_EXTRACT-FROM'] = invalid.join('\n');
     expect(
-      () => ghInputs().extractFrom(),
+      () => rtInputs().extractFrom(),
       'An invalid ticket extraction target did not throw a TypeError',
     ).toThrow(TypeError);
   });
@@ -41,7 +42,7 @@ describe('a GitHub-backed action inputs adapter', () => {
   it('reads fail-on-error flag when enabled', () => {
     process.env['INPUT_FAIL-ON-ERROR'] = 'true';
     expect(
-      ghInputs().failOnError(),
+      rtInputs().failOnError(),
       'The fail-on-error flag was not true',
     ).toBe(true);
   });
@@ -49,7 +50,7 @@ describe('a GitHub-backed action inputs adapter', () => {
   it('reads fail-on-error flag when disabled', () => {
     process.env['INPUT_FAIL-ON-ERROR'] = 'false';
     expect(
-      ghInputs().failOnError(),
+      rtInputs().failOnError(),
       'The fail-on-error flag was not false',
     ).toBe(false);
   });
@@ -58,7 +59,7 @@ describe('a GitHub-backed action inputs adapter', () => {
     const expected = ['do-not-merge', 'blocked', 'stale'];
     process.env['INPUT_FORBIDDEN-LABELS'] = expected.join('\n');
     expect(
-      ghInputs().forbiddenLabels(),
+      rtInputs().forbiddenLabels(),
       'The forbidden labels do not match the configured action input',
     ).toStrictEqual(expected);
   });
@@ -67,7 +68,7 @@ describe('a GitHub-backed action inputs adapter', () => {
     const expected = 'ghp_7xK9mQ2vL8wP4zR1tY6uI0oA3sD5fG8jH';
     process.env['INPUT_GITHUB-TOKEN'] = expected;
     expect(
-      silenced(() => ghInputs().gitHubToken()),
+      silenced(() => rtInputs().gitHubToken()),
       'The extracted GitHub token does not match the configured action input',
     ).toBe(expected);
   });
@@ -76,7 +77,7 @@ describe('a GitHub-backed action inputs adapter', () => {
     const expected = ['greenkeeper[bot]', 'snyk-bot'];
     process.env['INPUT_IGNORE-ACTORS'] = expected.join('\n');
     expect(
-      ghInputs().ignoreActors(),
+      rtInputs().ignoreActors(),
       'The ignored actors do not match the configured action input',
     ).toStrictEqual(expected);
   });
@@ -84,7 +85,7 @@ describe('a GitHub-backed action inputs adapter', () => {
   it('reads require-all-labels flag when enabled', () => {
     process.env['INPUT_REQUIRE-ALL-LABELS'] = 'true';
     expect(
-      ghInputs().requireAllLabels(),
+      rtInputs().requireAllLabels(),
       'The require-all-labels flag was not true',
     ).toBe(true);
   });
@@ -92,7 +93,7 @@ describe('a GitHub-backed action inputs adapter', () => {
   it('reads require-all-labels flag when disabled', () => {
     process.env['INPUT_REQUIRE-ALL-LABELS'] = 'false';
     expect(
-      ghInputs().requireAllLabels(),
+      rtInputs().requireAllLabels(),
       'The require-all-labels flag was not false',
     ).toBe(false);
   });
@@ -100,7 +101,7 @@ describe('a GitHub-backed action inputs adapter', () => {
   it('reads require-author-assigned flag when enabled', () => {
     process.env['INPUT_REQUIRE-AUTHOR-ASSIGNED'] = 'true';
     expect(
-      ghInputs().requireAuthorAssigned(),
+      rtInputs().requireAuthorAssigned(),
       'The require-author-assigned flag was not true',
     ).toBe(true);
   });
@@ -108,7 +109,7 @@ describe('a GitHub-backed action inputs adapter', () => {
   it('reads require-author-assigned flag when disabled', () => {
     process.env['INPUT_REQUIRE-AUTHOR-ASSIGNED'] = 'false';
     expect(
-      ghInputs().requireAuthorAssigned(),
+      rtInputs().requireAuthorAssigned(),
       'The require-author-assigned flag was not false',
     ).toBe(false);
   });
@@ -117,32 +118,65 @@ describe('a GitHub-backed action inputs adapter', () => {
     const expected = ['bug', 'triage', 'documentation'];
     process.env['INPUT_REQUIRED-LABELS'] = expected.join('\n');
     expect(
-      ghInputs().requiredLabels(),
+      rtInputs().requiredLabels(),
       'The required labels do not match the configured action input',
     ).toStrictEqual(expected);
   });
 
-  it('reads repository scope from environment', () => {
-    const expected = 'same-org';
-    process.env.INPUT_SCOPE = expected;
+  it('extracts normalized repository scope from environment', () => {
+    process.env.INPUT_SCOPE = ' Octocat/Hello-World \n ACME/Backlog \n';
     expect(
-      ghInputs().scope(),
-      'The repository scope does not match the configured action input',
-    ).toBe(expected);
+      rtInputs().scope(),
+      'The repository scope was not normalized to trimmed lowercase strings',
+    ).toStrictEqual(['octocat/hello-world', 'acme/backlog']);
   });
 
-  it('fails when repository scope is unsupported', () => {
-    const invalid = 'cross-enterprise';
-    process.env.INPUT_SCOPE = invalid;
+  it('fails when repository scope is empty', () => {
+    process.env.INPUT_SCOPE = '   \n \t \n';
     expect(
-      () => ghInputs().scope(),
-      'An invalid repository scope did not throw a TypeError',
-    ).toThrow(TypeError);
+      () => rtInputs().scope(),
+      'An empty repository scope did not throw a TypeError',
+    ).toThrow(
+      new TypeError(
+        'Invalid "scope": at least one repository must be specified',
+      ),
+    );
+  });
+
+  it('fails when repository coordinate in scope is malformed', () => {
+    process.env.INPUT_SCOPE = 'octocat/hello-world.git';
+    expect(
+      () => rtInputs().scope(),
+      'A malformed repository coordinate in scope did not throw a TypeError',
+    ).toThrow(
+      new TypeError(
+        'Invalid "scope": expected repository coordinates ("owner/repo"), got "octocat/hello-world.git"',
+      ),
+    );
+  });
+
+  it('preserves duplicate repository entries in scope', () => {
+    process.env.INPUT_SCOPE = 'octocat/hello-world\noctocat/hello-world';
+    expect(
+      rtInputs().scope(),
+      'Duplicate repository scope entries were unexpectedly dropped or rejected',
+    ).toStrictEqual(['octocat/hello-world', 'octocat/hello-world']);
+  });
+
+  it('delegates coordinate parsing to injected coordinates factory', () => {
+    process.env.INPUT_SCOPE = 'custom-org/custom-repo';
+    const inputs = rtInputs(stGrip, (raw) => ({
+      normalized: () => `injected:${raw.trim().toLowerCase()}`,
+    }));
+    expect(
+      inputs.scope(),
+      'Injected coordinates factory was not invoked for scope parsing',
+    ).toStrictEqual(['injected:custom-org/custom-repo']);
   });
 
   it('preserves allowed statuses reference identity across repeated calls', () => {
     process.env['INPUT_ALLOWED-STATUSES'] = 'opened\nclosed';
-    const inputs = ghInputs();
+    const inputs = rtInputs();
     const first = inputs.allowedStatuses();
     const second = inputs.allowedStatuses();
     expect(
@@ -153,7 +187,7 @@ describe('a GitHub-backed action inputs adapter', () => {
 
   it('preserves memoized value when environment changes after first call', () => {
     process.env['INPUT_ALLOWED-STATUSES'] = 'opened';
-    const inputs = ghInputs();
+    const inputs = rtInputs();
     inputs.allowedStatuses();
     process.env['INPUT_ALLOWED-STATUSES'] = 'closed';
     expect(
@@ -164,7 +198,7 @@ describe('a GitHub-backed action inputs adapter', () => {
 
   it('re-reads environment values when configured with real-time grip', () => {
     process.env['INPUT_ALLOWED-STATUSES'] = 'opened';
-    const inputs = ghInputs(rtGrip);
+    const inputs = rtInputs(rtGrip);
     inputs.allowedStatuses();
     process.env['INPUT_ALLOWED-STATUSES'] = 'closed';
     expect(

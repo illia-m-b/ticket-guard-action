@@ -5,8 +5,8 @@
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
 import { ckOk } from './ck-ok.ts';
+import { ckWhen } from './ck-when.ts';
 
 /**
  * Creates a {@link Check} that conditionally bypasses validation.
@@ -26,4 +26,4 @@ export const ckBypassed = (
   shouldBypass: () => boolean,
   origin: () => Check,
   message = 'Validation bypassed',
-): Check => ckEnvelope(() => (shouldBypass() ? ckOk(message) : origin()));
+): Check => ckWhen(shouldBypass, () => ckOk(message), origin);

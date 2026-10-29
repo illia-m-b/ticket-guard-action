@@ -5,9 +5,8 @@
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
+import { ckAssert } from './ck-assert.ts';
 import { ckFailed } from './ck-failed.ts';
-import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that the pull request author is assigned to
@@ -26,12 +25,14 @@ export const ckAuthorAssigned = (
   author: string,
   assignees: readonly string[],
 ): Check =>
-  ckEnvelope(() => {
-    const desired = author.toLowerCase();
-    return assignees.some((assignee) => assignee.toLowerCase() === desired)
-      ? ckOk()
-      : ckFailed(
-          'author-not-assigned',
-          `The author "${author}" is not among assignees. The current list of assignees: ${JSON.stringify(assignees)}`,
-        );
-  });
+  ckAssert(
+    () =>
+      assignees.some(
+        (assignee) => assignee.toLowerCase() === author.toLowerCase(),
+      ),
+    () =>
+      ckFailed(
+        'author-not-assigned',
+        `The author "${author}" is not among assignees. The current list of assignees: ${JSON.stringify(assignees)}`,
+      ),
+  );

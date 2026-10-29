@@ -10,13 +10,15 @@ import {
   setSecret,
 } from '@actions/core';
 
+import type { Coordinates } from '#coordinates/coordinates.ts';
 import type { Grip } from '#grip/grip.ts';
 
+import { ghCoordinates } from '#coordinates/gh-coordinates.ts';
 import { stGrip } from '#grip/st-grip.ts';
 
 import type { Inputs } from './inputs.ts';
 
-import { isScope, isTarget, SCOPES, TARGETS } from './inputs.ts';
+import { isTarget, TARGETS } from './inputs.ts';
 
 /**
  * Creates an {@link Inputs} instance backed by the GitHub Actions runner
@@ -27,10 +29,15 @@ import { isScope, isTarget, SCOPES, TARGETS } from './inputs.ts';
  *
  * @param grip - The grip strategy governing evaluation and caching. Defaults to
  *   {@link stGrip}.
+ * @param coordinates - The repository coordinates factory. Defaults to
+ *   {@link ghCoordinates}.
  *
  * @returns An {@link Inputs} implementation reading from workflow inputs.
  */
-export const ghInputs = (grip: Grip = stGrip): Inputs => ({
+export const rtInputs = (
+  grip: Grip = stGrip,
+  coordinates: (raw: string) => Coordinates = ghCoordinates,
+): Inputs => ({
   allowedStatuses: grip(() => getMultilineInput('allowed-statuses')),
   extractFrom: grip(() => {
     const raw = getMultilineInput('extract-from');
@@ -55,12 +62,22 @@ export const ghInputs = (grip: Grip = stGrip): Inputs => ({
   requireAuthorAssigned: grip(() => getBooleanInput('require-author-assigned')),
   requiredLabels: grip(() => getMultilineInput('required-labels')),
   scope: grip(() => {
-    const raw = getInput('scope');
-    if (!isScope(raw)) {
+    const lines = getMultilineInput('scope')
+      .map((line) => line.trim())
+      .filter((line) => line.length > 0);
+    if (lines.length === 0) {
       throw new TypeError(
-        `Invalid "scope": expected ${SCOPES.join(' | ')}, got "${raw}"`,
+        'Invalid "scope": at least one repository must be specified',
       );
     }
-    return raw;
+    return lines.map((line) => {
+      try {
+        return coordinates(line).normalized();
+      } catch {
+        throw new TypeError(
+          `Invalid "scope": expected repository coordinates ("owner/repo"), got "${line}"`,
+        );
+      }
+    });
   }),
 });

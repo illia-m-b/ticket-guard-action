@@ -5,9 +5,9 @@
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
 import { ckFailed } from './ck-failed.ts';
 import { ckOk } from './ck-ok.ts';
+import { ckWhen } from './ck-when.ts';
 
 /**
  * Creates a {@link Check} verifying whether the pull request author is listed in
@@ -26,9 +26,8 @@ export const ckIgnoredActor = (
   author: string,
   actors: readonly string[],
 ): Check =>
-  ckEnvelope(() => {
-    const desired = author.toLowerCase();
-    return actors.some((actor) => actor.toLowerCase() === desired)
-      ? ckOk(`Validation bypassed: author "${author}" is in ignore-actors`)
-      : ckFailed('ok', `Author "${author}" is not in ignore-actors`);
-  });
+  ckWhen(
+    () => actors.some((actor) => actor.toLowerCase() === author.toLowerCase()),
+    () => ckOk(`Validation bypassed: author "${author}" is in ignore-actors`),
+    () => ckFailed('ok', `Author "${author}" is not in ignore-actors`),
+  );
