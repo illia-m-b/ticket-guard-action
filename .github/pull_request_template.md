@@ -10,7 +10,7 @@ Closes #
 
 ## Integrity Checklist
 
-Review our [Contributing Guidelines](https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md) before submitting:
+Review the [contributing guidelines](https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md) before submitting:
 
 - [ ] Traceability: branch is named after the issue number integer (e.g. `123`)
 - [ ] TDD: failing test added first

@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         ### Whole Before Parts, Composition Before Ingredients
-        Review [CONTRIBUTING.md][contributing] before submitting an enhancement proposal.
+        Review [`CONTRIBUTING.md`][contributing] before submitting an enhancement proposal.
 
         [contributing]: https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md
   - type: textarea

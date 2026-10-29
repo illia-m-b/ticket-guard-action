@@ -12,7 +12,7 @@ body:
     attributes:
       value: |
         ### Questions and Clarifications
-        Review [README.md][readme] and [CONTRIBUTING.md][contributing] before submitting.
+        Review [`README.md`][readme] and [`CONTRIBUTING.md`][contributing] before submitting.
 
         [readme]: https://github.com/illia-m-b/ticket-guard-action/blob/main/README.md
         [contributing]: https://github.com/illia-m-b/ticket-guard-action/blob/main/CONTRIBUTING.md
