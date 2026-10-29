@@ -48,7 +48,7 @@ export const ckTicket = (
 ): Check =>
   ckChained([
     () => ckPresentTicket(ticket),
-    () => ckScope(inputs.scope(), pr.repository(), rpUrl(ticket.url())),
+    () => ckScope(inputs.scope(), rpUrl(ticket.url())),
     () =>
       ckBypassed(
         () => inputs.allowedStatuses().length === 0,

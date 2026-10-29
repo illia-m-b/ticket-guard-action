@@ -5,222 +5,118 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { Repository } from '#repository/repository.ts';
-
 import { ckFailed } from '#check/ck-failed.ts';
-import { ckOk } from '#check/ck-ok.ts';
 import { ckScope } from '#check/ck-scope.ts';
 import { rpPlain } from '#repository/rp-plain.ts';
 
 describe('a scope verification check', () => {
-  it('bypasses validation when scope is set to "any"', () => {
-    const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
-    const other = rpPlain({ owner: 'googleapis', repo: 'release-please' });
-    const actual = ckScope('any', repository, other);
-    const check = {
-      message: actual.message(),
-      reason: actual.reason(),
-      valid: actual.valid(),
-    };
-    const ok = ckOk('Validation bypassed: scope is set to "any"');
-    const passed = {
-      message: ok.message(),
-      reason: ok.reason(),
-      valid: ok.valid(),
-    };
+  it('passes when ticket matches allowlist coordinates', () => {
+    const ticket = rpPlain({ owner: 'octo-org', repo: 'app_7x' });
+    const actual = ckScope(['octo-org/app_7x'], ticket);
     expect(
-      check,
-      'A scope verification check did not bypass validation when scope is "any"',
-    ).toStrictEqual(passed);
+      actual.valid(),
+      'A scope verification check failed when ticket matches allowlist coordinates',
+    ).toBe(true);
   });
 
-  it('bypasses validation when scope is set to "any" even if coordinates cannot be determined', () => {
-    const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
-    const ticket: Repository = {
+  it('passes when ticket matches dedicated external backlog repository', () => {
+    const ticket = rpPlain({ owner: 'octo-org', repo: 'backlog_9z' });
+    const actual = ckScope(['octo-org/backlog_9z'], ticket);
+    expect(
+      actual.valid(),
+      'A scope verification check failed when ticket matches dedicated backlog repository',
+    ).toBe(true);
+  });
+
+  it('passes when ticket matches one entry in a multi-repository allowlist', () => {
+    const ticket = rpPlain({ owner: 'acme-shared', repo: 'tickets' });
+    const actual = ckScope(
+      ['acme-inc/core', 'acme-shared/tickets', 'acme-inc/roadmap'],
+      ticket,
+    );
+    expect(
+      actual.valid(),
+      'A scope verification check failed when ticket matches multi-repository allowlist entry',
+    ).toBe(true);
+  });
+
+  it('fails when ticket repository is not present in allowlist', () => {
+    const ticket = rpPlain({ owner: 'stranger-danger', repo: 'fake-issues' });
+    const actual = ckScope(['octo-org/app_7x'], ticket);
+    const expected = ckFailed(
+      'scope-violation',
+      'Scope violation: ticket repository "stranger-danger/fake-issues" is not permitted by scope policy',
+    );
+    expect(
+      actual.message(),
+      'A scope verification check did not fail when ticket repository is not in allowlist',
+    ).toBe(expected.message());
+  });
+
+  it('fails with scope-violation reason code when check fails', () => {
+    const ticket = rpPlain({ owner: 'other-org', repo: 'repo-2' });
+    const actual = ckScope(['octo-org/app_7x'], ticket);
+    expect(
+      actual.reason(),
+      'A scope verification check did not return scope-violation reason on failure',
+    ).toBe('scope-violation');
+  });
+
+  it('matches allowlist coordinates regardless of letter casing', () => {
+    const ticket = {
+      name: () => 'App_7X',
+      owner: () => 'Octo-Org',
+    };
+    const actual = ckScope(['octo-org/app_7x'], ticket);
+    expect(
+      actual.valid(),
+      'A scope verification check failed when coordinates differ only in letter casing',
+    ).toBe(true);
+  });
+
+  it('fails when ticket coordinates throw TypeError', () => {
+    const ticket = {
       name: () => {
-        throw new TypeError('Cannot extract coordinates');
+        throw new TypeError('Cannot extract coordinates: ‡_bad');
       },
-      owner: () => {
-        throw new TypeError('Cannot extract coordinates');
-      },
+      owner: () => 'octo-org',
     };
-    const actual = ckScope('any', repository, ticket);
-    const check = {
-      message: actual.message(),
-      reason: actual.reason(),
-      valid: actual.valid(),
-    };
-    const ok = ckOk('Validation bypassed: scope is set to "any"');
-    const passed = {
-      message: ok.message(),
-      reason: ok.reason(),
-      valid: ok.valid(),
-    };
+    const actual = ckScope(['octo-org/app_7x'], ticket);
     expect(
-      check,
-      'A scope verification check did not bypass validation when scope is "any" and coordinates cannot be determined',
-    ).toStrictEqual(passed);
+      actual.message(),
+      'A scope verification check did not fail with coordinates message on TypeError',
+    ).toBe(
+      'Scope violation: ticket repository coordinates cannot be determined',
+    );
   });
 
-  describe('"same-org" scope', () => {
-    it('passes when repositories belong to the same organization', () => {
-      const repository = rpPlain({ owner: 'pnpm', repo: 'setup' });
-      const other = rpPlain({ owner: 'pnpm', repo: 'pnpm' });
-      const actual = ckScope('same-org', repository, other);
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const ok = ckOk();
-      const passed = {
-        message: ok.message(),
-        reason: ok.reason(),
-        valid: ok.valid(),
-      };
-      expect(
-        check,
-        'A scope verification check did not succeed when scope is "same-org" and repositories belong to the same organization',
-      ).toStrictEqual(passed);
-    });
-
-    it('fails when repositories belong to different organizations', () => {
-      const target = rpPlain({ owner: 'pnpm', repo: 'setup' });
-      const ticket = rpPlain({ owner: 'googleapis', repo: 'release-please' });
-      const actual = ckScope('same-org', target, ticket);
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const expected = ckFailed(
-        'scope-violation',
-        `Scope violation: ticket owner "${ticket.owner()}" does not match target organization "${target.owner()}". Scope is set to "same-org".`,
-      );
-      const failed = {
-        message: expected.message(),
-        reason: expected.reason(),
-        valid: expected.valid(),
-      };
-      expect(
-        check,
-        'A scope verification check succeeded when scope is "same-org" but repositories belong to different organizations',
-      ).toStrictEqual(failed);
-    });
-
-    it('fails when ticket repository coordinates cannot be determined', () => {
-      const target = rpPlain({ owner: 'pnpm', repo: 'setup' });
-      const ticket: Repository = {
-        name: () => {
-          throw new TypeError('Cannot extract coordinates');
-        },
-        owner: () => {
-          throw new TypeError('Cannot extract coordinates');
-        },
-      };
-      const actual = ckScope('same-org', target, ticket);
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const expected = ckFailed(
-        'scope-violation',
-        'Scope violation: ticket repository coordinates cannot be determined. Scope is set to "same-org".',
-      );
-      const failed = {
-        message: expected.message(),
-        reason: expected.reason(),
-        valid: expected.valid(),
-      };
-      expect(
-        check,
-        'A scope verification check did not fail when ticket repository coordinates cannot be determined in "same-org" scope',
-      ).toStrictEqual(failed);
-    });
+  it('rethrows unexpected non-type errors thrown during coordinate evaluation', () => {
+    const ticket = {
+      name: () => {
+        throw new RangeError('Index out of range: ‡_crash');
+      },
+      owner: () => 'octo-org',
+    };
+    const actual = ckScope(['octo-org/app_7x'], ticket);
+    expect(
+      () => actual.valid(),
+      'A scope verification check did not rethrow unexpected non-type error',
+    ).toThrow(RangeError);
   });
 
-  describe('"current-repo" scope', () => {
-    it('passes when repositories are identical', () => {
-      const repository = rpPlain({ owner: 'illia-m-b', repo: 'veils-js' });
-      const clone = rpPlain({
-        owner: repository.owner(),
-        repo: repository.name(),
-      });
-      const actual = ckScope('current-repo', repository, clone);
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const ok = ckOk();
-      const passed = {
-        message: ok.message(),
-        reason: ok.reason(),
-        valid: ok.valid(),
-      };
-      expect(
-        check,
-        'A scope verification check did not succeed when scope is "current-repo" and repositories are identical',
-      ).toStrictEqual(passed);
-    });
-
-    it('fails when repositories belong to the same organization but have different names', () => {
-      const owner = 'octocat';
-      const one = 'octo-repo';
-      const other = one.split('').toReversed().join('');
-      const target = rpPlain({ owner, repo: one });
-      const ticket = rpPlain({ owner, repo: other });
-      const actual = ckScope('current-repo', target, ticket);
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const expected = ckFailed(
-        'scope-violation',
-        `Scope violation: ticket belongs to "${ticket.owner()}/${ticket.name()}", but pull request targets "${target.owner()}/${target.name()}". Scope is set to "current-repo".`,
-      );
-      const failed = {
-        message: expected.message(),
-        reason: expected.reason(),
-        valid: expected.valid(),
-      };
-      expect(
-        check,
-        'A scope verification check succeeded when scope is "current-repo", repositories belong to the same organization, but have different names',
-      ).toStrictEqual(failed);
-    });
-
-    it('fails when ticket repository coordinates cannot be determined', () => {
-      const target = rpPlain({ owner: 'octocat', repo: 'octo-repo' });
-      const ticket: Repository = {
-        name: () => {
-          throw new TypeError('Cannot extract coordinates');
-        },
-        owner: () => {
-          throw new TypeError('Cannot extract coordinates');
-        },
-      };
-      const actual = ckScope('current-repo', target, ticket);
-      const check = {
-        message: actual.message(),
-        reason: actual.reason(),
-        valid: actual.valid(),
-      };
-      const expected = ckFailed(
-        'scope-violation',
-        'Scope violation: ticket repository coordinates cannot be determined. Scope is set to "current-repo".',
-      );
-      const failed = {
-        message: expected.message(),
-        reason: expected.reason(),
-        valid: expected.valid(),
-      };
-      expect(
-        check,
-        'A scope verification check did not fail when ticket repository coordinates cannot be determined in "current-repo" scope',
-      ).toStrictEqual(failed);
-    });
+  it('defers coordinates check until queried', () => {
+    let queried = false;
+    const ticket = {
+      name: () => {
+        queried = true;
+        return 'lazy-repo';
+      },
+      owner: () => 'octo-org',
+    };
+    ckScope(['octo-org/app_7x'], ticket);
+    expect(
+      queried,
+      'A scope verification check evaluated coordinates eagerly upon instantiation',
+    ).toBe(false);
   });
 });

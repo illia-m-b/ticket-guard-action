@@ -5,9 +5,8 @@
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
+import { ckAssert } from './ck-assert.ts';
 import { ckFailed } from './ck-failed.ts';
-import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that an issue status is allowed.
@@ -22,11 +21,11 @@ import { ckOk } from './ck-ok.ts';
  * @returns A {@link Check} representing the status validation outcome.
  */
 export const ckStatus = (status: string, allowed: readonly string[]): Check =>
-  ckEnvelope(() =>
-    allowed.includes(status)
-      ? ckOk()
-      : ckFailed(
-          'status-not-allowed',
-          `Status must be one of the following: ${JSON.stringify(allowed)}. Got "${status}" instead.`,
-        ),
+  ckAssert(
+    () => allowed.includes(status),
+    () =>
+      ckFailed(
+        'status-not-allowed',
+        `Status must be one of the following: ${JSON.stringify(allowed)}. Got "${status}" instead.`,
+      ),
   );

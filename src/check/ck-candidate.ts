@@ -39,11 +39,6 @@ export const ckCandidate = (
   ckEnvelope(() =>
     ckChained([
       () => ckHasReference(reference),
-      () =>
-        ckScope(
-          inputs.scope(),
-          pr.repository(),
-          rpReference(reference, pr.repository()),
-        ),
+      () => ckScope(inputs.scope(), rpReference(reference, pr.repository())),
     ]),
   );

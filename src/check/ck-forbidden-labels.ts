@@ -5,9 +5,8 @@
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
+import { ckAssert } from './ck-assert.ts';
 import { ckFailed } from './ck-failed.ts';
-import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that no forbidden labels are attached.
@@ -25,11 +24,11 @@ export const ckForbiddenLabels = (
   labels: readonly string[],
   forbidden: readonly string[],
 ): Check =>
-  ckEnvelope(() =>
-    labels.some((label) => forbidden.includes(label))
-      ? ckFailed(
-          'forbidden-label',
-          `Found the banned label(s). Here is a full list of banned ones: ${JSON.stringify(forbidden)}`,
-        )
-      : ckOk(),
+  ckAssert(
+    () => labels.every((label) => !forbidden.includes(label)),
+    () =>
+      ckFailed(
+        'forbidden-label',
+        `Found the banned label(s). Here is a full list of banned ones: ${JSON.stringify(forbidden)}`,
+      ),
   );

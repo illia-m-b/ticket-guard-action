@@ -201,7 +201,7 @@ describe('a composite traceability policy check', () => {
     };
     const expected = ckFailed(
       'scope-violation',
-      `Scope violation: ticket belongs to "google/guava", but pull request targets "${pr.repository().owner()}/${pr.repository().name()}". Scope is set to "current-repo".`,
+      'Scope violation: ticket repository "google/guava" is not permitted by scope policy',
     );
     const failed = {
       message: expected.message(),
@@ -212,6 +212,29 @@ describe('a composite traceability policy check', () => {
       result,
       'A composite traceability check did not fail due to ticket scope violation',
     ).toStrictEqual(failed);
+  });
+
+  it('fails without querying backlog when candidate repository violates scope', async () => {
+    const backlog: Backlog = {
+      ticket: () => {
+        throw new Error(
+          'Backlog queried when candidate repository violates scope',
+        );
+      },
+    };
+    const pr = fkPullRequest({
+      body: 'Fixes #123',
+      repository: rpPlain({ owner: 'org', repo: 'repo' }),
+    });
+    const actual = await ckTraceability(
+      fkInputs({ scope: ['external/tracker'] }),
+      pr,
+      backlog,
+    );
+    expect(
+      actual.reason(),
+      'Backlog was queried despite candidate repository violating scope policy',
+    ).toBe('scope-violation');
   });
 
   it('fails when ticket url is not a valid github repository url', async () => {
@@ -229,7 +252,7 @@ describe('a composite traceability policy check', () => {
     };
     const expected = ckFailed(
       'scope-violation',
-      'Scope violation: ticket repository coordinates cannot be determined. Scope is set to "current-repo".',
+      'Scope violation: ticket repository coordinates cannot be determined',
     );
     const failed = {
       message: expected.message(),
@@ -253,7 +276,11 @@ describe('a composite traceability policy check', () => {
       status: 'closed',
       url: 'https://github.com/google/guava/issues/8738',
     });
-    const actual = await ckTraceability(fkInputs(), pr, fkBacklog([ticket]));
+    const actual = await ckTraceability(
+      fkInputs({ scope: ['google/guava'] }),
+      pr,
+      fkBacklog([ticket]),
+    );
     const result = {
       message: actual.message(),
       reason: actual.reason(),
@@ -305,6 +332,7 @@ describe('a composite traceability policy check', () => {
     const inputs = fkInputs({
       requireAllLabels: true,
       requiredLabels: required,
+      scope: ['illia-m-b/veils-js'],
     });
     const pr = fkPullRequest({
       body: 'Fixes #2',
@@ -340,7 +368,10 @@ describe('a composite traceability policy check', () => {
 
   it('fails when a forbidden label is present', async () => {
     const forbidden = ['wontfix', 'question', 'duplicate'];
-    const inputs = fkInputs({ forbiddenLabels: forbidden });
+    const inputs = fkInputs({
+      forbiddenLabels: forbidden,
+      scope: ['illia-m-b/ticket-guard-action'],
+    });
     const pr = fkPullRequest({
       body: 'Fixes #20',
       repository: rpPlain({
@@ -440,7 +471,7 @@ describe('a composite traceability policy check', () => {
       allowedStatuses: [],
       forbiddenLabels: [],
       requiredLabels: [],
-      scope: 'any',
+      scope: ['octo-org/octo-repo'],
     });
     const ticket: Ticket = {
       assignees: () => [],
@@ -492,25 +523,26 @@ describe('a composite traceability policy check', () => {
   });
 
   it('supports custom reference extractor', async () => {
-    const pr = fkPullRequest({ body: 'Fixes JIRA-456' });
+    const pr = fkPullRequest({ body: 'Fixes GH-456' });
     const ticket = fkTicket({
-      id: 'JIRA-456',
+      id: '456',
       present: true,
       status: 'open',
-      url: 'https://octo-org.atlassian.net/browse/JIRA-456',
+      url: 'https://github.com/octo-org/octo-repo/issues/456',
     });
     const actual = await ckTraceability(
-      fkInputs({ scope: 'any' }),
+      fkInputs({ scope: ['octo-org/octo-repo'] }),
       pr,
       fkBacklog([ticket]),
       (text: string) => {
-        const match = /\b[A-Z]+-\d+\b/.exec(text);
-        return match === null
+        const match = /\bGH-(?<id>\d+)\b/.exec(text);
+        const id = match?.groups?.id;
+        return match === null || id === undefined
           ? rfEmpty()
           : {
-              id: () => match[0],
+              id: () => id,
               present: () => true,
-              raw: () => match[0],
+              raw: () => `#${id}`,
             };
       },
     );
@@ -519,7 +551,7 @@ describe('a composite traceability policy check', () => {
       valid: actual.valid(),
     };
     const expected = {
-      id: 'JIRA-456',
+      id: '456',
       valid: true,
     };
     expect(

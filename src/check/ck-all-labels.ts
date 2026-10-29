@@ -5,9 +5,8 @@
 
 import type { Check } from './check.ts';
 
-import { ckEnvelope } from './ck-envelope.ts';
+import { ckAssert } from './ck-assert.ts';
 import { ckFailed } from './ck-failed.ts';
-import { ckOk } from './ck-ok.ts';
 
 /**
  * Creates a {@link Check} verifying that all required labels are attached.
@@ -25,11 +24,11 @@ export const ckAllLabels = (
   labels: readonly string[],
   required: readonly string[],
 ): Check =>
-  ckEnvelope(() =>
-    required.every((label) => labels.includes(label))
-      ? ckOk()
-      : ckFailed(
-          'missing-required-label',
-          `Missing required label(s). All of the following are required: ${JSON.stringify(required)}`,
-        ),
+  ckAssert(
+    () => required.every((label) => labels.includes(label)),
+    () =>
+      ckFailed(
+        'missing-required-label',
+        `Missing required label(s). All of the following are required: ${JSON.stringify(required)}`,
+      ),
   );
