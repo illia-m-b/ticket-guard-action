@@ -5,6 +5,8 @@
 name: pr-cleanup
 'on':
   pull_request:
+    branches:
+      - main
     types:
       - closed
 permissions: {}
