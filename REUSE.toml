@@ -9,6 +9,7 @@ path = [
     ".prettierrc",
     ".yamlignore",
     "renovate.json",
+    "release-please-config.json",
     "stryker.config.json",
     "tsconfig.json"
 ]
@@ -17,7 +18,7 @@ SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = [
-    ".github/requirements-reuse.txt",
+    ".release-please-manifest.json",
     "pnpm-lock.yaml"
 ]
 SPDX-FileCopyrightText = "NONE"
