@@ -1,6 +1,6 @@
 {
   "name": "ticket-guard-action",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Traceability enforcer—validates business state, labels, and lifecycle status of issues referenced in pull requests.",
   "keywords": [

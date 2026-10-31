@@ -8,6 +8,7 @@ path = [
     ".gitignore",
     ".prettierrc",
     ".yamlignore",
+    "CHANGELOG.md",
     "renovate.json",
     "release-please-config.json",
     "stryker.config.json",
@@ -19,6 +20,7 @@ SPDX-License-Identifier = "CC0-1.0"
 [[annotations]]
 path = [
     ".release-please-manifest.json",
+    "dist/THIRD-PARTY-LICENSES.txt",
     "pnpm-lock.yaml"
 ]
 SPDX-FileCopyrightText = "NONE"

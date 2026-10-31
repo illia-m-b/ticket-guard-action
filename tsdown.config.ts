@@ -9,6 +9,10 @@ import path from 'node:path';
 import license from 'rollup-plugin-license';
 
 export default ((): ReturnType<UserConfigFn> => ({
+  banner: `/*
+ * SPDX-FileCopyrightText: 2026 Illia Brashkin
+ * SPDX-License-Identifier: MIT
+ */`,
   clean: true,
   deps: {
     alwaysBundle: [/.*/],
@@ -25,12 +29,6 @@ export default ((): ReturnType<UserConfigFn> => ({
   platform: 'node',
   plugins: [
     license({
-      banner: {
-        commentStyle: 'ignored',
-        content: {
-          file: path.join(import.meta.dirname, 'LICENSE.txt'),
-        },
-      },
       thirdParty: {
         allow: {
           failOnUnlicensed: true,
