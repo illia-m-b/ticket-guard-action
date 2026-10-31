@@ -5,42 +5,10 @@
 
 ### Features
 
-* **action:** introduce `Action` contract and `ticketGuard` object ([#141](https://github.com/illia-m-b/ticket-guard-action/issues/141)) ([04c15b6](https://github.com/illia-m-b/ticket-guard-action/commit/04c15b6e1386c28f9dc2b7b0a08d1c78a572cb77))
-* **action:** wire runtime composition root and error handling in `index.ts` ([#150](https://github.com/illia-m-b/ticket-guard-action/issues/150)) ([2b1aa38](https://github.com/illia-m-b/ticket-guard-action/commit/2b1aa3852e7edaf6599e2ba0ad90474c9f5df28f))
-* **backlog:** introduce `Backlog` and `Ticket` domain contracts with GitHub adapter ([#40](https://github.com/illia-m-b/ticket-guard-action/issues/40)) ([339d597](https://github.com/illia-m-b/ticket-guard-action/commit/339d597bcb27e32260e6829e3fe98e140d30c069))
-* **check:** add envelope and chained check composite implementations ([#59](https://github.com/illia-m-b/ticket-guard-action/issues/59)) ([1cb53c1](https://github.com/illia-m-b/ticket-guard-action/commit/1cb53c1ec4affa014d5b8b1cc485fcacf14daec2))
-* **check:** implement `ckTraceability` composite check ([#130](https://github.com/illia-m-b/ticket-guard-action/issues/130)) ([e56461e](https://github.com/illia-m-b/ticket-guard-action/commit/e56461ec9c7a717d32f8c88eafdbc504196b7b63))
-* **check:** introduce `Check` contract, `ckOk`, `ckFailed`, and `fkCheck` ([#46](https://github.com/illia-m-b/ticket-guard-action/issues/46)) ([13fbd41](https://github.com/illia-m-b/ticket-guard-action/commit/13fbd411131e8c18ac2276b705147a739a6f2476))
-* **check:** introduce `ckBypassed` check decorator ([#105](https://github.com/illia-m-b/ticket-guard-action/issues/105)) ([c075502](https://github.com/illia-m-b/ticket-guard-action/commit/c075502a4924a14e610366596bc1fb7f54e87bec))
-* **check:** introduce `ckScope` check for repository scope validation ([#119](https://github.com/illia-m-b/ticket-guard-action/issues/119)) ([b00fbe5](https://github.com/illia-m-b/ticket-guard-action/commit/b00fbe538fedc52eaff2e10445306257877b1131))
-* **check:** introduce all required labels check implementation ([#74](https://github.com/illia-m-b/ticket-guard-action/issues/74)) ([8c199d1](https://github.com/illia-m-b/ticket-guard-action/commit/8c199d1b2fe1967aa47a7559bb09aa81e47cd505))
-* **check:** introduce any required label check implementation ([#76](https://github.com/illia-m-b/ticket-guard-action/issues/76)) ([6c21f36](https://github.com/illia-m-b/ticket-guard-action/commit/6c21f363babb4a554bae7cd0b7bf2e8c969c06d5))
-* **check:** introduce author assignment check implementation ([#78](https://github.com/illia-m-b/ticket-guard-action/issues/78)) ([a527d20](https://github.com/illia-m-b/ticket-guard-action/commit/a527d201f315cf53cd2d692c6c6e6ce5518742c3))
-* **check:** introduce ckWhen conditional check wrapper ([#102](https://github.com/illia-m-b/ticket-guard-action/issues/102)) ([cddfd30](https://github.com/illia-m-b/ticket-guard-action/commit/cddfd3009e557ee47bbc76830190a74aec5fa039))
-* **check:** introduce forbidden labels check implementation ([#70](https://github.com/illia-m-b/ticket-guard-action/issues/70)) ([22c49d1](https://github.com/illia-m-b/ticket-guard-action/commit/22c49d180277a47ef24d2021139d0f9b86057227))
-* **check:** introduce issue status check implementation ([#67](https://github.com/illia-m-b/ticket-guard-action/issues/67)) ([832c04e](https://github.com/illia-m-b/ticket-guard-action/commit/832c04e7c7e420712c917393f705d1e0dc342b3c))
-* **check:** introduce reference presence check implementation ([#63](https://github.com/illia-m-b/ticket-guard-action/issues/63)) ([0cca38c](https://github.com/illia-m-b/ticket-guard-action/commit/0cca38c2c176662914884f4c2f81820e704cf39d))
-* **check:** introduce required-labels check with strategy delegation ([#107](https://github.com/illia-m-b/ticket-guard-action/issues/107)) ([0a5cca8](https://github.com/illia-m-b/ticket-guard-action/commit/0a5cca8f570dbd4637c81a96bb7aa685b7ef1693))
-* **check:** introduce ticket presence check implementation ([#65](https://github.com/illia-m-b/ticket-guard-action/issues/65)) ([9725675](https://github.com/illia-m-b/ticket-guard-action/commit/9725675fcdb1f86552d7ef3f8b77e4696de200e1))
-* **grip:** introduce `Grip` type and its real-time and sticky implementations ([#86](https://github.com/illia-m-b/ticket-guard-action/issues/86)) ([3c38ec1](https://github.com/illia-m-b/ticket-guard-action/commit/3c38ec154a3a197f541df965b939280520b5161e))
-* **inputs:** introduce action inputs contract and implementations ([#20](https://github.com/illia-m-b/ticket-guard-action/issues/20)) ([4ab419c](https://github.com/illia-m-b/ticket-guard-action/commit/4ab419c1d761c337ff0e6584c90ee36349b7474a))
-* **outputs:** introduce `Outputs` contract, its realtime and fake implementations ([#137](https://github.com/illia-m-b/ticket-guard-action/issues/137)) ([04b3b3f](https://github.com/illia-m-b/ticket-guard-action/commit/04b3b3fc6f5825ba51c9c544621cf7787ed8f6bc))
-* **pull-request:** introduce `PullRequest` interface and GitHub adapter ([#26](https://github.com/illia-m-b/ticket-guard-action/issues/26)) ([9c70c63](https://github.com/illia-m-b/ticket-guard-action/commit/9c70c630caa56f4ade85de29afbc7be9bcf11489))
-* **reference:** implement `rfTargets` multi-target scanner ([#134](https://github.com/illia-m-b/ticket-guard-action/issues/134)) ([5e92482](https://github.com/illia-m-b/ticket-guard-action/commit/5e9248264bb1047258cccce71eb121517e43c9d0))
-* **reference:** introduce issue reference contract and GitHub extractor ([#18](https://github.com/illia-m-b/ticket-guard-action/issues/18)) ([cddc481](https://github.com/illia-m-b/ticket-guard-action/commit/cddc48154c95bdc9939b5fd091c4864fb86ddac8))
-* **repository:** introduce `Repository` coordinates contract, its plain text and url implementations ([#116](https://github.com/illia-m-b/ticket-guard-action/issues/116)) ([54ae0ef](https://github.com/illia-m-b/ticket-guard-action/commit/54ae0ef07963c7b113b997a68d600660f4409017))
-* **scope:** rewrite repository scope to allowlist of coordinates ([#254](https://github.com/illia-m-b/ticket-guard-action/issues/254)) ([253a766](https://github.com/illia-m-b/ticket-guard-action/commit/253a766a76525f412f3c688281dd1f3535ede174))
-* **sticky:** introduce sticky memoized supplier implementation ([#84](https://github.com/illia-m-b/ticket-guard-action/issues/84)) ([93f6f06](https://github.com/illia-m-b/ticket-guard-action/commit/93f6f069bc096c11da929af0b7d169bbb414d1be))
-
-
-### Bug Fixes
-
-* **check:** defer downstream check evaluation in chained traceability ([#205](https://github.com/illia-m-b/ticket-guard-action/issues/205)) ([23e11c2](https://github.com/illia-m-b/ticket-guard-action/commit/23e11c217ca937c1bfcb39b850afe25748fc0b32))
-* **check:** handle unparseable repository coordinates gracefully as scope violation in `ckScope` ([#191](https://github.com/illia-m-b/ticket-guard-action/issues/191)) ([990109d](https://github.com/illia-m-b/ticket-guard-action/commit/990109df73cc0d3c4adc3e43b145768c9624c2cc))
-
-
-### Performance Improvements
-
-* **action:** avoid premature backlog HTTP request on bypassed pr ([#196](https://github.com/illia-m-b/ticket-guard-action/issues/196)) ([fce4426](https://github.com/illia-m-b/ticket-guard-action/commit/fce4426e123cf8b2d8deecf72e4db067402bad2c))
-* **backlog:** memoize transformed labels and assignees in `ghIssue`  ([#206](https://github.com/illia-m-b/ticket-guard-action/issues/206)) ([af417b8](https://github.com/illia-m-b/ticket-guard-action/commit/af417b87cd606e2f53a751248f86d11ae4ad39cc))
-* **inputs:** memoize environment variable parsing in `ghInputs` ([#208](https://github.com/illia-m-b/ticket-guard-action/issues/208)) ([8ec89ac](https://github.com/illia-m-b/ticket-guard-action/commit/8ec89acd0fef3a01395d795abafaeb5c6019c88e))
+* **Traceability Verification**: Automatically extracts and verifies GitHub issue references from pull request titles and descriptions.
+* **Repository Scope Control**: Enforces repository boundary compliance using an allowlist of repository coordinates.
+* **Status Enforcement**: Validates ticket lifecycle state (`open`, `closed`) against configured requirements.
+* **Flexible Label Rules**: Asserts required issue labels using conjunctive (`AND`) or disjunctive (`OR`) matching, and rejects forbidden labels.
+* **Author Assignment Guard**: Validates that the pull request author is explicitly assigned to referenced tickets.
+* **Actor Bypass**: Supports exemptions for automated dependency bots (e.g., `dependabot[bot]`, `renovate[bot]`).
+* **Audit & Diagnostics**: Publishes structured, machine-readable step outputs and error codes with optional non-blocking audit mode.
