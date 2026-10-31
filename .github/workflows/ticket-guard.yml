@@ -1,0 +1,36 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+name: ticket-guard
+'on':
+  pull_request:
+    branches:
+      - main
+    types:
+      - opened
+      - reopened
+      - edited
+      - synchronize
+permissions: {}
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  ticket-guard:
+    runs-on: ubuntu-slim
+    timeout-minutes: 3
+    permissions:
+      issues: read
+      pull-requests: read
+    steps:
+      - uses: illia-m-b/ticket-guard-action@aa0d4f36b605619690f996f731b1d22ab8be8d57 # v1.0.0
+        with:
+          extract-from: pr-body
+          forbidden-labels: |
+            invalid
+            question
+            wontfix
+          ignore-actors: |
+            illia-m-b-automation[bot]
+            renovate[bot]
