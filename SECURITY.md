@@ -12,8 +12,8 @@ major version of Ticket Guard Action.
 
 | Version                               |     Supported      |
 | :------------------------------------ | :----------------: |
-| 0.x <!-- x-release-please-major -->   | :white_check_mark: |
-| < 0.x <!-- x-release-please-major --> |        :x:         |
+| 1.x <!-- x-release-please-major -->   | :white_check_mark: |
+| < 1.x <!-- x-release-please-major --> |        :x:         |
 
 ## Reporting a Vulnerability
 

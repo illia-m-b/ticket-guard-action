@@ -77,7 +77,7 @@ jobs:
       issues: read
       pull-requests: read
     steps:
-      - uses: illia-m-b/ticket-guard-action@v0 # x-release-please-major
+      - uses: illia-m-b/ticket-guard-action@v1 # x-release-please-major
 ```
 
 ## Inputs
@@ -137,7 +137,7 @@ Allow pull requests to link to issues in the current repository as well as a
 dedicated backlog repository:
 
 ```yaml
-- uses: illia-m-b/ticket-guard-action@v0 # x-release-please-major
+- uses: illia-m-b/ticket-guard-action@v1 # x-release-please-major
   with:
     scope: |
       ${{ github.repository }}
@@ -150,7 +150,7 @@ Require linked issues to have either `ready-for-dev` or `accepted`, while
 rejecting any issue marked `duplicate` or `wontfix`:
 
 ```yaml
-- uses: illia-m-b/ticket-guard-action@v0 # x-release-please-major
+- uses: illia-m-b/ticket-guard-action@v1 # x-release-please-major
   with:
     required-labels: |
       ready-for-dev
@@ -185,7 +185,7 @@ jobs:
       is-valid: ${{ steps.guard.outputs.is-valid }}
       error-message: ${{ steps.guard.outputs.error-message }}
     steps:
-      - uses: illia-m-b/ticket-guard-action@v0 # x-release-please-major
+      - uses: illia-m-b/ticket-guard-action@v1 # x-release-please-major
         id: guard
         with:
           fail-on-error: false
