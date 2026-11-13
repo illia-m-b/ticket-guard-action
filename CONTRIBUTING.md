@@ -100,6 +100,10 @@ Before submitting your pull request:
    pnpm exec lefthook run pre-push --all-files
    ```
 
+   Do not commit local changes to `dist/` produced by `pnpm build` (run
+   `git restore dist/` if needed); release automation updates `dist/` during
+   releases.
+
 3. Format your pull request title using
    [Conventional Commits][conventional-commits] syntax (for example,
    `feat(matcher): add regex support` or `fix(scope): handle empty org`).

@@ -7,6 +7,9 @@ no_tty: true
 pre-commit:
   piped: true
   jobs:
+    - name: forbid-dist
+      glob: 'dist/**'
+      run: echo "Do not commit dist/ directly" >&2 && exit 1
     - name: pkg-fix
       glob: package.json
       run: pnpm pkg fix

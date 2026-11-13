@@ -21,8 +21,16 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          fetch-depth: ${{ github.event_name == 'pull_request' && 2 || 1 }}
           persist-credentials: false
           show-progress: false
+      - if: >
+          github.event_name == 'pull_request' &&
+          !(
+            github.event.pull_request.head.repo.full_name == github.repository &&
+            github.event.pull_request.user.login == 'illia-m-b-automation[bot]'
+          )
+        run: git diff --quiet HEAD^1 HEAD -- dist/
       - uses: pnpm/setup@fa36a5ef7dcdefc3a7cb25655c122e00cf6e636e # v3.1.2
         with:
           cache: true
