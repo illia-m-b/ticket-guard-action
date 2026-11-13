@@ -15,8 +15,8 @@ import { ckWhen } from './ck-when.ts';
  * using the specified message. Otherwise, delegates to the wrapped check.
  *
  * @param shouldBypass - Whether validation should be bypassed.
- * @param origin - The supplier function that returns a fallback {@link Check} to
- *   evaluate when not bypassed.
+ * @param origin - The supplier function that returns a fallback {@link Check}
+ *   to evaluate when not bypassed.
  * @param message - An optional custom explanation of the bypass outcome.
  *   Defaults to `'Validation bypassed'`.
  *

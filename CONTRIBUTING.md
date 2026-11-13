@@ -84,8 +84,8 @@ Run these commands locally to verify your changes:
 | `pnpm types:check`                            | Check TypeScript types with `tsc`.                |
 | `pnpm lint:ts:check`                          | Check TypeScript files with [ESLint].             |
 | `pnpm lint:ts:fix`                            | Fix autofixable [ESLint] errors.                  |
-| `pnpm format:code:check`                      | Verify [Prettier] code formatting.                |
-| `pnpm format:code:fix <files...>`             | Format code with [Prettier].                      |
+| `pnpm fmt:ck`                                 | Verify [Oxfmt] code formatting.                   |
+| `pnpm fmt <files...>`                         | Format code with [Oxfmt].                         |
 | `pnpm lint:agents`                            | Lint [`AGENTS.md`](AGENTS.md) with [dogent].      |
 | `pnpm exec lefthook run pre-push --all-files` | Run all pre-push verification checks.             |
 
@@ -118,9 +118,9 @@ Before submitting your pull request:
 [lefthook]: https://lefthook.dev/
 [new-issue]: https://github.com/illia-m-b/ticket-guard-action/issues/new/choose
 [node]: https://nodejs.org/en/download
+[oxfmt]: https://oxc.rs/docs/guide/usage/formatter
 [pnpm]: https://pnpm.io/
 [pr]: https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request
-[prettier]: https://prettier.io/
 [reuse]: https://reuse.software/
 [runtime-management]: https://pnpm.io/cli/runtime
 [status]: https://github.com/illia-m-b/ticket-guard-action/actions

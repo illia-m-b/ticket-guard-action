@@ -5,7 +5,6 @@
 
 import eslint from '@eslint/js';
 import vitest from '@vitest/eslint-plugin';
-import eslintConfigPrettier from 'eslint-config-prettier';
 import packageJson from 'eslint-plugin-package-json';
 import perfectionist from 'eslint-plugin-perfectionist';
 import security from 'eslint-plugin-security';
@@ -210,18 +209,21 @@ export default defineConfig([
       'unicorn/better-dom-traversing': 'off',
       'unicorn/consistent-boolean-name': 'off',
       'unicorn/dom-node-dataset': 'off',
+      'unicorn/empty-brace-spaces': 'off',
       'unicorn/no-asterisk-prefix-in-documentation-comments': 'off',
       'unicorn/no-canvas-to-image': 'off',
       'unicorn/no-incorrect-query-selector': 'off',
       'unicorn/no-invalid-dom-token': 'off',
       'unicorn/no-invalid-remove-event-listener': 'off',
       'unicorn/no-late-event-control': 'off',
+      'unicorn/no-nested-ternary': 'off',
       'unicorn/no-prevent-default-in-passive-listener': 'off',
       'unicorn/no-process-exit': 'off',
       'unicorn/no-repeated-call-wrappers': 'error',
       'unicorn/no-selector-as-dom-name': 'off',
       'unicorn/no-unnecessary-default-arguments': 'error',
       'unicorn/no-unsafe-dom-html': 'off',
+      'unicorn/number-literal-case': 'off',
       'unicorn/prefer-add-event-listener': 'off',
       'unicorn/prefer-add-event-listener-options': 'off',
       'unicorn/prefer-dom-node-append': 'off',
@@ -235,6 +237,7 @@ export default defineConfig([
       'unicorn/prefer-path2d': 'off',
       'unicorn/prefer-query-selector': 'off',
       'unicorn/require-passive-events': 'off',
+      'unicorn/template-indent': 'off',
     },
   },
   {
@@ -301,6 +304,7 @@ export default defineConfig([
     files: ['package.json'],
     rules: {
       'package-json/no-local-dependencies': 'error',
+      'package-json/order-properties': 'off',
       'package-json/require-author': 'error',
       'package-json/require-bugs': 'error',
       'package-json/require-dependencies': 'error',
@@ -321,5 +325,4 @@ export default defineConfig([
       'package-json/restrict-private-properties': 'error',
     },
   },
-  eslintConfigPrettier,
 ]);

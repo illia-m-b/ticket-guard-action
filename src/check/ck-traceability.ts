@@ -38,7 +38,8 @@ import { trPlain } from './tr-plain.ts';
  * @param extracted - The reference extractor parsing candidate text. Defaults
  *   to {@link rfGitHub}.
  *
- * @returns A promise resolving to the {@link Traceability} verification outcome.
+ * @returns A promise resolving to the {@link Traceability} verification
+ *   outcome.
  */
 export const ckTraceability = async (
   inputs: Inputs,

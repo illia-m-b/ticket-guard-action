@@ -5,39 +5,32 @@ version = 1
 
 [[annotations]]
 path = [
-    ".gitignore",
-    ".prettierrc",
-    ".yamlignore",
-    "CHANGELOG.md",
-    "renovate.json",
-    "release-please-config.json",
-    "stryker.config.json",
-    "tsconfig.json"
+  ".gitignore",
+  ".yamlignore",
+  "CHANGELOG.md",
+  "renovate.json",
+  "release-please-config.json",
+  "stryker.config.json",
+  "tsconfig.json",
 ]
 SPDX-FileCopyrightText = "2026 Illia Brashkin"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
 path = [
-    ".release-please-manifest.json",
-    "dist/THIRD-PARTY-LICENSES.txt",
-    "pnpm-lock.yaml"
+  ".release-please-manifest.json",
+  "dist/THIRD-PARTY-LICENSES.txt",
+  "pnpm-lock.yaml",
 ]
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"
 
 [[annotations]]
-path = [
-    "patches/@stryker-mutator__typescript-checker.patch"
-]
+path = ["patches/@stryker-mutator__typescript-checker.patch"]
 SPDX-FileCopyrightText = "Stryker Mutator contributors"
 SPDX-License-Identifier = "Apache-2.0"
 
 [[annotations]]
-path = [
-    ".github/pull_request_template.md",
-    "AGENTS.md",
-    "package.json"
-]
+path = [".github/pull_request_template.md", "AGENTS.md", "package.json"]
 SPDX-FileCopyrightText = "2026 Illia Brashkin"
 SPDX-License-Identifier = "MIT"

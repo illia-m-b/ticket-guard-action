@@ -27,4 +27,4 @@ jobs:
         with:
           cache: true
           require-lockfile: true
-      - run: pnpm exec lefthook run pre-push --all-files --no-tty
+      - run: pnpm exec lefthook run pre-push --all-files

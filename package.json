@@ -4,40 +4,40 @@
   "private": true,
   "description": "Traceability enforcer—validates business state, labels, and lifecycle status of issues referenced in pull requests.",
   "keywords": [
-    "github-actions",
-    "traceability",
-    "issue-tracking",
-    "ticket-guard",
-    "ticket-validation",
-    "pull-request",
-    "pr-lint",
+    "audit-readiness",
+    "automation",
+    "change-management",
+    "ci-cd",
     "compliance",
     "devsecops",
-    "governance",
-    "change-management",
-    "audit-readiness",
-    "soc2",
+    "fast",
+    "github-actions",
     "github-issues",
-    "quality-gate",
-    "ci-cd",
-    "automation",
+    "governance",
+    "issue-tracking",
     "policy-as-code",
-    "zero-dependency",
-    "fast"
+    "pr-lint",
+    "pull-request",
+    "quality-gate",
+    "soc2",
+    "ticket-guard",
+    "ticket-validation",
+    "traceability",
+    "zero-dependency"
   ],
   "homepage": "https://github.com/illia-m-b/ticket-guard-action#readme",
   "bugs": {
     "url": "https://github.com/illia-m-b/ticket-guard-action/issues",
     "email": "illiamb@duck.com"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/illia-m-b/ticket-guard-action.git"
-  },
   "license": "MIT",
   "author": {
     "name": "Illia Brashkin",
     "email": "illiamb@duck.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/illia-m-b/ticket-guard-action.git"
   },
   "type": "module",
   "imports": {
@@ -45,9 +45,8 @@
   },
   "scripts": {
     "build": "tsdown",
-    "format:code": "prettier --ignore-unknown --log-level=warn",
-    "format:code:check": "pnpm format:code --check .",
-    "format:code:fix": "pnpm format:code --cache --cache-strategy=metadata --write",
+    "fmt": "oxfmt --no-error-on-unmatched-pattern",
+    "fmt:ck": "oxfmt --check --no-error-on-unmatched-pattern",
     "lint:agents": "dogent --hints --offline --verbose AGENTS.md",
     "lint:ts": "eslint --cache --exit-on-fatal-error --no-warn-ignored --flag=unstable_native_nodejs_ts_config",
     "lint:ts:check": "pnpm lint:ts --max-warnings=0",
@@ -70,7 +69,6 @@
     "@vitest/eslint-plugin": "1.6.28",
     "@yegor256/dogent": "0.13.3",
     "eslint": "10.14.0",
-    "eslint-config-prettier": "10.1.8",
     "eslint-plugin-package-json": "1.14.0",
     "eslint-plugin-perfectionist": "5.13.0",
     "eslint-plugin-security": "4.2.1",
@@ -79,27 +77,26 @@
     "eslint-plugin-unicorn": "79.0.0",
     "globals": "17.14.0",
     "lefthook": "2.2.1",
-    "prettier": "3.9.10",
-    "prettier-plugin-jsdoc": "1.8.1",
+    "oxfmt": "0.78.0",
     "rollup-plugin-license": "3.7.1",
     "tsdown": "0.23.5",
     "typescript": "6.0.3",
     "typescript-eslint": "8.72.1",
     "vitest": "5.1.0"
   },
-  "engines": {
-    "node": "24.x"
-  },
   "devEngines": {
-    "runtime": {
-      "name": "node",
-      "version": "24.22.2",
-      "onFail": "error"
-    },
     "packageManager": {
       "name": "pnpm",
       "version": "12.18.0",
       "onFail": "error"
+    },
+    "runtime": {
+      "name": "node",
+      "version": "24.22.2",
+      "onFail": "error"
     }
+  },
+  "engines": {
+    "node": "24.x"
   }
 }
