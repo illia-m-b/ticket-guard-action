@@ -36,11 +36,10 @@ describe('an author assignment check', () => {
 
   it('returns a failed check when author is not assigned', () => {
     const assignees = ['NiCkNaMe', 'AbbR', 'LoREM'];
-    const author =
-      (assignees[randomInt(assignees.length)] ?? 'NpM')
-        .split('')
-        .toReversed()
-        .join('') + '-unassigned';
+    const author = `${(assignees[randomInt(assignees.length)] ?? 'NpM')
+      .split('')
+      .toReversed()
+      .join('')}-unassigned`;
     const actual = ckAuthorAssigned(author, assignees);
     const check = {
       message: actual.message(),

@@ -4,6 +4,8 @@
 # yamllint disable rule:line-length
 blockExoticSubdeps: true
 trustPolicy: no-downgrade
+trustPolicyExclude:
+  - tsrs@0.25.0-ts7.1.0-beta
 minimumReleaseAge: 1440
 nodeLinker: isolated
 shamefullyHoist: false
@@ -12,7 +14,3 @@ strictPeerDependencies: true
 autoInstallPeers: true
 allowBuilds:
   lefthook: true
-patchedDependencies:
-  '@stryker-mutator/typescript-checker': patches/@stryker-mutator__typescript-checker.patch
-overrides:
-  '@typescript-eslint/utils': 8.72.1

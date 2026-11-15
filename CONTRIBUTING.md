@@ -81,9 +81,8 @@ Run these commands locally to verify your changes:
 | `pnpm build`                                  | Bundle action assets using [tsdown].              |
 | `pnpm test`                                   | Run test suite and check 100% coverage threshold. |
 | `pnpm test:watch`                             | Run test suite in watch mode.                     |
-| `pnpm types:check`                            | Check TypeScript types with `tsc`.                |
-| `pnpm lint:ts:check`                          | Check TypeScript files with [ESLint].             |
-| `pnpm lint:ts:fix`                            | Fix autofixable [ESLint] errors.                  |
+| `pnpm lint:ck`                                | Check TypeScript files with [Oxlint].             |
+| `pnpm lint <files...>`                        | Fix autofixable [Oxlint] errors.                  |
 | `pnpm fmt:ck`                                 | Verify [Oxfmt] code formatting.                   |
 | `pnpm fmt <files...>`                         | Format code with [Oxfmt].                         |
 | `pnpm lint:agents`                            | Lint [`AGENTS.md`](AGENTS.md) with [dogent].      |
@@ -116,13 +115,13 @@ Before submitting your pull request:
 [conventional-commits]: https://www.conventionalcommits.org/
 [dogent]: https://github.com/yegor256/dogent
 [eo]: https://www.elegantobjects.org/
-[eslint]: https://eslint.org/
 [fork]: https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo
 [issues]: https://github.com/illia-m-b/ticket-guard-action/issues
 [lefthook]: https://lefthook.dev/
 [new-issue]: https://github.com/illia-m-b/ticket-guard-action/issues/new/choose
 [node]: https://nodejs.org/en/download
 [oxfmt]: https://oxc.rs/docs/guide/usage/formatter
+[oxlint]: https://oxc.rs/docs/guide/usage/linter
 [pnpm]: https://pnpm.io/
 [pr]: https://docs.github.com/en/pull-requests/how-tos/create-pull-requests/creating-a-pull-request
 [reuse]: https://reuse.software/

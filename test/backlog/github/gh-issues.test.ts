@@ -5,8 +5,7 @@
 
 import { describe, expect, it } from 'vitest';
 
-import type { IssuePayload } from '#backlog/github/octokit.ts';
-import type { Octokit } from '#backlog/github/octokit.ts';
+import type { IssuePayload, Octokit } from '#backlog/github/octokit.ts';
 
 import { fkTicket } from '#backlog/fk-ticket.ts';
 import { fkOctokit } from '#backlog/github/fk-octokit.ts';
@@ -73,10 +72,10 @@ describe('a GitHub issues adapter', () => {
       url: fake.url(),
     };
     const owner = 'pnpm';
-    const repository_ = 'setup';
+    const name = 'setup';
     const number = new Date().getSeconds() + 1;
-    const reference = rfGitHub(`Closes ${owner}/${repository_}#${number}`);
-    const repository = rpPlain({ owner, repo: repository_ });
+    const reference = rfGitHub(`Closes ${owner}/${name}#${number}`);
+    const repository = rpPlain({ owner, repo: name });
     const backlog = ghIssues(fkOctokit({ status: 404 }));
     const retrieved = await backlog.ticket(reference, repository);
     let actualId;

@@ -97,7 +97,6 @@ describe('a repository URL', () => {
       },
       {
         expected: { name: 'eslint', owner: 'eslint' },
-        // eslint-disable-next-line unicorn/prefer-https
         input: 'http://github.com/eslint/eslint',
         message:
           'The repository coordinates were not extracted from an insecure http URL',
@@ -311,10 +310,7 @@ describe('a repository URL', () => {
     });
 
     it('processes a ten-thousand character hostile body within performance limits', () => {
-      const hostile =
-        'ab-cd-'.repeat(1600) +
-        ' https://github.com/nodejs/node/issues/52109 ' +
-        '-cd-ab'.repeat(1600);
+      const hostile = `${'ab-cd-'.repeat(1600)} https://github.com/nodejs/node/issues/52109 ${'-cd-ab'.repeat(1600)}`;
       const repository = rpUrl(hostile);
       expect(
         { name: repository.name(), owner: repository.owner() },

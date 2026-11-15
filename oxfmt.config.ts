@@ -6,7 +6,6 @@
 import type { OxfmtConfig } from 'oxfmt';
 
 export default {
-  endOfLine: 'lf',
   ignorePatterns: ['CHANGELOG.md', 'dist/**'],
   jsdoc: {
     commentLineStrategy: 'multiline',
@@ -16,11 +15,19 @@ export default {
     separateTagGroups: true,
   },
   printWidth: 80,
-  semi: true,
   singleQuote: true,
+  sortImports: {
+    groups: [
+      'type-import',
+      ['value-builtin', 'value-external'],
+      ['type-internal', 'type-subpath'],
+      ['value-internal', 'value-subpath'],
+      ['type-parent', 'type-sibling', 'type-index'],
+      ['value-parent', 'value-sibling', 'value-index'],
+      'unknown',
+    ],
+  },
   sortPackageJson: {
     sortScripts: true,
   },
-  tabWidth: 2,
-  trailingComma: 'all',
 } satisfies OxfmtConfig;

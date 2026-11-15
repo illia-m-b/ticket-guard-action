@@ -14,11 +14,9 @@ pre-commit:
       glob: package.json
       run: pnpm pkg fix
       stage_fixed: true
-    - name: lint-ts-fix
-      glob:
-        - '**/*.{js,ts,cjs,mjs}'
-        - package.json
-      run: pnpm lint:ts:fix {staged_files}
+    - name: lint
+      glob: '**/*.{js,cjs,mjs,ts,cts,mts}'
+      run: pnpm lint {staged_files}
       stage_fixed: true
     - name: fmt
       glob: '**/*.{js,cjs,mjs,ts,cts,mts,json,jsonc,json5,toml,yml,yaml,md}'
@@ -28,15 +26,12 @@ pre-push:
   parallel: true
   commands:
     lint-agents:
-      glob: 'AGENTS.md'
       run: pnpm lint:agents
     build:
       run: pnpm build
-    types-check:
-      run: pnpm types:check
-    fmt-check:
+    fmt-ck:
       run: pnpm fmt:ck
-    lint-ts-check:
-      run: pnpm lint:ts:check
+    lint-ck:
+      run: pnpm lint:ck
     test:
       run: pnpm test
