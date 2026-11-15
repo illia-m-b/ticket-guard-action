@@ -506,8 +506,8 @@ const ckAuthorAssigned = (author, assignees) => ckAssert(() => assignees.some((a
 * using the specified message. Otherwise, delegates to the wrapped check.
 *
 * @param shouldBypass - Whether validation should be bypassed.
-* @param origin - The supplier function that returns a fallback {@link Check} to
-*   evaluate when not bypassed.
+* @param origin - The supplier function that returns a fallback {@link Check}
+*   to evaluate when not bypassed.
 * @param message - An optional custom explanation of the bypass outcome.
 *   Defaults to `'Validation bypassed'`.
 *
@@ -667,7 +667,8 @@ const trPlain = (check, ticket = fkTicket()) => ({
 * @param extracted - The reference extractor parsing candidate text. Defaults
 *   to {@link rfGitHub}.
 *
-* @returns A promise resolving to the {@link Traceability} verification outcome.
+* @returns A promise resolving to the {@link Traceability} verification
+*   outcome.
 */
 const ckTraceability = async (inputs, pr, backlog, extracted = rfGitHub) => {
 	const actor = ckIgnoredActor(pr.author(), inputs.ignoreActors());
