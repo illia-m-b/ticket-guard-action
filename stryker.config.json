@@ -2,9 +2,9 @@
   "$schema": "./node_modules/@stryker-mutator/core/schema/stryker-schema.json",
   "packageManager": "pnpm",
   "testRunner": "vitest",
-  "buildCommand": "pnpm tsrs",
-  "concurrency": 4,
+  "disableTypeChecks": false,
   "coverageAnalysis": "perTest",
+  "ignoreStatic": true,
   "inPlace": true,
   "incremental": true,
   "incrementalFile": "reports/stryker-incremental.json",
@@ -12,11 +12,14 @@
   "ignorePatterns": [
     ".idea",
     "coverage",
+    "dist",
     "reports",
     ".stryker-tmp",
     "stryker-setup-*.js",
     "oxlint.config.ts",
-    "tsdown.config.ts"
+    "tsdown.config.ts",
+    "oxfmt.config.ts",
+    "vitest.config.ts"
   ],
   "plugins": ["@stryker-mutator/vitest-runner"],
   "reporters": ["clear-text", "progress", "dashboard"],

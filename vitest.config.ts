@@ -25,14 +25,14 @@ export default defineConfig({
     environment: 'node',
     exclude: [...configDefaults.exclude, '.stryker-tmp/**'],
     include: ['test/**/*.test.ts'],
-    isolate: true,
+    isolate: false,
     onConsoleLog(): never {
       throw new Error('Logs are forbidden in test suites');
     },
     pool: 'threads',
     reporters: ['dot'],
     sequence: {
-      concurrent: false,
+      concurrent: true,
       shuffle: true,
     },
     slowTestThreshold: 100,

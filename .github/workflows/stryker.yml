@@ -41,7 +41,7 @@ jobs:
         with:
           path: reports/stryker-incremental.json
           key: >-
-            stryker-${{ runner.os }}-${{ github.head_ref || github.ref_name }}-${{
+            stryker-${{ runner.os }}-${{
               hashFiles(
                 'src/**',
                 'test/**',
@@ -52,9 +52,7 @@ jobs:
                 'package.json'
               )
             }}
-          restore-keys: |
-            stryker-${{ runner.os }}-${{ github.head_ref || github.ref_name }}-
-            stryker-${{ runner.os }}-main-
+          restore-keys: stryker-${{ runner.os }}-
       - run: pnpm stryker run
         env:
           STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}
