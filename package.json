@@ -68,7 +68,7 @@
     "oxfmt": "0.78.0",
     "oxlint": "1.93.0",
     "rollup-plugin-license": "3.7.2",
-    "tsdown": "0.23.5",
+    "tsdown": "0.23.7",
     "tsrs": "0.25.0-ts7.1.0-beta",
     "vitest": "5.1.0"
   },
