@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: MIT
  */
 import { createRequire } from "node:module";
-import * as os$1 from "os";
-import os, { EOL } from "os";
+import * as os from "os";
+import os$1, { EOL } from "os";
 import * as crypto from "crypto";
 import * as fs from "fs";
 import { constants, existsSync, promises, readFileSync } from "fs";
@@ -28,14 +28,14 @@ var __esmMin = (fn, res, err) => () => {
 	}
 };
 var __commonJSMin = (cb, mod) => () => (mod || (cb((mod = { exports: {} }).exports, mod, mod.exports), cb = null), mod.exports);
-var __exportAll = (all, no_symbols) => {
-	let target = {};
+var __exportAll = (all, flags) => {
+	let target = Object.setPrototypeOf({}, null);
 	for (var name in all) __defProp(target, name, {
 		get: all[name],
 		enumerable: true
 	});
-	if (!no_symbols) __defProp(target, Symbol.toStringTag, { value: "Module" });
-	return target;
+	if (!(flags & 1)) __defProp(target, Symbol.toStringTag, { value: "Module" });
+	return flags & 2 ? target : Object.preventExtensions(target);
 };
 var __copyProps = (to, from, except, desc) => {
 	if (from && typeof from === "object" || typeof from === "function") for (var keys = __getOwnPropNames(from), i = 0, n = keys.length, key; i < n; i++) {
@@ -506,8 +506,8 @@ const ckAuthorAssigned = (author, assignees) => ckAssert(() => assignees.some((a
 * using the specified message. Otherwise, delegates to the wrapped check.
 *
 * @param shouldBypass - Whether validation should be bypassed.
-* @param origin - The supplier function that returns a fallback {@link Check} to
-*   evaluate when not bypassed.
+* @param origin - The supplier function that returns a fallback {@link Check}
+*   to evaluate when not bypassed.
 * @param message - An optional custom explanation of the bypass outcome.
 *   Defaults to `'Validation bypassed'`.
 *
@@ -667,7 +667,8 @@ const trPlain = (check, ticket = fkTicket()) => ({
 * @param extracted - The reference extractor parsing candidate text. Defaults
 *   to {@link rfGitHub}.
 *
-* @returns A promise resolving to the {@link Traceability} verification outcome.
+* @returns A promise resolving to the {@link Traceability} verification
+*   outcome.
 */
 const ckTraceability = async (inputs, pr, backlog, extracted = rfGitHub) => {
 	const actor = ckIgnoredActor(pr.author(), inputs.ignoreActors());
@@ -741,7 +742,7 @@ function toCommandProperties(annotationProperties) {
 */
 function issueCommand(command, properties, message) {
 	const cmd = new Command(command, properties, message);
-	process.stdout.write(cmd.toString() + os$1.EOL);
+	process.stdout.write(cmd.toString() + os.EOL);
 }
 const CMD_STRING = "::";
 var Command = class {
@@ -780,14 +781,14 @@ function issueFileCommand(command, message) {
 	const filePath = process.env[`GITHUB_${command}`];
 	if (!filePath) throw new Error(`Unable to find environment variable for file command ${command}`);
 	if (!fs.existsSync(filePath)) throw new Error(`Missing file at path: ${filePath}`);
-	fs.appendFileSync(filePath, `${toCommandValue(message)}${os$1.EOL}`, { encoding: "utf8" });
+	fs.appendFileSync(filePath, `${toCommandValue(message)}${os.EOL}`, { encoding: "utf8" });
 }
 function prepareKeyValueMessage(key, value) {
 	const delimiter = `ghadelimiter_${crypto.randomUUID()}`;
 	const convertedValue = toCommandValue(value);
 	if (key.includes(delimiter)) throw new Error(`Unexpected input: name should not contain the delimiter "${delimiter}"`);
 	if (convertedValue.includes(delimiter)) throw new Error(`Unexpected input: value should not contain the delimiter "${delimiter}"`);
-	return `${key}<<${delimiter}${os$1.EOL}${convertedValue}${os$1.EOL}${delimiter}`;
+	return `${key}<<${delimiter}${os.EOL}${convertedValue}${os.EOL}${delimiter}`;
 }
 // node_modules/.pnpm/tunnel@0.0.6/node_modules/tunnel/lib/tunnel.js
 var require_tunnel$1 = /* @__PURE__ */ __commonJSMin(((exports) => {
@@ -2544,7 +2545,7 @@ var require_dispatcher_base = /* @__PURE__ */ __commonJSMin(((exports, module) =
 		get webSocketOptions() {
 			return {
 				maxFragments: this[kWebSocketOptions].maxFragments ?? 131072,
-				maxPayloadSize: this[kWebSocketOptions].maxPayloadSize ?? 134217728
+				maxPayloadSize: this[kWebSocketOptions].maxPayloadSize ?? 0x8000000
 			};
 		}
 		get eventSourceOptions() {
@@ -6844,7 +6845,7 @@ var require_client_h2 = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 		});
 		return {
 			version: "h2",
-			defaultPipelining: Infinity,
+			defaultPipelining: 1e400,
 			write(...args) {
 				return writeH2(client, ...args);
 			},
@@ -10233,7 +10234,7 @@ var require_pending_interceptors_formatter = /* @__PURE__ */ __commonJSMin(((exp
 				"Status code": statusCode,
 				Persistent: persist ? PERSISTENT : NOT_PERSISTENT,
 				Invocations: timesInvoked,
-				Remaining: persist ? Infinity : times - timesInvoked
+				Remaining: persist ? 1e400 : times - timesInvoked
 			}));
 			this.logger.table(withPrettyHeaders);
 			return this.transform.read().toString();
@@ -10683,7 +10684,7 @@ var require_dns = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			pick: interceptorOpts?.pick ?? null,
 			dualStack,
 			affinity,
-			maxItems: interceptorOpts?.maxItems ?? Infinity
+			maxItems: interceptorOpts?.maxItems ?? 1e400
 		});
 		return (dispatch) => {
 			return function dnsInterceptor(origDispatchOpts, handler) {
@@ -13764,7 +13765,7 @@ var require_cache = /* @__PURE__ */ __commonJSMin(((exports, module) => {
 			}
 			return true;
 		}
-		#internalMatchAll(request, options, maxResponses = Infinity) {
+		#internalMatchAll(request, options, maxResponses = 1e400) {
 			let r = null;
 			if (request !== void 0) {
 				if (request instanceof Request) {
@@ -17122,8 +17123,8 @@ fs.constants.O_RDONLY;
 process.platform;
 events.EventEmitter;
 events.EventEmitter;
-os.platform();
-os.arch();
+os$1.platform();
+os$1.arch();
 /**
 * The code to exit an action
 */
@@ -17232,7 +17233,7 @@ function getBooleanInput(name, options) {
 */
 function setOutput(name, value) {
 	if (process.env["GITHUB_OUTPUT"] || "") return issueFileCommand("OUTPUT", prepareKeyValueMessage(name, value));
-	process.stdout.write(os$1.EOL);
+	process.stdout.write(os.EOL);
 	issueCommand("set-output", { name }, toCommandValue(value));
 }
 /**
@@ -17280,7 +17281,7 @@ function notice(message, properties = {}) {
 * @param message info message
 */
 function info(message) {
-	process.stdout.write(message + os$1.EOL);
+	process.stdout.write(message + os.EOL);
 }
 // src/coordinates/gh-coordinates.ts
 /**
@@ -17474,8 +17475,7 @@ var require_proxy = /* @__PURE__ */ __commonJSMin(((exports) => {
 	}
 	function checkBypass(reqUrl) {
 		if (!reqUrl.hostname) return false;
-		const reqHost = reqUrl.hostname;
-		if (isLoopbackAddress(reqHost)) return true;
+		if (isLoopbackAddress(reqUrl.hostname)) return true;
 		const noProxy = process.env["no_proxy"] || process.env["NO_PROXY"] || "";
 		if (!noProxy) return false;
 		let reqPort;
@@ -18166,7 +18166,6 @@ function getUserAgent() {
 	if (typeof process === "object" && process.version !== void 0) return `Node.js/${process.version.substr(1)} (${process.platform}; ${process.arch})`;
 	return "<environment undetectable>";
 }
-var init_universal_user_agent = __esmMin((() => {}));
 // node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/lib/register.js
 function register(state, name, method, options) {
 	if (typeof method !== "function") throw new Error("method for before hook must be a function");
@@ -18181,7 +18180,6 @@ function register(state, name, method, options) {
 		}, method)();
 	});
 }
-var init_register = __esmMin((() => {}));
 // node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/lib/add.js
 function addHook(state, kind, name, hook) {
 	const orig = hook;
@@ -18208,7 +18206,6 @@ function addHook(state, kind, name, hook) {
 		orig
 	});
 }
-var init_add = __esmMin((() => {}));
 // node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/lib/remove.js
 function removeHook(state, name, method) {
 	if (!state.registry[name]) return;
@@ -18218,7 +18215,6 @@ function removeHook(state, name, method) {
 	if (index === -1) return;
 	state.registry[name].splice(index, 1);
 }
-var init_remove = __esmMin((() => {}));
 // node_modules/.pnpm/before-after-hook@4.0.0/node_modules/before-after-hook/index.js
 function bindApi(hook, state, name) {
 	const removeHookRef = bindable(removeHook, null).apply(null, name ? [state, name] : [state]);
@@ -18253,9 +18249,6 @@ function Collection() {
 }
 var bind, bindable, before_after_hook_default;
 var init_before_after_hook = __esmMin((() => {
-	init_register();
-	init_add();
-	init_remove();
 	bind = Function.bind;
 	bindable = bind.bind(bind);
 	before_after_hook_default = {
@@ -18476,7 +18469,6 @@ function withDefaults$2(oldDefaults, newDefaults) {
 }
 var DEFAULTS, urlVariableRegex, endpoint;
 var init_dist_bundle$4 = __esmMin((() => {
-	init_universal_user_agent();
 	DEFAULTS = {
 		method: "GET",
 		baseUrl: "https://api.github.com",
@@ -19089,7 +19081,6 @@ function withDefaults$1(oldEndpoint, newDefaults) {
 var defaults_default, noop$1, request;
 var init_dist_bundle$3 = __esmMin((() => {
 	init_dist_bundle$4();
-	init_universal_user_agent();
 	init_dist();
 	init_json_with_bigint();
 	init_dist_src$2();
@@ -19152,7 +19143,6 @@ function withCustomRequest(customRequest) {
 var VERSION$3, GraphqlResponseError, NON_VARIABLE_OPTIONS, FORBIDDEN_VARIABLE_OPTIONS, GHES_V3_SUFFIX_REGEX;
 var init_dist_bundle$2 = __esmMin((() => {
 	init_dist_bundle$3();
-	init_universal_user_agent();
 	VERSION$3 = "0.0.0-development";
 	GraphqlResponseError = class extends Error {
 		constructor(request2, headers, response) {
@@ -19242,7 +19232,6 @@ function createLogger(logger = {}) {
 }
 var noop, consoleWarn, consoleError, userAgentTrail, Octokit;
 var init_dist_src$1 = __esmMin((() => {
-	init_universal_user_agent();
 	init_before_after_hook();
 	init_dist_bundle$3();
 	init_dist_bundle$2();
