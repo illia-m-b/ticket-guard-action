@@ -4,7 +4,7 @@
     ".": {
       "draft": true,
       "draft-pull-request": true,
-      "extra-files": ["README.md", "SECURITY.md"],
+      "extra-files": ["README.md", "SECURITY.md", "pyproject.toml"],
       "force-tag-creation": true,
       "include-component-in-tag": false,
       "release-type": "node"

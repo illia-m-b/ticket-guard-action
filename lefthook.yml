@@ -22,16 +22,33 @@ pre-commit:
       glob: '**/*.{js,cjs,mjs,ts,cts,mts,json,jsonc,json5,toml,yml,yaml,md}'
       run: pnpm fmt {staged_files}
       stage_fixed: true
+    - name: yamllint
+      glob: '**/*.{yml,yaml}'
+      run: pnpm exec yamllint {staged_files}
+    - name: reuse
+      run: pnpm exec reuse lint-file {staged_files}
 pre-push:
-  parallel: true
-  commands:
-    lint-agents:
-      run: pnpm lint:agents
-    build:
-      run: pnpm build
-    fmt-ck:
-      run: pnpm fmt:ck
-    lint-ck:
-      run: pnpm lint:ck
-    test:
-      run: pnpm test
+  piped: true
+  jobs:
+    - name: checks
+      group:
+        parallel: true
+        jobs:
+          - name: lint-agents
+            run: pnpm lint:agents
+          - name: lint-reuse
+            run: pnpm lint:reuse
+          - name: lint-yaml
+            run: pnpm lint:yaml
+          - name: fmt-ck
+            run: pnpm fmt:ck
+          - name: lint-ck
+            run: pnpm lint:ck
+    - name: verify
+      group:
+        parallel: true
+        jobs:
+          - name: build
+            run: pnpm build
+          - name: test
+            run: pnpm test

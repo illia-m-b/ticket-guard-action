@@ -21,6 +21,7 @@ path = [
   ".release-please-manifest.json",
   "dist/THIRD-PARTY-LICENSES.txt",
   "pnpm-lock.yaml",
+  "pylock.toml",
 ]
 SPDX-FileCopyrightText = "NONE"
 SPDX-License-Identifier = "CC0-1.0"

@@ -6,7 +6,7 @@
 import type { OxfmtConfig } from 'oxfmt';
 
 export default {
-  ignorePatterns: ['CHANGELOG.md', 'dist/**'],
+  ignorePatterns: ['CHANGELOG.md', 'dist/**', 'pylock.toml'],
   jsdoc: {
     commentLineStrategy: 'multiline',
     descriptionWithDot: true,

@@ -1,5 +1,9 @@
 # SPDX-FileCopyrightText: 2026 Illia Brashkin
 # SPDX-License-Identifier: MIT
 
+[default]
+locale = "en-us"
+
 [files]
-extend-exclude = ["CHANGELOG.md"]
+extend-exclude = [".git/", "CHANGELOG.md", "pnpm-lock.yaml", "pylock.toml"]
+ignore-hidden = false

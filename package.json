@@ -50,6 +50,8 @@
     "lint": "oxlint --fix --no-error-on-unmatched-pattern",
     "lint:agents": "dogent --hints --offline --verbose AGENTS.md",
     "lint:ck": "oxlint --no-error-on-unmatched-pattern",
+    "lint:reuse": "reuse lint",
+    "lint:yaml": "yamllint .",
     "test": "vitest run",
     "test:watch": "vitest"
   },

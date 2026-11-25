@@ -1,0 +1,208 @@
+lock-version = "1.0"
+created-by = "pnpm"
+environments = [
+    "implementation_name == 'cpython' and platform_machine == 'x86_64' and python_version == '3.12' and sys_platform == 'linux'",
+    "implementation_name == 'cpython' and platform_machine == 'aarch64' and python_version == '3.12' and sys_platform == 'linux'",
+    "implementation_name == 'cpython' and platform_machine == 'arm64' and python_version == '3.12' and sys_platform == 'darwin'",
+    "implementation_name == 'cpython' and platform_machine == 'AMD64' and python_version == '3.12' and sys_platform == 'win32'",
+]
+requires-python = "==3.12.*"
+
+[[packages]]
+name = "attrs"
+version = "26.1.0"
+
+[[packages.wheels]]
+name = "attrs-26.1.0-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/64/b4/17d4b0b2a2dc85a6df63d1157e028ed19f90d4cd97c36717afef2bc2f395/attrs-26.1.0-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "c647aa4a12dfbad9333ca4e71fe62ddc36f4e63b2d260a37a8b83d2f043ac309"
+
+[[packages]]
+name = "boolean-py"
+version = "5.0"
+
+[[packages.wheels]]
+name = "boolean_py-5.0-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/e5/ca/78d423b324b8d77900030fa59c4aa9054261ef0925631cd2501dd015b7b7/boolean_py-5.0-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "ef28a70bd43115208441b53a045d1549e2f0ec6e3d08a9d142cbc41c1938e8d9"
+
+[[packages]]
+name = "click"
+version = "8.5.1"
+
+[[packages.wheels]]
+name = "click-8.5.1-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/31/7d/164b7ffc8624fe9efb4221bf9af485d5c1e41b9ae118045d2b6dc5457d8b/click-8.5.1-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "8bb5376d2006950386f8c6427613334a2acadc5f559cb80e638d00b4df957e37"
+
+[[packages]]
+name = "jinja2"
+version = "3.1.6"
+
+[[packages.wheels]]
+name = "jinja2-3.1.6-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+
+[[packages]]
+name = "license-expression"
+version = "30.4.4"
+
+[[packages.wheels]]
+name = "license_expression-30.4.4-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/af/40/791891d4c0c4dab4c5e187c17261cedc26285fd41541577f900470a45a4d/license_expression-30.4.4-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "421788fdcadb41f049d2dc934ce666626265aeccefddd25e162a26f23bcbf8a4"
+
+[[packages]]
+name = "markupsafe"
+version = "3.0.4"
+
+[[packages.wheels]]
+name = "markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl"
+url = "https://files.pythonhosted.org/packages/a2/f0/d6613774d86fbf6d145751d43c59875e47a6f9f17daee0aef173bd36d90e/markupsafe-3.0.4-cp312-cp312-macosx_11_0_arm64.whl"
+
+[packages.wheels.hashes]
+sha256 = "0930db9bdc62d22944e10b066448bb65dc9abe9112880c7cab8da54db4284d5f"
+
+[[packages.wheels]]
+name = "markupsafe-3.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl"
+url = "https://files.pythonhosted.org/packages/0d/f2/8f18e0b806eb13c1f8d07d917a720831ead54253a6dec011fbc78098a6f8/markupsafe-3.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl"
+
+[packages.wheels.hashes]
+sha256 = "6a45c3d514f2436064db00d7fc8778d888f0236ebfed649b53d13a59e69ad51b"
+
+[[packages.wheels]]
+name = "markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+url = "https://files.pythonhosted.org/packages/4f/a7/aeedb5140afa41fc74c225e9184ab96723a6e873b6ee1c9fede7283456d8/markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+
+[packages.wheels.hashes]
+sha256 = "8e124f974786f831d6043728e38296969d3579db8896fe004682f5758e613581"
+
+[[packages.wheels]]
+name = "markupsafe-3.0.4-cp312-cp312-win_amd64.whl"
+url = "https://files.pythonhosted.org/packages/3f/bf/62495e180b7000aaf30000fff849e933f74264638057176cf46852500adc/markupsafe-3.0.4-cp312-cp312-win_amd64.whl"
+
+[packages.wheels.hashes]
+sha256 = "11935df9bf455ed0c04eb87bcd720f02b1fe5e02128a9430f23aed6f93336fc7"
+
+[[packages]]
+name = "pathspec"
+version = "1.1.1"
+
+[[packages.wheels]]
+name = "pathspec-1.1.1-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/f1/d9/7fb5aa316bc299258e68c73ba3bddbc499654a07f151cba08f6153988714/pathspec-1.1.1-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "a00ce642f577bf7f473932318056212bc4f8bfdf53128c78bbd5af0b9b20b189"
+
+[[packages]]
+name = "python-debian"
+version = "1.1.1"
+
+[[packages.wheels]]
+name = "python_debian-1.1.1-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/6e/47/e184f0004e63dbc49c4bad5e811218f66bece1b519f80b06a619b42e6ec3/python_debian-1.1.1-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "f98ae013e8e5310e49041cc3860a7105df73af73d4ff1d8afb474770d328a6ad"
+
+[[packages]]
+name = "python-magic"
+version = "0.4.27"
+
+[[packages.wheels]]
+name = "python_magic-0.4.27-py2.py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/6c/73/9f872cb81fc5c3bb48f7227872c28975f998f3e7c2b1c16e95e6432bbb90/python_magic-0.4.27-py2.py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "c212960ad306f700aa0d01e5d7a325d20548ff97eb9920dcd29513174f0294d3"
+
+[[packages]]
+name = "pyyaml"
+version = "6.0.4"
+
+[[packages.wheels]]
+name = "pyyaml-6.0.4-cp312-cp312-macosx_11_0_arm64.whl"
+url = "https://files.pythonhosted.org/packages/c7/30/efaabf2d135d11f32cbd4752f3b7df0d592894ee3ca252bbba013a7d5891/pyyaml-6.0.4-cp312-cp312-macosx_11_0_arm64.whl"
+
+[packages.wheels.hashes]
+sha256 = "4d30c2f186612bd2f9f07c08a4c96721af59cfc8da3ec7cb27dfa2834e8bb019"
+
+[[packages.wheels]]
+name = "pyyaml-6.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl"
+url = "https://files.pythonhosted.org/packages/af/fb/d5ff6957db5c843151ff13196277bb8e20b2d5db2e2db3e8d051038d888b/pyyaml-6.0.4-cp312-cp312-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl"
+
+[packages.wheels.hashes]
+sha256 = "45e37dd647db9d67b757444c74060c064ace5fdaa08f42bf4fda3812275d423e"
+
+[[packages.wheels]]
+name = "pyyaml-6.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+url = "https://files.pythonhosted.org/packages/94/80/1d27f7084b983b7cfd1fb35e65a38276d9eddfdcdabc0922bb26cf9521bc/pyyaml-6.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl"
+
+[packages.wheels.hashes]
+sha256 = "93bfb2459195406a518e2f487a9bbf01df240175f31e06f5a252ac6734c7bbf0"
+
+[[packages.wheels]]
+name = "pyyaml-6.0.4-cp312-cp312-win_amd64.whl"
+url = "https://files.pythonhosted.org/packages/a3/95/307a6ceafbad9a08300743d19329c31726224e583e05c4fe5358522ba283/pyyaml-6.0.4-cp312-cp312-win_amd64.whl"
+
+[packages.wheels.hashes]
+sha256 = "131d11bd9b60d705a6388366d77ed67850995a4d2be85fe149785a257c17e531"
+
+[[packages]]
+name = "reuse"
+version = "6.3.0"
+
+[[packages.wheels]]
+name = "reuse-6.3.0-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/b5/28/2206a2fa719f303b40b2bc2b50ccf06f59d64d22f2106258b2cf141e4db3/reuse-6.3.0-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "be6b598aa6d5cdf44af0da265572a72f0adcd30033857af874fd8607188259c1"
+
+[[packages]]
+name = "tomlkit"
+version = "0.15.3"
+
+[[packages.wheels]]
+name = "tomlkit-0.15.3-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/c3/49/6b0a22e69c844c0b18cb66c206bdd791693d0cf845badc5f84e6448f2192/tomlkit-0.15.3-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "a83ce6de3b648e68dd9b50aabadad749ba823eb58b1d026f3c0a283c4767a9c1"
+
+[[packages]]
+name = "yamllint"
+version = "1.38.0"
+
+[[packages.wheels]]
+name = "yamllint-1.38.0-py3-none-any.whl"
+url = "https://files.pythonhosted.org/packages/05/92/aed08e68de6e6a3d7c2328ce7388072cd6affc26e2917197430b646aed02/yamllint-1.38.0-py3-none-any.whl"
+
+[packages.wheels.hashes]
+sha256 = "fc394a5b3be980a4062607b8fdddc0843f4fa394152b6da21722f5d59013c220"
+
+[tool.pnpm]
+requirements = [
+    "reuse==6.3.0",
+    "yamllint==1.38.0",
+]
+platforms = [
+    "linux-x64-manylinux_2_28",
+    "linux-arm64-manylinux_2_28",
+    "darwin-arm64",
+    "win32-x64",
+]
+python-versions = ["3.12"]
+index = "https://pypi.org/simple/"
