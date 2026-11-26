@@ -3,7 +3,7 @@
 
 [project]
 name = "ticket-guard-action"
-version = "1.0.0" # x-release-please-version
+version = "1.0.1" # x-release-please-version
 requires-python = "==3.12.*"
 classifiers = ["Private :: Do Not Upload"]
 dependencies = []
