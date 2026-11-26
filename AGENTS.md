@@ -44,10 +44,10 @@ Match continuous integration job names to file names.
 ## Commands
 
 Run `pnpm lint [files...]` to analyze TypeScript code.
-Provide empty file argument list to lint entire project.
 Run `pnpm fmt [files...]` to format source files.
-Provide empty file argument list to format entire project.
+Run `pnpm lint:md` to fix Markdown files.
 Run `pnpm test` to execute test suite with coverage.
+Run `pnpm exec lefthook run pre-push --all-files` to run all checks.
 
 ## Testing
 

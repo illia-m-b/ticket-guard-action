@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: MIT
 ---
 # yamllint disable rule:line-length
-name: pnpm
+name: ci
 'on':
   push: &filter
     branches:
@@ -13,7 +13,7 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 jobs:
-  pnpm:
+  ci:
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -31,8 +31,10 @@ jobs:
             github.event.pull_request.user.login == 'illia-m-b-automation[bot]'
           )
         run: git diff --quiet HEAD^1 HEAD -- dist/
+      - uses: crate-ci/typos@276087d9a4f06398b3e04825487805e2d7375888 # v1.52.2
       - uses: pnpm/setup@731dfb6463bbd11c11fd0ee11fe00ed0e36d48a1 # v3.2.0
         with:
           cache: true
           require-lockfile: true
+          save-cache: ${{ github.event_name == 'push' }}
       - run: pnpm exec lefthook run pre-push --all-files

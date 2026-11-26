@@ -82,10 +82,14 @@ Run these commands locally to verify your changes:
 | `pnpm test`                                   | Run test suite and check 100% coverage threshold. |
 | `pnpm test:watch`                             | Run test suite in watch mode.                     |
 | `pnpm lint:ck`                                | Check TypeScript files with [Oxlint].             |
-| `pnpm lint <files...>`                        | Fix autofixable [Oxlint] errors.                  |
+| `pnpm lint [files...]`                        | Fix autofixable [Oxlint] errors.                  |
 | `pnpm fmt:ck`                                 | Verify [Oxfmt] code formatting.                   |
-| `pnpm fmt <files...>`                         | Format code with [Oxfmt].                         |
+| `pnpm fmt [files...]`                         | Format code with [Oxfmt].                         |
 | `pnpm lint:agents`                            | Lint [`AGENTS.md`](AGENTS.md) with [dogent].      |
+| `pnpm lint:md:ck`                             | Check Markdown files with [markdownlint-cli2].    |
+| `pnpm lint:md [--no-globs files...]`          | Fix autofixable [markdownlint-cli2] errors.       |
+| `pnpm lint:reuse`                             | Verify [SPDX][reuse] licensing compliance.        |
+| `pnpm lint:yaml`                              | Lint YAML files with [yamllint].                  |
 | `pnpm exec lefthook run pre-push --all-files` | Run all pre-push verification checks.             |
 
 ## Pull Request Submission
@@ -118,6 +122,7 @@ Before submitting your pull request:
 [fork]: https://docs.github.com/en/pull-requests/how-tos/work-with-forks/fork-a-repo
 [issues]: https://github.com/illia-m-b/ticket-guard-action/issues
 [lefthook]: https://lefthook.dev/
+[markdownlint-cli2]: https://github.com/DavidAnson/markdownlint-cli2
 [new-issue]: https://github.com/illia-m-b/ticket-guard-action/issues/new/choose
 [node]: https://nodejs.org/en/download
 [oxfmt]: https://oxc.rs/docs/guide/usage/formatter
@@ -128,3 +133,4 @@ Before submitting your pull request:
 [runtime-management]: https://pnpm.io/cli/runtime
 [status]: https://github.com/illia-m-b/ticket-guard-action/actions
 [tsdown]: https://tsdown.dev/
+[yamllint]: https://yamllint.readthedocs.io/

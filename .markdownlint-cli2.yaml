@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2026 Illia Brashkin
+# SPDX-License-Identifier: MIT
+---
+config:
+  MD003:
+    style: atx
+  MD004:
+    style: dash
+  MD009:
+    br_spaces: 0
+    code_blocks: true
+  MD010:
+    spaces_per_tab: 2
+  MD013:
+    stern: true
+    tables: false
+  MD029:
+    style: ordered
+  MD033:
+    table_allowed_elements:
+      - br
+  MD035:
+    style: '---'
+  MD040:
+    language_only: true
+  MD046:
+    style: fenced
+  MD048:
+    style: backtick
+  MD049:
+    style: underscore
+  MD050:
+    style: asterisk
+  MD052:
+    ignored_labels:
+      - x
+      - '!note'
+      - '!tip'
+      - '!important'
+      - '!warning'
+      - '!caution'
+    shortcut_syntax: true
+  MD054:
+    collapsed: false
+    url_inline: false
+  MD055:
+    style: leading_and_trailing
+  MD060:
+    style: aligned
+gitignore: true
+globs:
+  - '**/*.md'
+ignores:
+  - CHANGELOG.md
+noInlineConfig: true
+overrides:
+  - filter:
+      - .github/pull_request_template.md
+    combine: merge
+    config:
+      MD013: false
+      MD041:
+        level: 2

@@ -25,6 +25,13 @@ pre-commit:
     - name: yamllint
       glob: '**/*.{yml,yaml}'
       run: pnpm exec yamllint {staged_files}
+    - name: lint-md
+      glob: '**/*.md'
+      run: pnpm lint:md --no-globs {staged_files}
+      stage_fixed: true
+    - name: lint-md-config
+      glob: '**/.markdownlint-cli2.yaml'
+      run: pnpm lint:md:ck
     - name: reuse
       run: pnpm exec reuse lint-file {staged_files}
 pre-push:
@@ -36,6 +43,8 @@ pre-push:
         jobs:
           - name: lint-agents
             run: pnpm lint:agents
+          - name: lint-md-ck
+            run: pnpm lint:md:ck
           - name: lint-reuse
             run: pnpm lint:reuse
           - name: lint-yaml
